@@ -5,7 +5,6 @@ C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\backend.deps.json
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\backend.runtimeconfig.json
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\backend.dll
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\backend.pdb
-C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\nguy3\Desktop\Clipr\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
