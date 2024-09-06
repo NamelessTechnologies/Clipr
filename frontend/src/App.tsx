@@ -33,9 +33,9 @@ function App() {
 
         <tbody>
         <tr>
-          <th>First Name</th>
+          {/* <th>First Name</th>
           <th>Last Name</th>
-          <th>Faction</th>
+          <th>Faction</th> */}
         </tr>
         <tr>
           <td>{data.firstName}</td>

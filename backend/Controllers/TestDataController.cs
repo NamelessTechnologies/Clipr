@@ -1,5 +1,8 @@
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
+// using NRedisStack;
+// using NRedisStack.RedisStackCommands;
+using StackExchange.Redis;
 
 namespace backend.Controllers;
 
@@ -8,12 +11,14 @@ namespace backend.Controllers;
 public class TestDataController : ControllerBase
 {
     [HttpGet("user")]
-    public IActionResult getTestData() {
+    public IActionResult getTestData()
+    {
+        ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("nameless.redis.cache.windows.net:6380,password=h50mXz9PcVwe13Du14MlZZ1YfB0ROI9FUAzCaKBXt84=,ssl=True,abortConnect=False");
+        IDatabase db = redis.GetDatabase();
+
         return Ok(new TestData
         {
-            FirstName = "Dan",
-            LastName = "Heng",
-            Faction = "Trailblaze"
+            FirstName = db.StringGet("ourmessage")
         });
     }
 }

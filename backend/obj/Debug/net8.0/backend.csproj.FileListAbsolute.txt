@@ -31,3 +31,38 @@ C:\Users\nguy3\Desktop\Clipr\backend\obj\Debug\net8.0\refint\backend.dll
 C:\Users\nguy3\Desktop\Clipr\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\nguy3\Desktop\Clipr\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\nguy3\Desktop\Clipr\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.csproj.AssemblyReference.cache
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.AssemblyInfoInputs.cache
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.AssemblyInfo.cs
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.csproj.CoreCompileInputs.cache
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.sourcelink.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\refint\backend.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.pdb
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\backend.exe
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\backend.deps.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\backend.runtimeconfig.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\backend.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\backend.pdb
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets\msbuild.backend.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.backend.props
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.backend.props
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.backend.props
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\scopedcss\bundle\backend.styles.css
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.csproj.Up2Date
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
+C:\Users\alonz\Documents\The Nameless\Clipr Website\Clipr\backend\obj\Debug\net8.0\ref\backend.dll
