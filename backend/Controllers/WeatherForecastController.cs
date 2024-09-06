@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using backend.Models;
 
 namespace backend.Controllers;
 
@@ -28,5 +29,10 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+    }
+
+    [HttpGet("GetTestData")]
+    public string getTestData([FromQuery] string userID) {
+        return "test";
     }
 }
