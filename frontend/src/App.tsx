@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import hsr_logo from './assets/hsr_logo.png'
 import './App.css'
 
-function App() {
-  // const [data, setData] = useState([])
-  const [data, setData] = useState({ firstName: String, lastName: String, faction: String});
+import User from './types/User';
 
-  const fetchData = () => {
-    fetch('http://localhost:5001/TestData/user')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-      })
-      .catch(error => {
-        console.error("skibidi: " + error);
-      })
-      console.log(data);
+function App() {
+  const [data, setData] = useState<User>();
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/TestData/user');
+      const json = await response.json() as User;
+      setData(json);
+      console.log(json);
+    } catch (error) {
+      console.error(error);
+      }
   }
 
   return (
@@ -31,18 +31,12 @@ function App() {
           Fetch Data
         </button>
 
-        <tbody>
-        <tr>
-          {/* <th>First Name</th>
-          <th>Last Name</th>
-          <th>Faction</th> */}
-        </tr>
-        <tr>
-          <td>{data.firstName}</td>
-          <td>{data.lastName}</td>
-          <td>{data.faction}</td>
-        </tr>
-      </tbody>
+        <ul>
+          <li>First Name: {data ? data.firstName : ""}</li>
+          <li>Last Name: {data ? data.lastName : ""}</li>
+          <li>Faction: {data ? data.faction : ""}</li>
+        </ul>
+
       </div>
     </>
   )
