@@ -18,7 +18,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(builder =>
 {
-    builder.WithOrigins("http://localhost:5173")
+    builder.WithOrigins("http://localhost:5173")   
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+    builder.WithOrigins("https://namelesstechnologies.github.io")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
 });
