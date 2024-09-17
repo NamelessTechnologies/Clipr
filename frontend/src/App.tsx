@@ -1,23 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import hsr_logo from './assets/hsr_logo.png'
 import './App.css'
 
 import User from './types/User';
+import Video from './Video';
 
 function App() {
   const [data, setData] = useState<User>();
+  const [url, setURL] = useState<string>("");
+  // let url: string | undefined = "";
 
-  const fetchData = async () => {
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async (): Promise<string> => {
     try {
       const response = await fetch('http://localhost:5001/TestData/user');
       const json = await response.json() as User;
-      setData(json);
-      console.log(json);
+      console.log("setting URL to " + json.firstName);
+      setURL(json.firstName);
+      return json.firstName;
+      // console.log(json.firstName);
     } catch (error) {
       console.error(error);
+      throw new Error("This is a custom error message");
       }
+    
   }
-
   return (
     <>
       <div>
@@ -26,7 +37,7 @@ function App() {
         </a>
       </div>
       <h1>The Nameless</h1>
-      <div className="card">
+      {/* <div className="card">
         <button onClick={fetchData}>
           Fetch Data
         </button>
@@ -37,7 +48,11 @@ function App() {
           <li>Faction: {data ? data.faction : ""}</li>
         </ul>
 
-      </div>
+      </div> */}
+
+      {/* {url} */}
+      <Video url= {url ? url : "pornhub.com"} />
+      
     </>
   )
 }
