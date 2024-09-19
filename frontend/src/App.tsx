@@ -4,6 +4,7 @@ import './App.css'
 
 import User from './types/User';
 import Video from './Video';
+import Video2 from './Video2';
 
 function App() {
   const [data, setData] = useState<User>();
@@ -51,8 +52,9 @@ function App() {
       </div> */}
 
       {/* {url} */}
-      <Video url= {url ? url : "pornhub.com"} />
-      
+      {/* <Video url= {url ? url : "pornhub.com"} /> */}
+      <Video2></Video2>
+
     </>
   )
 }
