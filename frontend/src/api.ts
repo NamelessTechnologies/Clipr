@@ -14,10 +14,10 @@ export const fetchPosts = async (): Promise<Post[]> => {
                 title: post.title,
                 description: post.description,
                 datePosted: post.datePosted,
-                mediaTpe: post.mediaType,
+                mediaType: post.mediaType,
             };        
             posts.push(NewPost);
-            console.log("title: " + post.title);
+            // console.log("title: " + post.title);
         });
         return posts;
     } catch (error) {

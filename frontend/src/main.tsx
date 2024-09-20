@@ -6,7 +6,7 @@ import PostTest from './pages/PostTest.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* <App /> */}
-    <PostTest></PostTest>
+    <App />
+    {/* <PostTest></PostTest> */}
   </StrictMode>,
 )
