@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PostTagTemp from "../types/Post_Tag_Temp";
 
-function TagTest() {
+function PostTagTest() {
 
   const [data, setData] = useState<PostTagTemp[]>([]); 
   const url = 'http://localhost:5001/';
@@ -12,11 +12,11 @@ function TagTest() {
         const json = await response.json();
         const postTags: PostTagTemp[] = [];
         json.forEach((tag: any) => {
-            const Save: PostTagTemp = {
+            const PostTag: PostTagTemp = {
                 post_id: tag.postID,
                 tag_id: tag.tagID
             };        
-            postTags.push(Save);
+            postTags.push(PostTag);
         });
       setData(postTags); 
     } catch (error) {
@@ -50,4 +50,4 @@ function TagTest() {
     );
   }
   
-export default TagTest;
+export default PostTagTest;

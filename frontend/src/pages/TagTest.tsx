@@ -6,19 +6,19 @@ function TagTest() {
   const [data, setData] = useState<Tag_Temp[]>([]); 
   const url = 'http://localhost:5001/';
 
-  const fetchSaves = async () => {
+  const fetchTags = async () => {
     try {
         const response = await fetch(url + 'tag/temp');
         const json = await response.json();
-        const saves: Tag_Temp[] = [];
+        const tags: Tag_Temp[] = [];
         json.forEach((tag: any) => {
             const Save: Tag_Temp = {
                 id: tag.id,
                 name: tag.name
             };        
-            saves.push(Save);
+            tags.push(Save);
         });
-      setData(saves); 
+      setData(tags); 
     } catch (error) {
         console.error(error);
         throw new Error("Error getting saves data");
@@ -26,7 +26,7 @@ function TagTest() {
 }
 
   useEffect(() => {
-    fetchSaves();
+    fetchTags();
   }, []);
 
     return (

@@ -10,15 +10,15 @@ function LikeTest() {
     try {
         const response = await fetch(url + 'likes/temp');
         const json = await response.json();
-        const saves: Like_Temp[] = [];
+        const likes: Like_Temp[] = [];
         json.forEach((post: any) => {
-            const Save: Like_Temp = {
+            const Like: Like_Temp = {
                 post_id: post.postID,
                 user_id: post.userID
             };        
-            saves.push(Save);
+            likes.push(Like);
         });
-      setData(saves); 
+      setData(likes); 
     } catch (error) {
         console.error(error);
         throw new Error("Error getting saves data");
