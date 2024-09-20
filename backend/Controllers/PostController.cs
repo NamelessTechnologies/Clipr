@@ -172,4 +172,35 @@ public class PostController : ControllerBase {
         }
         return Ok(postTags);
     }
+
+    // TEMPORARY
+    [HttpGet("/media")]
+    public IActionResult getMedia() {
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM media";
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var medias = new List<Media>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            Media newMedia = new Media {
+                MediaID = reader.GetInt32(0),
+                PostID = reader.GetInt32(1),
+                Url = reader.GetString(2)
+            };
+            medias.Add(newMedia);
+        }
+        return Ok(medias);
+    }
 }
