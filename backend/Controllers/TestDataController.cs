@@ -14,13 +14,13 @@ public class TestDataController : ControllerBase
     public IActionResult getTestData()
     {
         // Define your connection string (replace with your actual values)
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=test";
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         // // Define your SQL query (e.g., retrieving a single value from a specific column)
         // var sql = "SELECT firstname FROM users LIMIT 1";
 
         // Define your SQL query (e.g., retrieving a single value from a specific column)
-        var sql = "SELECT email FROM users WHERE user_id = 1 LIMIT 1";
+        var sql = "SELECT * FROM users";
 
         // Create a connection object
         using var conn = new NpgsqlConnection(connString);
