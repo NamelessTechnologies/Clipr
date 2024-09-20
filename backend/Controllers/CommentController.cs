@@ -37,13 +37,49 @@ public class CommentController : ControllerBase {
         // THIS DONT WORK YET
         if (reader.Read()) {
             return Ok(new Comment {
-                // ID = reader.GetInt32(0),
-                // UserID = reader.GetInt32(1),
-                
+                ID = reader.GetInt32(0),
+                ParentID = reader.GetInt32(1),
+                PostID = reader.GetInt32(2),
+                UserID = reader.GetInt32(3),
+                Content = reader.GetString(4)
             });
         }  else {
             return BadRequest("no data");
         }
 
+    }
+    [HttpGet]
+    public IActionResult getAllComments() {
+
+        // DatabaseConnection con1 = new DatabaseConnection();
+        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM post";
+
+        using var conn = new NpgsqlConnection(connString);
+        // if (conn.State != System.Data.ConnectionState.Open) {
+        //     conn.Open();
+        // }
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var comments = new List<Comment>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            Comment newComment = new Comment {
+                ID = reader.GetInt32(0),
+                ParentID = reader.GetInt32(1),
+                PostID = reader.GetInt32(2),
+                UserID = reader.GetInt32(3),
+                Content = reader.GetString(4)
+            };
+            comments.Add(newComment);
+        }
+        return Ok(comments);
     }
 }
