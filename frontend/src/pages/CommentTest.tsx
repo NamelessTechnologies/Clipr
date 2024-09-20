@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Comment from "../types/Comment";
 
-function CommTest() {
+function CommentTest() {
 
   const [data, setData] = useState<Comment[]>([]); 
   const url = 'http://localhost:5001/';
@@ -39,16 +39,18 @@ function CommTest() {
         <table>
           <tr>
             <th>id</th>
+            <th>parent_id</th>
+            <th>post_id</th>
             <th>user_id</th>
-            <th>server_id</th>
             <th>message</th>
           </tr>
   
           {data?.map(user => (
             <tr>
               <td key={user.user_id}>{user.id}</td>
+              <td key={user.user_id}>{user.parent_id}</td>
+              <td key={user.user_id}>{user.post_id}</td>
               <td key={user.user_id}>{user.user_id}</td>
-              <td key={user.user_id}>{user.server_id}</td>
               <td key={user.user_id}>{user.message}</td>
             </tr>
           ))}
