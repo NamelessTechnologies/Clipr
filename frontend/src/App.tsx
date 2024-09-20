@@ -55,7 +55,6 @@ function App() {
       </div> */}
 
       {/* {url} */}
-      {/* <Video url= {url ? url : "pornhub.com"} /> */}
       <TableViewUser></TableViewUser>
       <TableViewConversation></TableViewConversation>
       <TableViewMessage></TableViewMessage>
