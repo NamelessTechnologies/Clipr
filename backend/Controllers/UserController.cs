@@ -12,16 +12,23 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
+    private NpgsqlConnection conn;
+
+    public UserController() {
+        conn = DBConn.Instance().getConn();
+    }
+
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
 
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -64,12 +71,13 @@ public class UserController : ControllerBase
     public IActionResult getAllUsers()
     {
 
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -103,11 +111,11 @@ public class UserController : ControllerBase
 
     [HttpGet("{id}/saved/")]
     public IActionResult getUserSaves(int id) {
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -136,12 +144,11 @@ public class UserController : ControllerBase
 // TEMPORARY
     [HttpGet("/saved/temp")]
     public IActionResult getSaveDataTEMP() {
-
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM save";
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -165,13 +172,13 @@ public class UserController : ControllerBase
     [HttpGet("convo/all")]
     public IActionResult getAllConversations()
     {
-
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM conversation";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -203,13 +210,13 @@ public class UserController : ControllerBase
     [HttpGet("msg/all")]
     public IActionResult getAllMessages()
     {
-
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM message";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+        
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
