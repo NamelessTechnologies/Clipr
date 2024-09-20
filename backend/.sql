@@ -73,10 +73,10 @@ CREATE TABLE comment(
 	CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES comment(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    message TEXT,
+    content TEXT,
     UNIQUE (id)
 );
-INSERT INTO comment (parent_id, post_id, user_id, message)
+INSERT INTO comment (parent_id, post_id, user_id, content)
 VALUES
 (NULL, 5, 1, 'This is a great post!'),
 (NULL, 5, 2, 'I really enjoyed reading this.'),
