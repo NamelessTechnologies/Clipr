@@ -8,7 +8,7 @@ function SaveTest() {
 
   const fetchSaves = async () => {
     try {
-        const response = await fetch(url + 'post/');
+        const response = await fetch(url + 'saved/temp');
         const json = await response.json();
         const saves: Saved_Temp[] = [];
         json.forEach((post: any) => {

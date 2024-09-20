@@ -134,11 +134,11 @@ public class UserController : ControllerBase
 
 
 // TEMPORARY
-    [HttpGet("{id}/saved/temp")]
-    public IActionResult getSaveDataTEMP(int id) {
+    [HttpGet("/saved/temp")]
+    public IActionResult getSaveDataTEMP() {
 
         string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-        var sql = "SELECT * FROM save WHERE user_id = " + id;
+        var sql = "SELECT * FROM save";
 
         using var conn = new NpgsqlConnection(connString);
         conn.Open();
