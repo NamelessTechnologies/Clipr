@@ -6,7 +6,7 @@ import PostWithCommentsTest from './pages/PostWithCommentsTest.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* <App /> */}
-    <PostWithCommentsTest></PostWithCommentsTest>
+    <App />
+    {/* <PostWithCommentsTest></PostWithCommentsTest> */}
   </StrictMode>,
 )
