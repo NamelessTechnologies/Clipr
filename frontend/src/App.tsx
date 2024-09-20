@@ -4,6 +4,8 @@ import './App.css'
 
 // import User from './types/User';
 import TableViewUser from './TableViewUser';
+import TableViewConversation from './TableViewConversation';
+import TableViewMessage from './TableViewMessage';
 
 function App() {
   // const [data, setData] = useState<User>();
@@ -53,6 +55,8 @@ function App() {
       {/* {url} */}
       {/* <Video url= {url ? url : "pornhub.com"} /> */}
       <TableViewUser></TableViewUser>
+      <TableViewConversation></TableViewConversation>
+      <TableViewMessage></TableViewMessage>
 
     </>
   )

@@ -100,4 +100,83 @@ public class UserController : ControllerBase
             return Ok(allUsers);
         }
     }
+
+    [HttpGet("convo/all")]
+    public IActionResult getAllConversations()
+    {
+
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM conversation";
+        Console.WriteLine(sql);
+
+        using var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+
+        var allConversations = new List<Conversation>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for conversation data.");
+                }
+
+                Conversation singleConversation = new Conversation
+                {
+                    Id = rdr.GetInt32(0),
+                    User_id = rdr.GetInt32(1),
+                    User_id_2 = rdr.GetInt32(2),
+                };
+
+                allConversations.Add(singleConversation);
+            }
+            return Ok(allConversations);
+        }
+    }
+
+    [HttpGet("msg/all")]
+    public IActionResult getAllMessages()
+    {
+
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM message";
+        Console.WriteLine(sql);
+
+        using var conn = new NpgsqlConnection(connString);
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+
+        var allMessages = new List<Message>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for message data.");
+                }
+
+                Message singleMessage = new Message
+                {
+                    Id = rdr.GetInt32(0),
+                    Convo_id = rdr.GetInt32(1),
+                    Content = rdr.GetString(2),
+                    Datesent = rdr.GetDateTime(3),
+                    User_id = rdr.GetInt32(4)
+
+                };
+
+                allMessages.Add(singleMessage);
+            }
+            return Ok(allMessages);
+        }
+    }
 }
