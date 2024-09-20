@@ -12,16 +12,23 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
+    private NpgsqlConnection conn;
+
+    public UserController() {
+        conn = DBConn.Instance().getConn();
+    }
+
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
 
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -64,12 +71,13 @@ public class UserController : ControllerBase
     public IActionResult getAllUsers()
     {
 
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -101,16 +109,76 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpGet("{id}/saved/")]
+    public IActionResult getUserSaves(int id) {
+        var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
+
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var saves = new List<Post>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            Post newPost = new Post {
+                PostID = reader.GetInt32(0),
+                UserID = reader.GetInt32(1),
+                Title = reader.GetString(2),
+                Description = reader.GetString(3),
+                DatePosted = reader.GetDateTime(4),
+                MediaType = reader.GetString(5)  
+            };
+            saves.Add(newPost);
+        }
+        return Ok(saves);
+    }
+
+
+// TEMPORARY
+    [HttpGet("/saved/temp")]
+    public IActionResult getSaveDataTEMP() {
+        var sql = "SELECT * FROM save";
+
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var saves = new List<Saved_Temp>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            Saved_Temp newPost = new Saved_Temp {
+                PostID = reader.GetInt32(0),
+                UserID = reader.GetInt32(1)
+            };
+            saves.Add(newPost);
+        }
+        return Ok(saves);
+    }
+
     [HttpGet("convo/all")]
     public IActionResult getAllConversations()
     {
-
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM conversation";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -142,13 +210,13 @@ public class UserController : ControllerBase
     [HttpGet("msg/all")]
     public IActionResult getAllMessages()
     {
-
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM message";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+        
         using var cmd = new NpgsqlCommand(sql, conn);
 
 

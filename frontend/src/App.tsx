@@ -4,6 +4,8 @@ import './App.css'
 
 // import User from './types/User';
 import TableViewUser from './TableViewUser';
+import PostTest from './pages/PostTest';
+import SaveTest from './pages/SaveTest';
 import TableViewConversation from './TableViewConversation';
 import TableViewMessage from './TableViewMessage';
 
@@ -57,7 +59,8 @@ function App() {
       <TableViewUser></TableViewUser>
       <TableViewConversation></TableViewConversation>
       <TableViewMessage></TableViewMessage>
-
+      {/* <PostTest></PostTest> */}
+      <SaveTest></SaveTest>      
     </>
   )
 }

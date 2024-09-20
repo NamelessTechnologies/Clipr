@@ -2,6 +2,7 @@ using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Npgsql;
+using DotNetEnv;
 
 namespace backend.Controllers;
 
@@ -26,9 +27,14 @@ public sealed class DBConn
                 if (_instance == null)
                 {
                     _instance = new DBConn();
-
+                    Env.Load();
+                    string? host = Environment.GetEnvironmentVariable("HOST");
+                    string? username = Environment.GetEnvironmentVariable("USERNAME");
+                    string? pass = Environment.GetEnvironmentVariable("PWD");
+                    string? database = Environment.GetEnvironmentVariable("DB");
+                    
                     // Define your connection string (replace with your actual values)
-                    var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+                    var connString = $"Host={host};Username={username};Password={pass};Database={database}";
 
                     _instance.conn = new NpgsqlConnection(connString);
 
@@ -44,8 +50,8 @@ public sealed class DBConn
  * </summary>
  */
     public NpgsqlConnection getConn() {
-        if (_instance == null) {
-            throw new Exception("Conn does not exist!");
+        if (_instance == null) { // should not be reachable
+            throw new Exception("Conn does not exist!"); 
         }
         return _instance.conn;
     }
