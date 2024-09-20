@@ -20,15 +20,14 @@ public class PostController : ControllerBase {
     public IActionResult getPost(int id) {
 
         // DatabaseConnection con1 = new DatabaseConnection();
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         var sql = "SELECT * FROM post WHERE post_id = " + id;
 
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
+        // using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open) {
+            conn.Open();
+        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -51,14 +50,13 @@ public class PostController : ControllerBase {
     public IActionResult getAllPosts() {
 
         // DatabaseConnection con1 = new DatabaseConnection();
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post";
 
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
+        // using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open) {
+            conn.Open();
+        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
