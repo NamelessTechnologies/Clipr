@@ -1,40 +1,14 @@
--- DROP TABLE IF EXISTS users;
-
--- CREATE TABLE users(
---     user_id SERIAL PRIMARY KEY,
---     username VARCHAR (50) NOT NULL,
---     email VARCHAR (50) NOT NULL,
---     password VARCHAR (50) NOT NULL,
---     biography VARCHAR (200) NOT NULL,
---     nickname VARCHAR (50) NOT NULL
--- );
-
--- INSERT INTO users (username, email, password, biography, nickname)
--- VALUES
--- ('alonzojp', 'jpalonzo@cpp.edu', 'password123', 'I love CS!', 'Ender'),
--- ('justin', 'jmn1@cpp.edu', 'password123', 'I love HSR!', 'SaltyBagels'),
--- ('maria123', 'maria@example.com', 'password456', 'Passionate about art and design.', 'ArtLover'),
--- ('bobby_the_builder', 'bobby@example.com', 'password789', 'Building amazing things!', 'BuilderBob'),
--- ('sarah.connor', 'sarah@future.com', 'password321', 'Tech enthusiast and robotics fan.', 'Techie'),
--- ('john.doe', 'john.doe@example.com', 'mypassword', 'Just a regular guy.', 'Johnny'),
--- ('emily.james', 'emily.james@example.com', 'password2021', 'Love traveling and photography.', 'Wanderlust'),
--- ('kevin_spacey', 'kevin.spacey@example.com', 'theater123', 'Movie buff and theater geek.', 'FilmFan'),
--- ('samantha_lee', 'samantha@example.com', 'samspassword', 'Fitness lover and health nut.', 'FitSamantha'),
--- ('charlie.brown', 'charlie.brown@example.com', 'peanut123', 'Dog lover and cartoonist.', 'Charlie');
--- SELECT * FROM users
-
-DROP TABLE IF EXISTS post_tag; 
-DROP TABLE IF EXISTS message; 
-DROP TABLE IF EXISTS media; 
-DROP TABLE IF EXISTS save;
-DROP TABLE IF EXISTS likes; 
-DROP TABLE IF EXISTS comment; 
-DROP TABLE IF EXISTS tag; 
-DROP TABLE IF EXISTS post; 
-DROP TABLE IF EXISTS comment_like; 
-DROP TABLE IF EXISTS conversation; 
-DROP TABLE IF EXISTS users; 
-
+drop table if exists media;
+drop table if exists post_tag;
+drop table if exists tag;
+drop table if exists save;
+drop table if exists likes;
+drop table if exists comment cascade;
+drop table if exists comment_like;
+drop table if exists post;
+drop table if exists message cascade;
+drop table if exists conversation cascade;
+drop table if exists users;
 
 -- Users Table
 CREATE TABLE users(
@@ -45,12 +19,6 @@ CREATE TABLE users(
     biography VARCHAR (200) NOT NULL,
     nickname VARCHAR (50) NOT NULL
 );
-
-
-
-
-
-
 INSERT INTO users (username, email, password, biography, nickname)
 VALUES
 ('alonzojp', 'jpalonzo@cpp.edu', 'password123', 'I love CS!', 'Ender'),
@@ -64,7 +32,6 @@ VALUES
 ('samantha_lee', 'samantha@example.com', 'samspassword', 'Fitness lover and health nut.', 'FitSamantha'),
 ('charlie.brown', 'charlie.brown@example.com', 'peanut123', 'Dog lover and cartoonist.', 'Charlie');
 
-
 -- Conversation Table
 CREATE TABLE conversation (id SERIAL,
                       user_id INTEGER,
@@ -73,22 +40,7 @@ CREATE TABLE conversation (id SERIAL,
                       CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
                       CONSTRAINT fk_user_2 FOREIGN KEY (user_id_2) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
                       UNIQUE (id));
-
-
 INSERT INTO conversation (user_id, user_id_2) VALUES (1, 2), (3, 4), (5, 6), (7, 8), (9, 10), (2, 3), (4, 5), (6, 7), (8, 9), (10, 1);
-
-
--- Comment_Like Table
-CREATE TABLE comment_like(
-			comment_id INTEGER,
-			user_id INTEGER,
-			CONSTRAINT fk_comment FOREIGN KEY (comment_id) REFERENCES comment(id) ON UPDATE CASCADE ON DELETE CASCADE,
-			CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-
-INSERT INTO comment_like (comment_id, user_id) VALUES (1, 3), (2, 5), (3, 7), (4, 2), (5, 8), (6, 4), (7, 9), (1, 1), (2, 6), (3, 10);
-
 
 -- Post Table
 CREATE TABLE post(
@@ -100,8 +52,6 @@ CREATE TABLE post(
 	datePosted DATE,
 	media_type VARCHAR (250)
 );
-
-
 INSERT INTO post (user_id, title, description, datePosted, media_type)
 VALUES
 (1, 'Healthy Living Habits', 'Simple habits that can help you live a healthier life.', '2023-07-30', 'text'),
@@ -114,41 +64,46 @@ VALUES
 (8, 'Photography Techniques', 'Advanced techniques for capturing stunning landscape photos.', '2023-10-07', 'image'),
 (9, 'The Future of Virtual Reality', 'Virtual reality: where it is today and what to expect in the next decade.', '2023-12-02', 'video');
 
+-- Comment Table
+CREATE TABLE comment(
+	id SERIAL PRIMARY KEY,
+	parent_id INTEGER,
+	post_id INTEGER,
+	user_id INTEGER,
+	CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES comment(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    message TEXT,
+    UNIQUE (id)
+);
+INSERT INTO comment (parent_id, post_id, user_id, message)
+VALUES
+(NULL, 5, 1, 'This is a great post!'),
+(NULL, 5, 2, 'I really enjoyed reading this.'),
+(NULL, 5, 3, 'Interesting perspective!'),
+(NULL, 5, 4, 'Thanks for sharing!'),
+(NULL, 5, 5, 'I learned something new today.'),
+(NULL, 5, 6, 'Can you elaborate on this?'),
+(NULL, 5, 7, 'I disagree with some points, but good article.'),
+(NULL, 5, 8, 'What a fantastic read!'),
+(NULL, 5, 9, 'This sparked some thoughts for me.'),
+(NULL, 5, 10, 'Looking forward to more posts like this.');
 
-select * from post;
-
+-- Comment_Like Table
+CREATE TABLE comment_like(
+			comment_id INTEGER,
+			user_id INTEGER,
+			CONSTRAINT fk_comment FOREIGN KEY (comment_id) REFERENCES comment(id) ON UPDATE CASCADE ON DELETE CASCADE,
+			CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+INSERT INTO comment_like (comment_id, user_id) VALUES (1, 3), (2, 5), (3, 7), (4, 2), (5, 8), (6, 4), (7, 9), (1, 1), (2, 6), (3, 10);
 
 -- Tag Table
 CREATE TABLE tag (id SERIAL,
                       name TEXT,
 			   PRIMARY KEY(id)
                       );
-
-
 INSERT INTO tag (name) VALUES ('Science'), ('Health'), ('Education'), ('Finance'), ('Sports'), ('Entertainment'), ('Art'), ('Travel'), ('Food');
-
-
--- Comment Table
-CREATE TABLE comment(
-	id SERIAL PRIMARY KEY,
-	user_id INTEGER,
-	CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT fk_server FOREIGN KEY (server_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    message TEXT,
-    UNIQUE (id)
-);
-
-
-insert into comment (user_id, server_id, message)
-values
-(1, 1, 'hawk tuah'),
-(1, 1, 'skibidi'),
-(1, 1, 'seaside bakery is mid'),
-(1, 1, 'whats the @'),
-(1, 1, 'you hawk gyatt tuah be kidding me'),
-(1, 1, 'this is crazy'),
-(1, 1, 'get a job');
-
 
 -- Likes Table
 CREATE TABLE likes(
@@ -157,8 +112,6 @@ CREATE TABLE likes(
 			CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
 			CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-
 INSERT INTO likes (post_id, user_id)
 VALUES 
 (1, 3),
@@ -172,7 +125,6 @@ VALUES
 (9, 6),
 (2, 10);
 
-
 -- Media Table
 CREATE TABLE media(
 	media_id SERIAL PRIMARY KEY,
@@ -180,8 +132,6 @@ CREATE TABLE media(
 	CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	url VARCHAR (250)
 );
-
-
 INSERT INTO media (post_id, url)
 VALUES
 (1, 'https://example.com/media/image1.jpg'),
@@ -194,24 +144,12 @@ VALUES
 (8, 'https://example.com/media/health-tips.png'),
 (9, 'https://example.com/media/music-beat.mp3');
 
-
-select * from media;
-
-
-
-
-
-
-
-
 -- Post_Tag Table
 CREATE TABLE post_tag (tag_id INTEGER,
 						post_id INTEGER,
                        CONSTRAINT fk_tag FOREIGN KEY (tag_id) REFERENCES tag(id) ON UPDATE CASCADE ON DELETE CASCADE,
                        CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE
-					   );
-
-
+);
 INSERT INTO post_tag (tag_id, post_id)
 VALUES
 (1, 3),
@@ -227,7 +165,6 @@ VALUES
 (3, 2),
 (3,3);
 
-
 -- Message Table				  
 CREATE TABLE message (id SERIAL,
                       convo_id INTEGER,
@@ -237,10 +174,8 @@ CREATE TABLE message (id SERIAL,
                       PRIMARY KEY(id),
                       CONSTRAINT fk_convo FOREIGN KEY (convo_id) REFERENCES conversation(id) ON UPDATE CASCADE ON DELETE CASCADE,
                       CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-                      message TEXT,
-                      UNIQUE (id));
-
-
+                      UNIQUE (id)
+);
 INSERT INTO message (convo_id, content, dateSent, user_id)
 VALUES
 (1, 'Hello, how are you?', '2024-09-18 10:30:00', 2),
@@ -254,7 +189,6 @@ VALUES
 (9, 'Yes, let’s get started.', '2024-09-19 09:10:00', 10),
 (3, 'Sounds good, I will join now.', '2024-09-19 09:15:00', 6);
 
-
 -- Save Table
 CREATE TABLE save(
 			post_id INTEGER,
@@ -262,12 +196,4 @@ CREATE TABLE save(
 			CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES post(post_id) ON UPDATE CASCADE ON DELETE CASCADE,
 			CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-
 INSERT INTO save (post_id, user_id) VALUES (1, 2), (2, 5), (3, 8), (4, 1), (5, 7), (6, 3), (7, 9), (8, 4), (9, 10), (2, 6);
-
-
-SELECT * FROM users
-
-
-
