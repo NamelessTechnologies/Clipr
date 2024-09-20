@@ -14,8 +14,9 @@ function CommentTest() {
         json.forEach((comment: any) => {
             const NewPost: Comment = {
                 id: comment.ID,
+                parent_id: comment.parentID,
                 user_id: comment.userID,
-                server_id: comment.serverID,
+                post_id: comment.postID,
                 message: comment.message
             };        
             comments.push(NewPost);
@@ -38,16 +39,18 @@ function CommentTest() {
         <table>
           <tr>
             <th>id</th>
+            <th>parent_id</th>
+            <th>post_id</th>
             <th>user_id</th>
-            <th>server_id</th>
             <th>message</th>
           </tr>
   
           {data?.map(user => (
             <tr>
               <td key={user.user_id}>{user.id}</td>
+              <td key={user.user_id}>{user.parent_id}</td>
+              <td key={user.user_id}>{user.post_id}</td>
               <td key={user.user_id}>{user.user_id}</td>
-              <td key={user.user_id}>{user.server_id}</td>
               <td key={user.user_id}>{user.message}</td>
             </tr>
           ))}
