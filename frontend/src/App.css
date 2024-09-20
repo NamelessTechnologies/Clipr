@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+.table_title {
+  text-align: left;
+}
+
+th {
+  border-bottom: 2px solid;
+}
+
+table {
+  background-color:rgb(173, 201, 212);
+  color:black;
+  border-radius: 10px;
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import hsr_logo from './assets/hsr_logo.png'
 import './App.css'
 
-import User from './types/User';
+// import User from './types/User';
 import TableViewUser from './TableViewUser';
 
 function App() {
