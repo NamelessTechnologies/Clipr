@@ -53,7 +53,7 @@ public class CommentController : ControllerBase {
 
         // DatabaseConnection con1 = new DatabaseConnection();
         string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-        var sql = "SELECT * FROM post";
+        var sql = "SELECT * FROM comment";
 
         using var conn = new NpgsqlConnection(connString);
         // if (conn.State != System.Data.ConnectionState.Open) {
@@ -73,7 +73,7 @@ public class CommentController : ControllerBase {
         while (reader.Read()) {
             Comment newComment = new Comment {
                 ID = reader.GetInt32(0),
-                ParentID = reader.GetInt32(1),
+                ParentID = reader.IsDBNull(1) ? null : reader.GetInt32(1),
                 PostID = reader.GetInt32(2),
                 UserID = reader.GetInt32(3),
                 Content = reader.GetString(4)

@@ -13,11 +13,11 @@ function CommentTest() {
         const comments: Comment[] = [];
         json.forEach((comment: any) => {
             const NewPost: Comment = {
-                id: comment.ID,
-                parent_id: comment.parentID,
-                user_id: comment.userID,
+                id: comment.id,
+                parent_id: comment.parentID ? comment.parentID : "null",
                 post_id: comment.postID,
-                message: comment.message
+                user_id: comment.userID,
+                content: comment.content
             };        
             comments.push(NewPost);
         });
@@ -42,7 +42,7 @@ function CommentTest() {
             <th>parent_id</th>
             <th>post_id</th>
             <th>user_id</th>
-            <th>message</th>
+            <th>content</th>
           </tr>
   
           {data?.map(user => (
@@ -51,7 +51,7 @@ function CommentTest() {
               <td key={user.user_id}>{user.parent_id}</td>
               <td key={user.user_id}>{user.post_id}</td>
               <td key={user.user_id}>{user.user_id}</td>
-              <td key={user.user_id}>{user.message}</td>
+              <td key={user.user_id}>{user.content}</td>
             </tr>
           ))}
         </table>

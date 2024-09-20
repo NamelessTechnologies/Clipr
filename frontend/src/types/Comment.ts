@@ -3,5 +3,5 @@ export default interface Comment {
     parent_id: number,
     post_id: number,
     user_id: number,
-    message: string
+    content: string
 }
