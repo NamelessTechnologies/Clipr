@@ -20,17 +20,10 @@ public class TestDataController : ControllerBase
     [HttpGet("user")]
     public IActionResult getTestData()
     {
-        // Define your connection string (replace with your actual values)
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=test";
-
-        // // Define your SQL query (e.g., retrieving a single value from a specific column)
-        // var sql = "SELECT firstname FROM users LIMIT 1";
-
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM users";
 
-        // Create a connection object
-        // using var conn = new NpgsqlConnection(connString);
+        // Use a connection object
         if (conn.State != System.Data.ConnectionState.Open) {
             conn.Open();
         }

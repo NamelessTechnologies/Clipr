@@ -32,10 +32,6 @@ public sealed class DBConn
                     string? username = Environment.GetEnvironmentVariable("USERNAME");
                     string? pass = Environment.GetEnvironmentVariable("PWD");
                     string? database = Environment.GetEnvironmentVariable("DB");
-                    Console.WriteLine(host);
-                    Console.WriteLine(username);
-                    Console.WriteLine(pass);
-                    Console.WriteLine(database);
                     
                     // Define your connection string (replace with your actual values)
                     var connString = $"Host={host};Username={username};Password={pass};Database={database}";
@@ -54,8 +50,8 @@ public sealed class DBConn
  * </summary>
  */
     public NpgsqlConnection getConn() {
-        if (_instance == null) {
-            throw new Exception("Conn does not exist!");
+        if (_instance == null) { // should not be reachable
+            throw new Exception("Conn does not exist!"); 
         }
         return _instance.conn;
     }

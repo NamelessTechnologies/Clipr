@@ -48,9 +48,6 @@ public class PostController : ControllerBase {
 
     [HttpGet]
     public IActionResult getAllPosts() {
-
-        // DatabaseConnection con1 = new DatabaseConnection();
-        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post";
 
         // using var conn = new NpgsqlConnection(connString);
