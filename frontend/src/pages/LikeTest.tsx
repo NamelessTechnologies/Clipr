@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Saved_Temp from "../types/Saved_Temp";
+import Like_Temp from "../types/Like_Temp";
 
 function LikeTest() {
 
-  const [data, setData] = useState<Saved_Temp[]>([]); 
+  const [data, setData] = useState<Like_Temp[]>([]); 
   const url = 'http://localhost:5001/';
 
-  const fetchSaves = async () => {
+  const fetchLikes = async () => {
     try {
-        const response = await fetch(url + 'saved/temp');
+        const response = await fetch(url + 'likes/temp');
         const json = await response.json();
-        const saves: Saved_Temp[] = [];
+        const saves: Like_Temp[] = [];
         json.forEach((post: any) => {
-            const Save: Saved_Temp = {
+            const Save: Like_Temp = {
                 post_id: post.postID,
                 user_id: post.userID
             };        
@@ -26,13 +26,13 @@ function LikeTest() {
 }
 
   useEffect(() => {
-    fetchSaves();
+    fetchLikes();
   }, []);
 
     return (
       <>
       <hr></hr>
-      <h2 className="table_title">Save Table:</h2>
+      <h2 className="table_title">Like Table:</h2>
         <table>
           <tr>
             <th>post_id</th>

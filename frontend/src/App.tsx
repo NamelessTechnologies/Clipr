@@ -10,6 +10,7 @@ import CommentTest from './pages/CommentTest';
 import TableViewConversation from './TableViewConversation';
 import TableViewMessage from './TableViewMessage';
 import TagTest from './pages/TagTest';
+import LikeTest from './pages/LikeTest';
 
 function App() {
   // const [data, setData] = useState<User>();
@@ -64,6 +65,7 @@ function App() {
       <PostTest></PostTest>
       <SaveTest></SaveTest>     
       <TagTest></TagTest> 
+      <LikeTest></LikeTest>
     </>
   )
 }
