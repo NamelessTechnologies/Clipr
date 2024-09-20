@@ -11,6 +11,7 @@ import TableViewConversation from './TableViewConversation';
 import TableViewMessage from './TableViewMessage';
 import TagTest from './pages/TagTest';
 import LikeTest from './pages/LikeTest';
+import PostTagTest from './pages/PostTagTest'
 
 function App() {
   // const [data, setData] = useState<User>();
@@ -66,6 +67,7 @@ function App() {
       <SaveTest></SaveTest>     
       <TagTest></TagTest> 
       <LikeTest></LikeTest>
+      <PostTagTest></PostTagTest>
     </>
   )
 }
