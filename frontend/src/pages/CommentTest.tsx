@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Comment from "../types/Comment";
 
-function CommentTest() {
+function CommTest() {
 
   const [data, setData] = useState<Comment[]>([]); 
   const url = 'http://localhost:5001/';
@@ -14,8 +14,9 @@ function CommentTest() {
         json.forEach((comment: any) => {
             const NewPost: Comment = {
                 id: comment.ID,
+                parent_id: comment.parentID,
                 user_id: comment.userID,
-                server_id: comment.serverID,
+                post_id: comment.postID,
                 message: comment.message
             };        
             comments.push(NewPost);
