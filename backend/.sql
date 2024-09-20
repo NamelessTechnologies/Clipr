@@ -19,6 +19,8 @@ CREATE TABLE users(
     nickname VARCHAR (50) NOT NULL
 );
 
+
+
 INSERT INTO users (username, email, password, biography, nickname)
 VALUES
 ('alonzojp', 'jpalonzo@cpp.edu', 'password123', 'I love CS!', 'Ender'),
