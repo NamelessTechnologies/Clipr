@@ -82,4 +82,34 @@ public class PostController : ControllerBase {
         }
         return Ok(posts);
     }
+
+    // TEMPORARY
+    [HttpGet("/tag/temp")]
+    public IActionResult getTagDataTEMP() {
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM tag";
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open){
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var tags = new List<Tag_Temp>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            Tag_Temp newPost = new Tag_Temp {
+                ID = reader.GetInt32(0),
+                Name = reader.GetString(1)
+            };
+            tags.Add(newPost);
+        }
+        return Ok(tags);
+    }
 }
