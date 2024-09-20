@@ -1,7 +1,7 @@
 export default interface Comment {
-    id: string,
-    parent_id: string,
-    post_id: string,
-    user_id: string,
+    id: number,
+    parent_id: number,
+    post_id: number,
+    user_id: number,
     message: string
 }
