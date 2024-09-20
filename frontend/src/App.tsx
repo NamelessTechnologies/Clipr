@@ -6,6 +6,8 @@ import './App.css'
 import TableViewUser from './TableViewUser';
 import PostTest from './pages/PostTest';
 import SaveTest from './pages/SaveTest';
+import TableViewConversation from './TableViewConversation';
+import TableViewMessage from './TableViewMessage';
 
 function App() {
   // const [data, setData] = useState<User>();
@@ -55,8 +57,10 @@ function App() {
       {/* {url} */}
       {/* <Video url= {url ? url : "pornhub.com"} /> */}
       <TableViewUser></TableViewUser>
+      <TableViewConversation></TableViewConversation>
+      <TableViewMessage></TableViewMessage>
       <PostTest></PostTest>
-      <SaveTest></SaveTest>
+      <SaveTest></SaveTest>      
     </>
   )
 }

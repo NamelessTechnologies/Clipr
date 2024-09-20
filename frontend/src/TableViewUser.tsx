@@ -49,12 +49,12 @@ const User_Table = () => {
         {/* Loops through allUsers, returning a row for each user */}
         {allUsers?.map(user => (
           <tr>
-            <td key={user.user_id}>{user.user_id}</td>
-            <td key={user.user_id}>{user.username}</td>
-            <td key={user.user_id}>{user.email}</td>
-            <td key={user.user_id}>{user.password}</td>
-            <td key={user.user_id}>{user.biography}</td>
-            <td key={user.user_id}>{user.nickname}</td>
+            <td>{user.user_id}</td>
+            <td>{user.username}</td>
+            <td>{user.email}</td>
+            <td>{user.password}</td>
+            <td>{user.biography}</td>
+            <td>{user.nickname}</td>
           </tr>
         ))}
       </table>
