@@ -1,5 +1,8 @@
 export default interface User {
-    firstName: string,
-    lastName: string,
-    faction: string
+    user_id: number,
+    username: string,
+    email: string,
+    password: string,
+    biography: string,
+    nickname: string,
 }

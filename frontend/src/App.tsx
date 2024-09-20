@@ -3,33 +3,32 @@ import hsr_logo from './assets/hsr_logo.png'
 import './App.css'
 
 import User from './types/User';
-import Video from './Video';
-import Video2 from './Video2';
+import TableViewUser from './TableViewUser';
 
 function App() {
-  const [data, setData] = useState<User>();
-  const [url, setURL] = useState<string>("");
+  // const [data, setData] = useState<User>();
+  // const [url, setURL] = useState<string>("");
   // let url: string | undefined = "";
 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  const fetchData = async (): Promise<string> => {
-    try {
-      const response = await fetch('http://localhost:5001/TestData/user');
-      const json = await response.json() as User;
-      console.log("setting URL to " + json.firstName);
-      setURL(json.firstName);
-      return json.firstName;
-      // console.log(json.firstName);
-    } catch (error) {
-      console.error(error);
-      throw new Error("This is a custom error message");
-      }
+  // const fetchData = async (): Promise<string> => {
+  //   try {
+  //     const response = await fetch('http://localhost:5001/TestData/user');
+  //     const json = await response.json() as User;
+  //     console.log("setting URL to " + json.firstName);
+  //     setURL(json.firstName);
+  //     return json.firstName;
+  //     // console.log(json.firstName);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error("This is a custom error message");
+  //     }
     
-  }
+  // }
   return (
     <>
       <div>
@@ -53,7 +52,7 @@ function App() {
 
       {/* {url} */}
       {/* <Video url= {url ? url : "pornhub.com"} /> */}
-      <Video2></Video2>
+      <TableViewUser></TableViewUser>
 
     </>
   )

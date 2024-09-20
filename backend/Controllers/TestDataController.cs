@@ -27,7 +27,7 @@ public class TestDataController : ControllerBase
         // var sql = "SELECT firstname FROM users LIMIT 1";
 
         // Define your SQL query (e.g., retrieving a single value from a specific column)
-        var sql = "SELECT email FROM users WHERE user_id = 1 LIMIT 1";
+        var sql = "SELECT * FROM users";
 
         // Create a connection object
         // using var conn = new NpgsqlConnection(connString);
