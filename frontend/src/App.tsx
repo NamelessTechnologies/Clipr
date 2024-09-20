@@ -6,6 +6,7 @@ import './App.css'
 import TableViewUser from './TableViewUser';
 import PostTest from './pages/PostTest';
 import SaveTest from './pages/SaveTest';
+import CommentTest from './pages/CommentTest';
 import TableViewConversation from './TableViewConversation';
 import TableViewMessage from './TableViewMessage';
 
@@ -59,7 +60,8 @@ function App() {
       <TableViewUser></TableViewUser>
       <TableViewConversation></TableViewConversation>
       <TableViewMessage></TableViewMessage>
-      {/* <PostTest></PostTest> */}
+      <CommentTest></CommentTest>
+      <PostTest></PostTest>
       <SaveTest></SaveTest>      
     </>
   )
