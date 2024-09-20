@@ -9,6 +9,7 @@ import SaveTest from './pages/SaveTest';
 import CommentTest from './pages/CommentTest';
 import TableViewConversation from './TableViewConversation';
 import TableViewMessage from './TableViewMessage';
+import TagTest from './pages/TagTest';
 
 function App() {
   // const [data, setData] = useState<User>();
@@ -61,7 +62,8 @@ function App() {
       <TableViewMessage></TableViewMessage>
       <CommentTest></CommentTest>
       <PostTest></PostTest>
-      <SaveTest></SaveTest>      
+      <SaveTest></SaveTest>     
+      <TagTest></TagTest> 
     </>
   )
 }
