@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import hsr_logo from './assets/hsr_logo.png'
 import './App.css'
 
