@@ -21,6 +21,9 @@ app.UseCors(builder =>
     builder.WithOrigins("http://localhost:5173")   
            .AllowAnyHeader()
            .AllowAnyMethod();
+    builder.WithOrigins("http://127.0.0.1:5173")   
+           .AllowAnyHeader()
+           .AllowAnyMethod();
     builder.WithOrigins("https://namelesstechnologies.github.io")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
