@@ -4,7 +4,7 @@ import Media from "../types/Media";
 function MediaTemp() {
 
   const [data, setData] = useState<Media[]>([]); 
-  const url = 'http://localhost:5001/';
+  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
   const fetchMedia = async () => {
     try {

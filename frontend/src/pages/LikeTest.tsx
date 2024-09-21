@@ -4,7 +4,7 @@ import Like_Temp from "../types/Like_Temp";
 function LikeTest() {
 
   const [data, setData] = useState<Like_Temp[]>([]); 
-  const url = 'http://localhost:5001/';
+  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
   const fetchLikes = async () => {
     try {

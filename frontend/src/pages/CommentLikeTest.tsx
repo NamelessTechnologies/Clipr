@@ -4,7 +4,7 @@ import CommentLikeTemp from "../types/CommentLike_Temp";
 function CommentLikeTest() {
 
   const [data, setData] = useState<CommentLikeTemp[]>([]); 
-  const url = 'http://localhost:5001/';
+  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
   const fetchCommentLikes = async () => {
     try {

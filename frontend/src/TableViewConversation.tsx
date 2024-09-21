@@ -6,7 +6,7 @@ const Conversation_Table = () => {
 
   const fetchData = async() => {
     try {
-      const response = await fetch('http://localhost:5001/User/convo/all');
+      const response = await fetch('https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/convo/all');
       const json = await response.json() as Conversation[];
       setData(json); 
     } 

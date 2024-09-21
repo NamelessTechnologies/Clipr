@@ -4,7 +4,7 @@ import Comment from "../types/Comment";
 function CommentTest() {
 
   const [data, setData] = useState<Comment[]>([]); 
-  const url = 'http://localhost:5001/';
+  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
   const fetchPosts = async () => {
     try {

@@ -4,7 +4,7 @@ import PostTagTemp from "../types/Post_Tag_Temp";
 function PostTagTest() {
 
   const [data, setData] = useState<PostTagTemp[]>([]); 
-  const url = 'http://localhost:5001/';
+  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
   const fetchPostTags = async () => {
     try {
