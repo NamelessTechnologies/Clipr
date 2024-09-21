@@ -17,20 +17,21 @@ CREATE TABLE users(
     email VARCHAR (50) NOT NULL,
     password VARCHAR (50) NOT NULL,
     biography VARCHAR (200) NOT NULL,
-    nickname VARCHAR (50) NOT NULL
+    nickname VARCHAR (50) NOT NULL,
+	pfp varchar (100) NOT NULL
 );
-INSERT INTO users (username, email, password, biography, nickname)
+INSERT INTO users (username, email, password, biography, nickname,pfp)
 VALUES
-('alonzojp', 'jpalonzo@cpp.edu', 'password123', 'I love CS!', 'Ender'),
-('justin', 'jmn1@cpp.edu', 'password123', 'I love HSR!', 'SaltyBagels'),
-('maria123', 'maria@example.com', 'password456', 'Passionate about art and design.', 'ArtLover'),
-('bobby_the_builder', 'bobby@example.com', 'password789', 'Building amazing things!', 'BuilderBob'),
-('sarah.connor', 'sarah@future.com', 'password321', 'Tech enthusiast and robotics fan.', 'Techie'),
-('john.doe', 'john.doe@example.com', 'mypassword', 'Just a regular guy.', 'Johnny'),
-('emily.james', 'emily.james@example.com', 'password2021', 'Love traveling and photography.', 'Wanderlust'),
-('kevin_spacey', 'kevin.spacey@example.com', 'theater123', 'Movie buff and theater geek.', 'FilmFan'),
-('samantha_lee', 'samantha@example.com', 'samspassword', 'Fitness lover and health nut.', 'FitSamantha'),
-('charlie.brown', 'charlie.brown@example.com', 'peanut123', 'Dog lover and cartoonist.', 'Charlie');
+('alonzojp', 'jpalonzo@cpp.edu', 'password123', 'I love CS!', 'Ender','https://random.image/img1.jpg'),
+('justin', 'jmn1@cpp.edu', 'password123', 'I love HSR!', 'SaltyBagels','https://random.image/img2.jpg'),
+('maria123', 'maria@example.com', 'password456', 'Passionate about art and design.', 'ArtLover','https://random.image/img3.jpg'),
+('bobby_the_builder', 'bobby@example.com', 'password789', 'Building amazing things!', 'BuilderBob','https://random.image/img4.jpg'),
+('sarah.connor', 'sarah@future.com', 'password321', 'Tech enthusiast and robotics fan.', 'Techie','https://random.image/img5.jpg'),
+('john.doe', 'john.doe@example.com', 'mypassword', 'Just a regular guy.', 'Johnny','https://random.image/img6.jpg'),
+('emily.james', 'emily.james@example.com', 'password2021', 'Love traveling and photography.', 'Wanderlust','https://random.image/img7.jpg'),
+('kevin_spacey', 'kevin.spacey@example.com', 'theater123', 'Movie buff and theater geek.', 'FilmFan','https://random.image/img8.jpg'),
+('samantha_lee', 'samantha@example.com', 'samspassword', 'Fitness lover and health nut.', 'FitSamantha','https://random.image/img9.jpg'),
+('charlie.brown', 'charlie.brown@example.com', 'peanut123', 'Dog lover and cartoonist.', 'Charlie','https://random.image/img10.jpg');
 
 -- Conversation Table
 CREATE TABLE conversation (id SERIAL,
