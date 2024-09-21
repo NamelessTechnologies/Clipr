@@ -8,4 +8,6 @@ public class User
     public string? Password { get; set; }
     public string? Biography { get; set; }
     public string? Nickname { get; set; }
+
+    public string? Pfp {get; set;}
 }

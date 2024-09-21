@@ -42,6 +42,7 @@ public class UserController : ControllerBase
                 var password = rdr.GetString(3);
                 var biography = rdr.GetString(4);
                 var nickname = rdr.GetString(5);
+                var pfp = rdr.GetString(6);
 
                 Console.WriteLine(user_id);
                 Console.WriteLine(username);
@@ -49,6 +50,7 @@ public class UserController : ControllerBase
                 Console.WriteLine(password);
                 Console.WriteLine(biography);
                 Console.WriteLine(nickname);
+                Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
@@ -57,7 +59,8 @@ public class UserController : ControllerBase
                     Email = email,
                     Password = password,
                     Biography = biography,
-                    Nickname = nickname
+                    Nickname = nickname,
+                    Pfp = pfp,
                 });
             }
             else
@@ -102,7 +105,8 @@ public class UserController : ControllerBase
                     Email = rdr.GetString(2),
                     Password = rdr.GetString(3),
                     Biography = rdr.GetString(4),
-                    Nickname = rdr.GetString(5)
+                    Nickname = rdr.GetString(5),
+                    Pfp = rdr.GetString(6)
                 };
 
                 allUsers.Add(singleUser);
