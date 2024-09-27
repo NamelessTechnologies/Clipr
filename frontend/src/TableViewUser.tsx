@@ -44,6 +44,7 @@ const User_Table = () => {
           <th>password</th>
           <th>biography</th>
           <th>nickname</th>
+          <th>pfp</th>
         </tr>
 
         {/* Loops through allUsers, returning a row for each user */}
@@ -55,6 +56,7 @@ const User_Table = () => {
             <td>{user.password}</td>
             <td>{user.biography}</td>
             <td>{user.nickname}</td>
+            <td>{user.pfp}</td>
           </tr>
         ))}
       </table>

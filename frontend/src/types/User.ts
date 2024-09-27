@@ -5,4 +5,5 @@ export default interface User {
     password: string,
     biography: string,
     nickname: string,
+    pfp: string,
 }

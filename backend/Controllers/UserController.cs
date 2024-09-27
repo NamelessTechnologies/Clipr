@@ -45,6 +45,7 @@ public class UserController : ControllerBase
                 var password = rdr.GetString(3);
                 var biography = rdr.GetString(4);
                 var nickname = rdr.GetString(5);
+                var pfp = rdr.GetString(6);
 
                 Console.WriteLine(user_id);
                 Console.WriteLine(username);
@@ -52,6 +53,7 @@ public class UserController : ControllerBase
                 Console.WriteLine(password);
                 Console.WriteLine(biography);
                 Console.WriteLine(nickname);
+                Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
@@ -60,13 +62,37 @@ public class UserController : ControllerBase
                     Email = email,
                     Password = password,
                     Biography = biography,
-                    Nickname = nickname
+                    Nickname = nickname,
+                    Pfp = pfp,
                 });
             }
             else
             {
                 return Ok("Error");
             }
+        }
+    }
+
+    [HttpPost]
+    public async void postUser([FromBody] User user) {
+
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open) {
+            conn.Open();
+        }
+
+        await using (var cmd = new NpgsqlCommand(sql, conn)) {
+            cmd.Parameters.AddWithValue("username", user.Username);
+            cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("password", user.Password);
+            cmd.Parameters.AddWithValue("biography", user.Biography);
+            cmd.Parameters.AddWithValue("nickname", user.Nickname);
+            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+
+            await cmd.ExecuteNonQueryAsync();
         }
     }
 
@@ -105,7 +131,8 @@ public class UserController : ControllerBase
                     Email = rdr.GetString(2),
                     Password = rdr.GetString(3),
                     Biography = rdr.GetString(4),
-                    Nickname = rdr.GetString(5)
+                    Nickname = rdr.GetString(5),
+                    Pfp = rdr.GetString(6)
                 };
 
                 allUsers.Add(singleUser);
