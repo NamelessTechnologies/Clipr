@@ -1,5 +1,5 @@
-import hsr_logo from './assets/hsr_logo.png'
-import './App.css'
+// import hsr_logo from './assets/hsr_logo.png'
+import './index.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { NavBar } from './components/Navbar';
@@ -26,7 +26,7 @@ function App() {
         <NavBar/>
         <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/Sign Up" element={<CreateAccount/>} />
+            <Route path="Clipr/SignUp" element={<CreateAccount/>} />
         </Routes>
     </Router>
 

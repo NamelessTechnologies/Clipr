@@ -1,4 +1,4 @@
-import hsr_logo from '../assets/hsr_logo.png'
+// import hsr_logo from '../assets/hsr_logo.png'
 // import './App.css'
 
 import TableViewUser from '../TableViewUser';

@@ -8,7 +8,7 @@ function NavBar() {
 
             <ul className="flex space-x-4">
             <li>
-                <Link to="/Sign Up" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Sign Up</Link>
+                <Link to="Clipr/SignUp" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Sign Up</Link>
             </li>
             {/* <li>
                 <Link to="/Logs" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Logs</Link>
