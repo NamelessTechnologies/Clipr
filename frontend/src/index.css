@@ -1,4 +1,26 @@
-:root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-customBackground;
+}
+
+h2 {
+  @apply text-yellow-500;
+}
+
+th {
+  @apply text-yellow-500;
+}
+
+td {
+  @apply text-gray-50;
+}
+
+
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +87,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
