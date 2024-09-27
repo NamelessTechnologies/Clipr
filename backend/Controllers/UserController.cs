@@ -70,6 +70,29 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpPost]
+    public async void postUser([FromBody] User user) {
+
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open) {
+            conn.Open();
+        }
+
+        await using (var cmd = new NpgsqlCommand(sql, conn)) {
+            cmd.Parameters.AddWithValue("username", user.Username);
+            cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("password", user.Password);
+            cmd.Parameters.AddWithValue("biography", user.Biography);
+            cmd.Parameters.AddWithValue("nickname", user.Nickname);
+            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+    }
+
 
     [HttpGet("all")]
     public IActionResult getAllUsers()
