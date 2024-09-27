@@ -12,21 +12,26 @@ const CreateAccount: React.FC = () => {
 
   const createAccount = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newUser = { Username: username, Email: email, Password: password, Biography: biography, Nickname: nickname, Pfp: pfp }
-    console.log(newUser);
+    const newUser = { Username: username, Email: email, Password: password, Biography: biography, Nickname: nickname, Pfp: pfp, }
       try {
         const response = await fetch("https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/", {
           body: JSON.stringify(newUser),
           method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8',
         },
         });
-        console.log('hi');
-        const json = await response.json();
-        console.log(json);
+        console.log(response);
+        if (response.status === 200){
+          alert('Success!')
+        }
+        else{
+          alert(`${response.status}: ${response.statusText}`);
+        }
       } 
       catch (error) {
+        alert(error);
         console.error(error);
       }
   };
