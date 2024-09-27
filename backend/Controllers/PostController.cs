@@ -11,6 +11,7 @@ namespace backend.Controllers;
 public class PostController : ControllerBase {
 
     private NpgsqlConnection conn;
+    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
     public PostController(){
         conn = DBConn.Instance().getConn();
@@ -20,7 +21,7 @@ public class PostController : ControllerBase {
     public IActionResult getPost(int id) {
 
         // DatabaseConnection con1 = new DatabaseConnection();
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         var sql = "SELECT * FROM post WHERE post_id = " + id;
 
@@ -51,7 +52,7 @@ public class PostController : ControllerBase {
     public IActionResult getAllPosts() {
 
         // DatabaseConnection con1 = new DatabaseConnection();
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post";
 
         using var conn = new NpgsqlConnection(connString);
@@ -86,7 +87,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/tag/temp")]
     public IActionResult getTagDataTEMP() {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM tag";
 
         using var conn = new NpgsqlConnection(connString);
@@ -116,7 +117,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/likes/temp")]
     public IActionResult getLikeDataTEMP() {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM likes";
 
         using var conn = new NpgsqlConnection(connString);
@@ -146,7 +147,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/post_tag/temp")]
     public IActionResult getPostTagsTEMP() {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post_tag";
 
         using var conn = new NpgsqlConnection(connString);
@@ -176,7 +177,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/media")]
     public IActionResult getMedia() {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM media";
 
         using var conn = new NpgsqlConnection(connString);
