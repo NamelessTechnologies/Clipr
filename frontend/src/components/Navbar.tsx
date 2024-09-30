@@ -14,7 +14,7 @@ function NavBar() {
         <ul className="flex space-x-4">
           <li>
             <Link
-              to="Clipr/SignUp"
+              to="/SignUp"
               className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
             >
               Sign Up

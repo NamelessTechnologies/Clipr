@@ -13,7 +13,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="Clipr/SignUp" element={<CreateAccount />} />
+          <Route path="/SignUp" element={<CreateAccount />} />
         </Routes>
       </Router>
     </>

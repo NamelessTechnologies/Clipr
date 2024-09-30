@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -122,6 +123,12 @@ const CreateAccount: React.FC = () => {
             onChange={(e) => setPfp(e.target.value)}
             required
           />
+        </div>
+        <div>Already have an account?</div>
+        <div>
+          <Link to="/LogIn" className="">
+            Log In
+          </Link>
         </div>
         <button
           type="submit"
