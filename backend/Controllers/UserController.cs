@@ -4,19 +4,15 @@ using System;
 using Npgsql;
 using System.Threading.Tasks.Dataflow;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
+using System.Data.SqlTypes;
 
 namespace backend.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-
 public class UserController : ControllerBase
 {
-    // private NpgsqlConnection conn;
-
-    // public UserController() {
-    //     conn = DBConn.Instance().getConn();
-    // }
 
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
@@ -44,14 +40,6 @@ public class UserController : ControllerBase
                 var nickname = rdr.GetString(5);
                 var pfp = rdr.GetString(6);
 
-                Console.WriteLine(user_id);
-                Console.WriteLine(username);
-                Console.WriteLine(email);
-                Console.WriteLine(password);
-                Console.WriteLine(biography);
-                Console.WriteLine(nickname);
-                Console.WriteLine(pfp);
-
                 return Ok(new User
                 {
                     User_id = user_id,
@@ -71,26 +59,40 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async void postUser([FromBody] User user) {
+    public async Task<IActionResult> PostUser([FromBody] User user) {
+
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
 
         var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-        var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
+        var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp) RETURNING user_id";
 
         using var conn = new NpgsqlConnection(connString);
         if (conn.State != System.Data.ConnectionState.Open) {
             conn.Open();
         }
-
+        int? newUserId = null;
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("email", user.Email);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("biography", user.Biography);
-            cmd.Parameters.AddWithValue("nickname", user.Nickname);
-            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+            cmd.Parameters.AddWithValue("username", user.Username ?? (object) DBNull.Value);
+            cmd.Parameters.AddWithValue("email", user.Email ?? (object) DBNull.Value);
+            cmd.Parameters.AddWithValue("password", user.Password ?? (object) DBNull.Value);
+            cmd.Parameters.AddWithValue("biography", user.Biography ?? (object) DBNull.Value);
+            cmd.Parameters.AddWithValue("nickname", user.Nickname ?? (object) DBNull.Value);
+            cmd.Parameters.AddWithValue("pfp", user.Pfp ?? (object) DBNull.Value);
 
-            await cmd.ExecuteNonQueryAsync();
+            var result = await cmd.ExecuteScalarAsync();    // return id of newly created record to confirm
+
+            if (result != null) {
+                newUserId = (int) result;
+            }
         }
+
+        if (newUserId == null) {
+            return BadRequest("User unable to be created");
+        }
+        user.User_id = newUserId;
+        return CreatedAtAction(nameof(getOneUser), new { id = newUserId }, user);
     }
 
 
