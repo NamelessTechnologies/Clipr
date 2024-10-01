@@ -12,26 +12,17 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
-    // private NpgsqlConnection conn;
+    private NpgsqlConnection conn;
 
-    // public UserController() {
-    //     conn = DBConn.Instance().getConn();
-    // }
-
-    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database;Pooling=true;MinPoolSize=0;MaxPoolSize=20;";
-
+    public UserController() {
+        conn = DBConn.GetConn();
+    }
 
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -75,14 +66,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     public async void postUser([FromBody] User user) {
-
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open) {
-            conn.Open();
-        }
 
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -100,17 +84,10 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     public IActionResult getAllUsers()
     {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users";
         Console.WriteLine(sql);
 
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
-
         using var cmd = new NpgsqlCommand(sql, conn);
-
 
         var allUsers = new List<User>();
 
@@ -143,13 +120,7 @@ public class UserController : ControllerBase
 
     [HttpGet("{id}/saved/")]
     public IActionResult getUserSaves(int id) {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -178,11 +149,7 @@ public class UserController : ControllerBase
 // TEMPORARY
     [HttpGet("/saved/temp")]
     public IActionResult getSaveDataTEMP() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database;Pooling=true;MinPoolSize=0;MaxPoolSize=100;";
         var sql = "SELECT * FROM save";
-
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -206,12 +173,8 @@ public class UserController : ControllerBase
     [HttpGet("convo/all")]
     public IActionResult getAllConversations()
     {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM conversation";
         Console.WriteLine(sql);
-
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -244,12 +207,8 @@ public class UserController : ControllerBase
     [HttpGet("msg/all")]
     public IActionResult getAllMessages()
     {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM message";
         Console.WriteLine(sql);
-
-        using var conn = new NpgsqlConnection(connString);
-        conn.Open();
         
         using var cmd = new NpgsqlCommand(sql, conn);
 

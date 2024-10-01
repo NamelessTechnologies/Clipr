@@ -11,26 +11,15 @@ namespace backend.Controllers;
 public class PostController : ControllerBase {
 
     private NpgsqlConnection conn;
-    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-
     public PostController(){
-        conn = DBConn.Instance().getConn();
+        conn = DBConn.GetConn();
     }
 
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
-
-        // DatabaseConnection con1 = new DatabaseConnection();
-        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-
         var sql = "SELECT * FROM post WHERE post_id = " + id;
 
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
-
+        // execute command
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var reader = cmd.ExecuteReader();
@@ -50,16 +39,7 @@ public class PostController : ControllerBase {
 
     [HttpGet]
     public IActionResult getAllPosts() {
-
-        // DatabaseConnection con1 = new DatabaseConnection();
-        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post";
-
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -87,13 +67,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/tag/temp")]
     public IActionResult getTagDataTEMP() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM tag";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -117,13 +91,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/likes/temp")]
     public IActionResult getLikeDataTEMP() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM likes";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -147,13 +115,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/post_tag/temp")]
     public IActionResult getPostTagsTEMP() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM post_tag";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -177,13 +139,7 @@ public class PostController : ControllerBase {
     // TEMPORARY
     [HttpGet("/media")]
     public IActionResult getMedia() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM media";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();

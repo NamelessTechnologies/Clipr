@@ -10,24 +10,15 @@ namespace backend.Controllers;
 
 public class CommentController : ControllerBase {
     private NpgsqlConnection conn;
-    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-
-    public CommentController() {
-        conn = DBConn.Instance().getConn();
+    public CommentController(){
+        conn = DBConn.GetConn();
     }
 
     [HttpGet("{id}")]
     public IActionResult getComment(int id) {
-        //var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM comment WHERE id = " + id;
-
-        // Open a connection object
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open){
-        //     conn.Open();
-        // }
 
         // Create a command object
         using var cmd = new NpgsqlCommand(sql, conn);
@@ -50,16 +41,7 @@ public class CommentController : ControllerBase {
     }
     [HttpGet]
     public IActionResult getAllComments() {
-
-        // DatabaseConnection con1 = new DatabaseConnection();
-        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM comment";
-
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
@@ -86,13 +68,7 @@ public class CommentController : ControllerBase {
         // TEMPORARY
     [HttpGet("/comment_like/temp")]
     public IActionResult getCommentLikeDataTEMP() {
-        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM comment_like";
-
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open){
-            conn.Open();
-        }
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
