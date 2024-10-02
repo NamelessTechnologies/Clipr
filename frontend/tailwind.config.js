@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         customBackground: "#242424",
+        navbar: "#211D1D"
       }
     },
   },

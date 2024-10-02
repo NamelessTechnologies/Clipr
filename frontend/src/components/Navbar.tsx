@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 function NavBar() {
     return (
-    <nav className="bg-gray-#3C3C3C text-white py-6 px-6 m-2 rounded-xl border-2 border-white">
+    <nav className="bg-navbar text-white py-6 px-6 border-b border-white">
         <div className="flex justify-between items-center">
-            <Link to="/" className="text-xl font-semibold bg-clip-text    text-transparent bg-gradient-to-r from-amber-500 to-amber-300">The Nameless</Link>
+            <Link to="/" className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300">The Nameless</Link>
 
             <ul className="flex space-x-4">
             <li>
