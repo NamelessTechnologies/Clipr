@@ -37,7 +37,7 @@ function Sidebar() {
                     <>
                         <li key={index} 
                             className={`text-white text-sm flex item-center gap-x-4 cursor-pointer p-2 
-                        hover:bg-gray-700 rounded-md ${menu.info ? "mt-96" : "mt-4"}`}>
+                                        hover:bg-gray-700 rounded-md ${menu.info ? "mt-96" : "mt-4"}`}>
                             <span className='text-2xl block float-left'>
                                 {menu.icon ? menu.icon : <RiDashboardFill/>}
                             </span>

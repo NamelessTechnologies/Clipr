@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import stelle from '../assets/Profile.png';
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -38,69 +39,67 @@ const CreateAccount: React.FC = () => {
 
   return (
     <div className="flex flex-row justify-center pt-2">
-    <form onSubmit={createAccount} className="bg-yellow-500 shadow-md rounded px-20 pt-6 pb-8 mb-4 items-center">
-      <div className="w-full text-gray-700 text-center text-2xl pb-2">Create Account</div>
+    <form onSubmit={createAccount} className="bg-navbar rounded px-20 pt-5 pb-5 mt-10 mb-4 items-center border border-x-gray-300">
+      <img src={stelle} className='w-28 h-28 mx-auto'></img>
+      <div className='w-full text-white text-center text-4xl mb-6'>Welcome to Clipr</div>
+      <div className="w-full text-amber-500 text-center text-2xl mb-6">Create Account</div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+        <label className="block text-white text-sm font-semibold mb-2">Username</label>
         <input 
           type="text" 
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          required
+          className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+          value={username} onChange={(e) => setUsername(e.target.value)} required placeholder='Username'
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+        <label className="block text-white text-sm font-semibold mb-2">Email</label>
         <input 
           type="email"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required
+          className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200" 
+          value={email} onChange={(e) => setEmail(e.target.value)} required placeholder='Email'
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+        <label className="block text-white text-sm font-semibold mb-2">Password</label>
         <input 
           type="password"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required
+          className="border-2 w-full py-2 px-3 text-black  leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"  
+          value={password} onChange={(e) => setPassword(e.target.value)} required placeholder='Create a password'
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Biography</label>
+        <label className="block text-white text-sm font-semibold mb-2">Biography</label>
         <input 
           type="text"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
-          value={biography} 
-          onChange={(e) => setBiography(e.target.value)} 
-          required
+          className="border w-full py-2 px-3 text-black  leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"  
+          value={biography} onChange={(e) => setBiography(e.target.value)} required placeholder='Temp'
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Nickname</label>
+        <label className="block text-white text-sm font-semibold mb-2">Nickname</label>
         <input 
           type="text"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
-          value={nickname} 
-          onChange={(e) => setNickname(e.target.value)} 
-          required
+          className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"  
+          value={nickname} onChange={(e) => setNickname(e.target.value)} required placeholder='Nickname'
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Profile Pic</label>
+        <label className="block text-white text-sm font-semibold mb-2">Profile Pic</label>
         <input 
           type="text"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  
-          value={pfp} 
-          onChange={(e) => setPfp(e.target.value)} 
-          required
+          className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"  
+          value={pfp} onChange={(e) => setPfp(e.target.value)} required placeholder='Temp'
         />
       </div>
-      <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Submit</button>
+
+      <div className='flex justify-center mt-5'>
+        <button type="submit" className='bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded '>Submit</button>
+      </div>
+
+      <div className='flex justify-center mt-4'>
+        <span className='text-white text-sm'>Already a member?</span>
+        <span className='text-amber-500 text-sm ml-1'>Log in</span>
+      </div>
     </form>
     </div>
   );

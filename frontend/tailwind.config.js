@@ -8,7 +8,9 @@ export default {
     extend: {
       colors: {
         customBackground: "#242424",
-        navbar: "#211D1D"
+        navbar: "#211D1D",
+        hsr_gold: "#d78d35",
+        hsr_gray: "#1e1f21"
       }
     },
   },

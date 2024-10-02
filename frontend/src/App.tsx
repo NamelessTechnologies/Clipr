@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { NavBar } from './components/Navbar';
 import CreateAccount from './pages/CreateAccount';
 import Home from './pages/Home.tsx';
+import TablesTEMP from './pages/TablesTEMP.tsx';
 // import TableViewUser from './TableViewUser';
 // import PostTest from './pages/PostTest';
 // import SaveTest from './pages/SaveTest';
@@ -27,6 +28,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="Clipr/SignUp" element={<CreateAccount/>} />
+            <Route path="Clipr/Tables" element={<TablesTEMP/>} />
         </Routes>
     </Router>
 
