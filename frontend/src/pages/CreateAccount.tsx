@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import stelle from '../assets/Profile.png';
+import { Link } from 'react-router-dom';
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -98,7 +99,7 @@ const CreateAccount: React.FC = () => {
 
       <div className='flex justify-center mt-4'>
         <span className='text-white text-sm'>Already a member?</span>
-        <span className='text-amber-500 text-sm ml-1'>Log in</span>
+        <Link to="Clipr/LogIn" className='text-amber-500 text-sm ml-1'>Log in</Link>
       </div>
     </form>
     </div>
