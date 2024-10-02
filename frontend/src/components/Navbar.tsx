@@ -10,6 +10,9 @@ function NavBar() {
             <li>
                 <Link to="Clipr/SignUp" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Sign Up</Link>
             </li>
+            <li>
+                <Link to="Clipr/LogIn" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Log In</Link>
+            </li>
             {/* <li>
                 <Link to="/Logs" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Logs</Link>
             </li>
