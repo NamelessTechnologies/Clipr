@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { MdFileUpload } from "react-icons/md";
 
 function NavBar() {
     return (
@@ -8,6 +9,9 @@ function NavBar() {
 
             <ul className="flex space-x-4">
             <li>
+                <Link to="Clipr/Upload"><MdFileUpload className='w-7 h-7 rounded-full'/></Link>
+            </li>
+            <li>
                 <Link to="Clipr/Tables" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Tables</Link>
             </li>  
             <li>
@@ -16,12 +20,7 @@ function NavBar() {
             <li>
                 <Link to="Clipr/LogIn" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Log In</Link>
             </li>
-            {/* <li>
-                <Link to="/Logs" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Logs</Link>
-            </li>
-            <li>
-                <Link to="/Contact" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Contact</Link>
-            </li> */}
+
             </ul>
         </div>
     </nav>
