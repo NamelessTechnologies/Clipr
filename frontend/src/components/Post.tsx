@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from "react";
 import PostType from "../types/Post";
 
@@ -37,7 +36,10 @@ function Post() {
                 };        
                 posts.push(NewPost);
             });
-            setPost(posts); 
+
+            const sortedPosts = posts.sort((a, b) => new Date(b.datePosted).getTime() - new Date(a.datePosted).getTime());
+
+            setPost(sortedPosts); 
             setLoading(false);
         } catch (error) {
             console.error(error);
