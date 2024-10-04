@@ -1,34 +1,63 @@
 import React, { useState } from 'react';
+import User from "../types/User";
+import { useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
 
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
+    const[data, setData] = useState<User>(); // Fetched data will be an array of json
+    const[message, setMessage] = useState('');
+
+    const navigate = useNavigate();
 
     const attemptLogIn = async (event:React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        // put query/checking logic here
+        try {
+            const queryString = 'http://localhost:5001/User/email/' + email
+            const response = await fetch(queryString);
+            const json = await response.json() as User;
+            setData(json); 
 
+            if(json?.password == password) {
+                setMessage("Correct Password!");
+                console.log("Caching info...");
+                try {
+                    localStorage.setItem('user',JSON.stringify(json));
+                    console.log('done.');
+                } catch (error) {
+                    console.log(error);
+                }
+                navigate("/");
+                console.log("yay");
+            }
+            else {
+                setMessage("Incorrect Password");
+            }
+        } 
+            catch (error) {
+            setMessage("Invalid email, please make an account!");
+        }
     }
 
-
     return (
-        <div className="flex justify-center">
-            <form onSubmit={attemptLogIn} className="bg-slate-200 p-2 rounded-md shadow-lg">
-                <div className="flex justify-center">
-                    <h1 className="font-bold p-2 text-xl">Log In To Account</h1>
+        <div className="flex flex-row justify-center text-white p-10">
+            {message}
+            <form onSubmit={attemptLogIn} className="bg-navbar items-center pt-5 px-10 pb-10 rounded-md shadow-lg border border-white">
+                <div className="px-5 pt-2 pb-10">
+                    <h1 className="text-4xl">Log In To Account</h1>
                 </div>
 
-                <div className="bg-slate-400 p-3 rounded-sm shadow-md">
-                    <label className="text-lg">Email:</label><br></br>
-                    <input className = "p-2" type='email' required value={email} onChange={(e) => setEmail(e.target.value)}></input><br></br><br></br>
-                    <label className="text-lg">Password:</label><br></br>
-                    <input className = "p-2" type='password' required value={password} onChange={(e) => setPassword(e.target.value)}></input><br></br>
+                <div className="flex justify-center flex-col mx-5">
+                    <label className="">Email:</label>
+                    <input className = "p-2 text-black mb-6 rounded-md" type='email' required value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <label className="">Password:</label>
+                    <input className = "p-2 text-black mb-10 rounded-md" type='password' required value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
 
-                <div className='flex justify-right pt-2'>
-                    <button className="bg-blue-300 hover:bg-blue-500 rounded-xl pl-3 pr-3 ml-auto" type="submit">Log In</button>
+                <div className='flex justify-center'>
+                    <button className="bg-hsr_gold hover:bg-amber-600 rounded-md pl-5 pr-5 pt-2 pb-2 justify-center" type="submit">Log In</button>
                 </div>
             </form>
         </div>

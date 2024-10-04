@@ -10,6 +10,7 @@ namespace backend.Controllers;
 
 public class CommentController : ControllerBase {
     private NpgsqlConnection conn;
+    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
     public CommentController() {
         conn = DBConn.Instance().getConn();
@@ -17,8 +18,7 @@ public class CommentController : ControllerBase {
 
     [HttpGet("{id}")]
     public IActionResult getComment(int id) {
-        //
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        //var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM comment WHERE id = " + id;
@@ -52,7 +52,7 @@ public class CommentController : ControllerBase {
     public IActionResult getAllComments() {
 
         // DatabaseConnection con1 = new DatabaseConnection();
-        string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM comment";
 
         using var conn = new NpgsqlConnection(connString);
@@ -86,7 +86,7 @@ public class CommentController : ControllerBase {
         // TEMPORARY
     [HttpGet("/comment_like/temp")]
     public IActionResult getCommentLikeDataTEMP() {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM comment_like";
 
         using var conn = new NpgsqlConnection(connString);
