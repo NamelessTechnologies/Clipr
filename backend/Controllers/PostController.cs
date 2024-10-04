@@ -13,9 +13,9 @@ public class PostController : ControllerBase {
     private NpgsqlConnection conn;
     private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
-    public PostController(){
-        conn = DBConn.Instance().getConn();
-    }
+    // public PostController(){
+    //     conn = DBConn.Instance().getConn();
+    // }
 
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {

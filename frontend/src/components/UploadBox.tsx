@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import User from '../types/User';
 
 interface PostContent {
   content: string;
 }
 
-const foundUser = localStorage.getItem('user');
-  var userInfo: { [x: string]: any; };
-  var uid: any;
-
-  if (foundUser) {
-    userInfo = JSON.parse(foundUser);
-    uid = userInfo["user_id"];
-    console.log(uid);
+const [currentUser,setCurrentUser] = useState(() => {
+  return localStorage.getItem("user") || '';
+});
+useEffect(() => {
+  const handleStorageChange = () => {
+    setCurrentUser(localStorage.getItem('user') || '');
   }
+});
+
+  var userInfo = {
+    "biography": "bio",
+    "email":"a@test.com",
+    "nickname": "defnickname",
+    "password": "defaultpwd",
+    "pfp": "https://default.png",
+    "user_id": 1,
+    "username": "default",
+ };
+
+   useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setCurrentUser(foundUser);
+      userInfo = foundUser;
+    }
+  }, []);
+
+
 
 const CreatePost: React.FC = () => {
     const [title, setTitle] = useState('');
@@ -24,6 +45,7 @@ const CreatePost: React.FC = () => {
 
     const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        var uid = userInfo.user_id;
         console.log("Using id "+uid);
         const newPost = { UserID: uid, Title: title, Content: post.content }
         try {
@@ -76,6 +98,7 @@ const CreatePost: React.FC = () => {
             </div>
             <button type="submit" className='bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded'>Post</button>
         </form>
+        <h1 className='text-white'>UID: {uid}</h1>
     </div>
   );
 };
