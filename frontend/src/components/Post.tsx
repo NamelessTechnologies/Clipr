@@ -9,7 +9,7 @@ function Post() {
     // const [currentIndex, setCurrentIndex] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(true);
     // const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
-    const url = 'http://localhost:5001/';
+    const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
     // const image = "https://admin.esports.gg/wp-content/uploads/2024/03/robin-honkai-star-rail.jpg-968x544.jpg";
 

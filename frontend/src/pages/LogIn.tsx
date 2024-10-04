@@ -15,7 +15,7 @@ const LogIn: React.FC = () => {
         event.preventDefault();
 
         try {
-            const queryString = 'http://localhost:5001/User/email/' + email
+            const queryString = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/' + email
             const response = await fetch(queryString);
             const json = await response.json() as User;
             setData(json); 
