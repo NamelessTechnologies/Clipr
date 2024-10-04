@@ -99,7 +99,7 @@ const CreateAccount: React.FC = () => {
 
       <div className='flex justify-center mt-4'>
         <span className='text-white text-sm'>Already a member?</span>
-        <Link to="Clipr/LogIn" className='text-amber-500 text-sm ml-1'>Log in</Link>
+        <Link to="/Clipr/LogIn" className='text-amber-500 text-sm ml-1'>Log in</Link>
       </div>
     </form>
     </div>
