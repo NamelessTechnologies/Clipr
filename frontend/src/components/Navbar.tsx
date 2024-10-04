@@ -9,7 +9,7 @@ function NavBar() {
 
             <ul className="flex space-x-4">
             <li>
-                <Link to="Clipr/Upload"><MdFileUpload className='w-7 h-7 rounded-full'/></Link>
+                <Link to="Clipr/Upload"><MdFileUpload className='w-7 h-7 rounded-full hover:bg-gray-600'/></Link>
             </li>
             <li>
                 <Link to="Clipr/Tables" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Tables</Link>
