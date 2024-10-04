@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+// import User from '../types/User';
 
 interface PostContent {
   content: string;
 }
 
-const foundUser = localStorage.getItem('user');
-  var userInfo: { [x: string]: any; };
-  var uid: any;
-
-  if (foundUser) {
-    userInfo = JSON.parse(foundUser);
-    uid = userInfo["user_id"];
-    console.log(uid);
-  }
-
 const CreatePost: React.FC = () => {
     const [title, setTitle] = useState('');
     const [post, setPost] = useState<PostContent>({ content: '' });
+    const [currentUser,setCurrentUser] = useState(localStorage.getItem("user") || '');
+    var userInfo = JSON.parse(currentUser);
+    useEffect(() => {
+      const handleStorageChange = (event: any) => {
+        if (event.key == 'storage') {
+          setCurrentUser(localStorage.getItem('user') || '');
+          userInfo = JSON.parse(currentUser);
+        }
+      }
+      window.addEventListener('storage',handleStorageChange);
+
+      return () => {
+        window.removeEventListener('storage',handleStorageChange);
+      }
+    });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPost({ ...post, content: e.target.value });
@@ -24,8 +30,10 @@ const CreatePost: React.FC = () => {
 
     const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        var uid =userInfo["user_id"];
         console.log("Using id "+uid);
         const newPost = { UserID: uid, Title: title, Content: post.content }
+
         try {
             const response = await fetch("https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/post/", {
               body: JSON.stringify(newPost),
@@ -76,6 +84,7 @@ const CreatePost: React.FC = () => {
             </div>
             <button type="submit" className='bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded'>Post</button>
         </form>
+        <h1 className='text-white'>UID: {userInfo["user_id"]}</h1>
     </div>
   );
 };
