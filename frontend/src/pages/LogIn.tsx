@@ -25,6 +25,7 @@ const LogIn: React.FC = () => {
                 console.log("Caching info...");
                 try {
                     localStorage.setItem('user',JSON.stringify(json));
+                    window.dispatchEvent(new Event("storage"));
                     console.log('done.');
                 } catch (error) {
                     console.log(error);
