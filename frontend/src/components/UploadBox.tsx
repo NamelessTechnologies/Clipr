@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import User from '../types/User';
+// import User from '../types/User';
 
 interface PostContent {
   content: string;
