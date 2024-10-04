@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import stelle from '../assets/Profile.png';
 import { Link } from 'react-router-dom';
-import stelle from '../assets/Profile.png';
-import { Link } from 'react-router-dom';
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState('');
