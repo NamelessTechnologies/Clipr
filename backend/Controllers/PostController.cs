@@ -89,7 +89,7 @@ public class PostController : ControllerBase {
     public async void postTEMPTextPost([FromBody] TEMP_Post post) {
 
         var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
-        var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(1, @title, @content, @datePosted);";
+        var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
 
         using var conn = new NpgsqlConnection(connString);
         if (conn.State != System.Data.ConnectionState.Open) {
@@ -97,7 +97,7 @@ public class PostController : ControllerBase {
         }
 
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
-            cmd.Parameters.AddWithValue("user_id", 1);
+            cmd.Parameters.AddWithValue("user_id", post.UserID);
             cmd.Parameters.AddWithValue("title", post.Title);
             cmd.Parameters.AddWithValue("content", post.Content);
             cmd.Parameters.AddWithValue("datePosted", DateTime.Now);

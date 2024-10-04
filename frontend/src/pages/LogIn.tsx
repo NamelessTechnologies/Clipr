@@ -20,9 +20,17 @@ const LogIn: React.FC = () => {
             const json = await response.json() as User;
             setData(json); 
 
-            if(data?.password == password) {
+            if(json?.password == password) {
                 setMessage("Correct Password!");
+                console.log("Caching info...");
+                try {
+                    localStorage.setItem('user',JSON.stringify(json));
+                    console.log('done.');
+                } catch (error) {
+                    console.log(error);
+                }
                 navigate("/");
+                console.log("yay");
             }
             else {
                 setMessage("Incorrect Password");
