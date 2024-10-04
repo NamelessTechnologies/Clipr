@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PostType from "../types/Post";
+// import PostType from "../types/Post";
 import TEMP_Post from "../types/TEMP_Post";
 
 function Post() {
