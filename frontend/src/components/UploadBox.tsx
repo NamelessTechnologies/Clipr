@@ -24,17 +24,6 @@ useEffect(() => {
     "username": "default",
  };
 
-   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-      setCurrentUser(foundUser);
-      userInfo = foundUser;
-    }
-  }, []);
-
-
-
 const CreatePost: React.FC = () => {
     const [title, setTitle] = useState('');
     const [post, setPost] = useState<PostContent>({ content: '' });
@@ -48,8 +37,10 @@ const CreatePost: React.FC = () => {
         var uid = userInfo.user_id;
         console.log("Using id "+uid);
         const newPost = { UserID: uid, Title: title, Content: post.content }
+        console.log("Using id "+uid);
+        const newPost = { UserID: uid, Title: title, Content: post.content }
         try {
-            const response = await fetch("http://localhost:5001/post/", {
+            const response = await fetch("https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/post/", {
               body: JSON.stringify(newPost),
               method: "POST",
               headers: {
