@@ -305,7 +305,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("email/{e}")]
+    [HttpGet("/email/{e}")]
     public IActionResult getPassword(string e)
     {
         var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";

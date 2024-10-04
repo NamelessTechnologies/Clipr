@@ -6,7 +6,7 @@ const LogIn: React.FC = () => {
 
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
-    const[data, setData] = useState<User>(); // Fetched data will be an array of json
+    // const[data, setData] = useState<User>(); // Fetched data will be an array of json
     const[message, setMessage] = useState('');
 
     const navigate = useNavigate();
@@ -14,15 +14,23 @@ const LogIn: React.FC = () => {
     const attemptLogIn = async (event:React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        try {
-            const queryString = 'http://localhost:5001/User/email/' + email
+        try { 
+            const queryString = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/' + email;
             const response = await fetch(queryString);
             const json = await response.json() as User;
-            setData(json); 
+            // setData(json); 
 
-            if(data?.password == password) {
+            if(json?.password == password) {
                 setMessage("Correct Password!");
+                console.log("Caching info...");
+                try {
+                    localStorage.setItem('user',JSON.stringify(json));
+                    console.log('done.');
+                } catch (error) {
+                    console.log(error);
+                }
                 navigate("/");
+                console.log("yay");
             }
             else {
                 setMessage("Incorrect Password");
