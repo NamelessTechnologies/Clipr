@@ -18,10 +18,13 @@ public class UserController : ControllerBase
     //     conn = DBConn.Instance().getConn();
     // }
 
+    private String connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database;Pooling=true;MinPoolSize=0;MaxPoolSize=20;";
+
+
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
 
@@ -101,7 +104,7 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     public IActionResult getAllUsers()
     {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users";
         Console.WriteLine(sql);
 
@@ -220,7 +223,7 @@ public class UserController : ControllerBase
     [HttpGet("convo/all")]
     public IActionResult getAllConversations()
     {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM conversation";
         Console.WriteLine(sql);
 
@@ -261,7 +264,7 @@ public class UserController : ControllerBase
     [HttpGet("msg/all")]
     public IActionResult getAllMessages()
     {
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM message";
         Console.WriteLine(sql);
 
