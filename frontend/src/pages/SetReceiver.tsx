@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import User from "../types/User";
 import Conversation from "../types/Conversation";
 import { useNavigate } from "react-router-dom";
-import { Result } from 'postcss';
 
 const SetReceiver: React.FC = () => {
     const[receiver, setReceiver] = useState('');
