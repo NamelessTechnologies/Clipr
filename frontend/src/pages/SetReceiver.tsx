@@ -13,7 +13,7 @@ const SetReceiver: React.FC = () => {
         const response = await fetch(queryString);
         const json = await response.json() as User;
 
-        navigate("/Clipr/Messages", { state: json.user_id }); 
+        navigate("/Clipr/Messages", {state:[receiver, json.user_id]}); 
     };
 
     return (

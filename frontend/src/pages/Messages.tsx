@@ -9,15 +9,20 @@ const Messages: React.FC =  () => {
     const location = useLocation();
     const second_user = location.state;
     console.log(userInfo['user_id']);
-    console.log(second_user)
+    console.log(second_user[1])
+
 
     return (
         <div className="flex flex-col justify-center items-center">
             <div className="w-screen p-5 pl-20">
-                <h1 className="text-white text-3xl">2's Username</h1>
+                <h1 className="text-white text-3xl">{second_user[0]}</h1>
             </div>
 
             <div className=' text-white bg-slate-700 flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5'>
+                
+                
+                {/*MESSAGES PROP GOES HERE*/}
+                
                 <div className="border-b-2 pb-2 pt-4">
                     <h1 className="text-2xl">User 1</h1>
                     <p>Hello User 2!</p>
@@ -26,6 +31,8 @@ const Messages: React.FC =  () => {
                     <h1 className="text-2xl">User 2</h1>
                     <p>Hey whats up</p>
                 </div>
+
+
             </div>
 
             <form className='flex justify-center pt-7 w-screen'>
