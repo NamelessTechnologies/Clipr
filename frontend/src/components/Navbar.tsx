@@ -21,6 +21,8 @@ function NavBar() {
                 <Link to="Clipr/LogIn" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Log In</Link>
             </li>
             <li>
+                <Link to="Clipr/Messages" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Messages</Link>
+            </li>            <li>
                 <Link to="Clipr/SetReceiver" className="text-lg hover:bg-gray-600 px-3 py-2 rounded">Set Receiver</Link>
             </li>
 
