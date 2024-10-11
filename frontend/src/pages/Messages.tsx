@@ -45,7 +45,7 @@ const Messages: React.FC =  () => {
 
     // saves message sent by current user in database
     const postMessage = async () => {
-        const newMessage = { Convo_id: 1, Content: message, Datesent: new Date(), User_id:  JSON.parse(currentUser)['user_id']}
+        const newMessage = { Convo_id: second_user[2], Content: message, Datesent: new Date(), User_id:  JSON.parse(currentUser)['user_id']}
 
         try {
             const response = await fetch(url + "conversation/message", {
@@ -90,7 +90,7 @@ const Messages: React.FC =  () => {
         <div className="flex flex-col justify-center items-center">
             <div className="w-screen p-5 pl-20">
                 <h1 className="text-white text-3xl">{second_user[0]}</h1>
-                <h1 className="text-white text-3xl">{"convoid " + second_user[2]}</h1>                
+                {/* <h1 className="text-white text-3xl">{"convoid " + second_user[2]}</h1>                 */}
             </div>
 
             <div className=' text-white bg-navbar flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5'>
