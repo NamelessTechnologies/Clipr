@@ -8,6 +8,8 @@ import LogIn from './pages/LogIn';
 import Home from './pages/Home.tsx';
 import TablesTEMP from './pages/TablesTEMP.tsx';
 import Upload from './pages/Upload.tsx';
+import Messages from './pages/Messages.tsx';
+import SetReceiver from './pages/SetReceiver.tsx';
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
               <Route path="Clipr/Tables" element={<TablesTEMP/>} />
               <Route path="Clipr/LogIn" element={<LogIn/>} />
               <Route path="Clipr/Upload" element={<Upload/>} />
+              <Route path="Clipr/Messages" element={<Messages/>} />
+              <Route path="Clipr/SetReceiver" element={<SetReceiver/>} />
           </Routes>
       </Router>
     </>
