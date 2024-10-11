@@ -4,7 +4,8 @@ import Message from '../types/Message';
 import MessageBox from '../components/MessageBox';
 
 const Messages: React.FC =  () => {
-    const url = 'http://localhost:5001/';
+    // const url = 'http://localhost:5001/';
+    const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
 
     const [currentUser] = useState(localStorage.getItem("user") || '');
     var userInfo = JSON.parse(currentUser);
