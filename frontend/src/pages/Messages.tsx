@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-// import User from "../types/User";
-// import { useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 const LogIn: React.FC = () => {
 
     const[message, setMessage] = useState('');
-    
-    // const getMessages = () => {
-    //     event.preventDefault();
-
-    //     const queryString = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/' + email;
-    //     const response = await fetch(queryString);
-    //     const json = await response.json() as User;
-    // }
+    const location = useLocation();
+    const state = location.state;
+    console.log(state);
 
     return (
         <div className="flex flex-col justify-center items-center">
