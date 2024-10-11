@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Messages: React.FC =  () => {
 
-    const [currentUser,setCurrentUser] = useState(localStorage.getItem("user") || '');
+    const [currentUser] = useState(localStorage.getItem("user") || '');
     var userInfo = JSON.parse(currentUser);
     const[message, setMessage] = useState('');
     const location = useLocation();
@@ -16,6 +16,7 @@ const Messages: React.FC =  () => {
         <div className="flex flex-col justify-center items-center">
             <div className="w-screen p-5 pl-20">
                 <h1 className="text-white text-3xl">{second_user[0]}</h1>
+                <h1 className="text-white text-3xl">{"convoid " + second_user[2]}</h1>                
             </div>
 
             <div className=' text-white bg-slate-700 flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5'>
