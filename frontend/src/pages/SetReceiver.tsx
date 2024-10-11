@@ -13,8 +13,9 @@ const SetReceiver: React.FC = () => {
                             <input className = "p-2 text-black mb-6 rounded-md" required value={receiver} onChange={(e) => setReceiver(e.target.value)}></input>
                             <Link to="/Clipr/Messages" state={receiver}>Go to Messages Page</Link>
                         </div>
+                        <button disabled className='visiblity: hidden'></button>
                     </form>
-                    <h1 className='text-white'>{receiver}</h1>
+                    {/* <h1 className='text-white'>{receiver}</h1> */}
                 </div>
             </div>
         </>
