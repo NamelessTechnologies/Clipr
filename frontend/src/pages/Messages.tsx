@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from "react-router-dom";
 import Message from '../types/Message';
 import MessageBox from '../components/MessageBox';
@@ -12,6 +12,8 @@ const Messages: React.FC =  () => {
     const[convoMessages, setMessages] = useState<Message[]>([]); 
     const location = useLocation();
     const second_user = location.state;
+
+    const scrollToBottom = useRef<HTMLDivElement | null>(null);
 
     useEffect(()=>{
         fetchMessages();
@@ -79,15 +81,26 @@ const Messages: React.FC =  () => {
           } catch (error) {
             console.error('Error in executing functions:', error);
           }
+
     }
+
+
 
     convoMessages.forEach((msg: Message) => {
         console.log(msg.content);
     });
 
+    const refreshPage = () => {
+        window.location.reload();
+    }
+
+    const goDown = () => {
+        scrollToBottom.current?.scrollIntoView({behavior:'smooth'});
+    }
 
     return (
         <div className="flex flex-col justify-center items-center">
+            <button className='fixed bottom-5 right-5 rounded-xl bg-slate-400 p-5' onClick={goDown}>Jump To Recent</button>
             <div className="w-screen p-5 pl-20">
                 <h1 className="text-white text-3xl">{second_user[0]}</h1>
                 {/* <h1 className="text-white text-3xl">{"convoid " + second_user[2]}</h1>                 */}
@@ -101,7 +114,10 @@ const Messages: React.FC =  () => {
 
             </div>
 
-            <form className='flex justify-center pt-7 w-screen' onSubmit={messagePipeline}>
+            <button className='mr-10 text-blue-300 pt-2' onClick={refreshPage}>Refresh</button>
+
+            <form className='flex justify-center w-screen pb-10' onSubmit={messagePipeline}>
+
                 <div className='flex flex-col justify-center w-1/3 pr-5'>
                     <input className='p-2 rounded-xl' value={message} onChange={(e) => setMessage(e.target.value)}>
                     </input>
@@ -110,6 +126,7 @@ const Messages: React.FC =  () => {
                     <button className='p-2 bg-navbar text-white border-white border-2' type='submit'> Send Message </button>
                 </div>
             </form>
+            <div ref={scrollToBottom}></div>
         </div>
     )
 }
