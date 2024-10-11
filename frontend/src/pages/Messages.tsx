@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from "react-router-dom";
 
-const Messages: React.FC = () => {
+const Messages: React.FC =  () => {
+
     const [currentUser,setCurrentUser] = useState(localStorage.getItem("user") || '');
     var userInfo = JSON.parse(currentUser);
     const[message, setMessage] = useState('');
     const location = useLocation();
     const second_user = location.state;
-    console.log(userInfo['username']);
-    console.log(second_user);
-
+    console.log(userInfo['user_id']);
+    console.log(second_user)
 
     return (
         <div className="flex flex-col justify-center items-center">

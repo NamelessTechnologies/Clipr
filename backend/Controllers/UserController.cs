@@ -357,4 +357,57 @@ public class UserController : ControllerBase
             }
         }
     }
+
+    [HttpGet("/username/{u}")]
+    public IActionResult getUserFromUsername(string u)
+    {
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM users WHERE username = '" + u + "'";
+        Console.WriteLine(sql);
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (rdr.Read())
+            {
+                var user_id = rdr.GetInt32(0);
+                var username = rdr.GetString(1);
+                var email = rdr.GetString(2);
+                var password = rdr.GetString(3);
+                var biography = rdr.GetString(4);
+                var nickname = rdr.GetString(5);
+                var pfp = rdr.GetString(6);
+
+                Console.WriteLine(user_id);
+                Console.WriteLine(username);
+                Console.WriteLine(email);
+                Console.WriteLine(password);
+                Console.WriteLine(biography);
+                Console.WriteLine(nickname);
+                Console.WriteLine(pfp);
+
+                return Ok(new User
+                {
+                    User_id = user_id,
+                    Username = username,
+                    Email = email,
+                    Password = password,
+                    Biography = biography,
+                    Nickname = nickname,
+                    Pfp = pfp,
+                });
+            }
+            else
+            {
+                return Ok("Error");
+            }
+        }
+    }
 }
