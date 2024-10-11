@@ -43,7 +43,7 @@ const LogIn: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-row justify-center text-white p-10">
+        <div className="flex justify-center text-white p-10">
             {message}
             <form onSubmit={attemptLogIn} className="bg-navbar items-center pt-5 px-10 pb-10 rounded-md shadow-lg border border-white">
                 <div className="px-5 pt-2 pb-10">
