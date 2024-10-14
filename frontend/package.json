@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "express": "^4.21.1",
     "postcss": "^8.4.47",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
