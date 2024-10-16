@@ -29,7 +29,7 @@ const Messages: React.FC = () => {
     try {
       const response = await fetch(
         url +
-          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`
+          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`,
       );
       const json = await response.json();
       const messages: MessageModel[] = [];

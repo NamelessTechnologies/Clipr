@@ -32,7 +32,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
       );
       valid = false;
     }
@@ -88,7 +88,7 @@ const CreateAccount: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        }
+        },
       );
       console.log(response);
       if (response.status === 200) {

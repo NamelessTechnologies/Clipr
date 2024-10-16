@@ -9,7 +9,7 @@ const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
   const [post, setPost] = useState<PostContent>({ content: "" });
   const [currentUser, setCurrentUser] = useState(
-    localStorage.getItem("user") || ""
+    localStorage.getItem("user") || "",
   );
   let userInfo = JSON.parse(currentUser);
   useEffect(() => {
@@ -47,7 +47,7 @@ const CreatePost: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        }
+        },
       );
       console.log(response);
       if (response.status === 200) {
