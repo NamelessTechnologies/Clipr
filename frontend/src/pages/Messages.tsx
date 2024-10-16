@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
 import MessageBox from "../components/MessageBox";
+import shouldBeLoggedIn from "../components/Authenticate";
 
 const Messages: React.FC = () => {
-  // const url = 'http://localhost:5001/';
+  shouldBeLoggedIn(true);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const [currentUser] = useState(localStorage.getItem("user") || "");

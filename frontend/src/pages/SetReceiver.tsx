@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import UserModel from "../types/User";
 import ConversationModel from "../types/Conversation";
 import { useNavigate } from "react-router-dom";
+import shouldBeLoggedIn from "../components/Authenticate";
 
 const SetReceiver: React.FC = () => {
+  shouldBeLoggedIn(true);
   const [receiver, setReceiver] = useState("");
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);

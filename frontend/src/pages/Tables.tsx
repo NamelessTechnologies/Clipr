@@ -9,8 +9,11 @@ import PostTagTable from "../components/tables/PostTagTest";
 import SavedTable from "../components/tables/SavedTable";
 import TagTable from "../components/tables/TagTable";
 import UserTable from "../components/tables/UserTable";
+import shouldBeLoggedIn from "../components/Authenticate";
 
 function Tables() {
+  shouldBeLoggedIn(true);
+  console.log("hi");
   return (
     <div className="flex">
       <div className="flex-1 p-5">

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
+import shouldBeLoggedIn from "../components/Authenticate";
 
 const CreateAccount: React.FC = () => {
+  shouldBeLoggedIn(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

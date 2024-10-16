@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
+import shouldBeLoggedIn from "../components/Authenticate";
 
 const LogIn: React.FC = () => {
+  shouldBeLoggedIn(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const[data, setData] = useState<User>(); // Fetched data will be an array of json
