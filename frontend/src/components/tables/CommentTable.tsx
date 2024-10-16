@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Comment from "../types/Comment";
+import Comment from "../../types/Comment";
 
-function CommentTest() {
+function CommentTable() {
   const [data, setData] = useState<Comment[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
@@ -10,6 +10,7 @@ function CommentTest() {
       const response = await fetch(url + "comment/");
       const json = await response.json();
       const comments: Comment[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((comment: any) => {
         const NewPost: Comment = {
           id: comment.id,
@@ -58,4 +59,4 @@ function CommentTest() {
   );
 }
 
-export default CommentTest;
+export default CommentTable;

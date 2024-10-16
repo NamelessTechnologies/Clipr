@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import Tag_Temp from "../types/Tag_Temp";
+import Tag from "../../types/Tag";
 
-function TagTest() {
-  const [data, setData] = useState<Tag_Temp[]>([]);
+function TagTable() {
+  const [data, setData] = useState<Tag[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchTags = async () => {
     try {
       const response = await fetch(url + "tag/temp");
       const json = await response.json();
-      const tags: Tag_Temp[] = [];
+      const tags: Tag[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((tag: any) => {
-        const Save: Tag_Temp = {
+        const Save: Tag = {
           id: tag.id,
           name: tag.name,
         };
@@ -49,4 +50,4 @@ function TagTest() {
   );
 }
 
-export default TagTest;
+export default TagTable;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import Message from "../types/Message";
-import MessageBox from "../components/MessageBox";
+import Message from "../../types/Message";
+import MessageBox from "../MessageBox";
 
 const Messages: React.FC = () => {
   // const url = 'http://localhost:5001/';
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const [currentUser] = useState(localStorage.getItem("user") || "");
-  var userInfo = JSON.parse(currentUser);
+  const userInfo = JSON.parse(currentUser);
   const [message, setMessage] = useState("");
   const [convoMessages, setMessages] = useState<Message[]>([]);
   const location = useLocation();
@@ -28,7 +28,7 @@ const Messages: React.FC = () => {
     try {
       const response = await fetch(
         url +
-          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`,
+          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`
       );
       const json = await response.json();
       const messages: Message[] = [];

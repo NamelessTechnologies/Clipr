@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import Saved_Temp from "../types/Saved_Temp";
+import Saved from "../../types/Saved";
 
-function SaveTest() {
-  const [data, setData] = useState<Saved_Temp[]>([]);
+function SavedTable() {
+  const [data, setData] = useState<Saved[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchSaves = async () => {
     try {
       const response = await fetch(url + "saved/temp");
       const json = await response.json();
-      const saves: Saved_Temp[] = [];
+      const saves: Saved[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
-        const Save: Saved_Temp = {
+        const Save: Saved = {
           post_id: post.postID,
           user_id: post.userID,
         };
@@ -49,4 +50,4 @@ function SaveTest() {
   );
 }
 
-export default SaveTest;
+export default SavedTable;

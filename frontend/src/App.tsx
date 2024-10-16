@@ -6,9 +6,9 @@ import { NavBar } from "./components/Navbar";
 import CreateAccount from "./pages/CreateAccount";
 import LogIn from "./pages/LogIn";
 import Home from "./pages/Home.tsx";
-import TablesTEMP from "./pages/TablesTEMP.tsx";
+import TablesTEMP from "./pages/Tables.tsx";
 import Upload from "./pages/Upload.tsx";
-import Messages from "./pages/Messages.tsx";
+import Messages from "./components/tables/Messages.tsx";
 import SetReceiver from "./pages/SetReceiver.tsx";
 import NotFound from "./pages/NotFound.tsx";
 

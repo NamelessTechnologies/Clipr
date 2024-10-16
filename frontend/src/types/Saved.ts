@@ -1,4 +1,4 @@
-export default interface Saved_Temp {
+export default interface Saved {
   post_id: number;
   user_id: number;
 }

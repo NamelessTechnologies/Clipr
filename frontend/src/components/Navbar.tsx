@@ -55,7 +55,7 @@ function NavBar() {
               </li>
               <li>
                 <Link
-                  to="./"
+                  to="/"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   View Profile
@@ -64,7 +64,7 @@ function NavBar() {
               <li>
                 <button
                   onClick={logout}
-                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                  className="text-lg hover:bg-gray-600 px-3 rounded"
                 >
                   Logout
                 </button>

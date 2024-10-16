@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import PostTagTemp from "../types/Post_Tag_Temp";
+import PostTag from "../../types/PostTag";
 
-function PostTagTest() {
-  const [data, setData] = useState<PostTagTemp[]>([]);
+function PostTagTable() {
+  const [data, setData] = useState<PostTag[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPostTags = async () => {
     try {
       const response = await fetch(url + "post_tag/temp");
       const json = await response.json();
-      const postTags: PostTagTemp[] = [];
+      const postTags: PostTag[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((tag: any) => {
-        const PostTag: PostTagTemp = {
+        const PostTag: PostTag = {
           post_id: tag.postID,
           tag_id: tag.tagID,
         };
@@ -49,4 +50,4 @@ function PostTagTest() {
   );
 }
 
-export default PostTagTest;
+export default PostTagTable;

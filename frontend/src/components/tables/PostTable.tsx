@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Post from "../types/Post";
+import Post from "../../types/Post";
 
-function PostTest() {
+function PostTable() {
   const [data, setData] = useState<Post[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
@@ -10,6 +10,7 @@ function PostTest() {
       const response = await fetch(url + "post/");
       const json = await response.json();
       const posts: Post[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
         const NewPost: Post = {
           post_id: post.postID,
@@ -61,4 +62,4 @@ function PostTest() {
   );
 }
 
-export default PostTest;
+export default PostTable;

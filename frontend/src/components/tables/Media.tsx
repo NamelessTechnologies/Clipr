@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Media from "../types/Media";
+import Media from "../../types/Media";
 
-function MediaTemp() {
+function MediaTable() {
   const [data, setData] = useState<Media[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
@@ -10,6 +10,7 @@ function MediaTemp() {
       const response = await fetch(url + "media/");
       const json = await response.json();
       const medias: Media[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((media: any) => {
         const NewMedia: Media = {
           media_id: media.mediaID,
@@ -52,4 +53,4 @@ function MediaTemp() {
   );
 }
 
-export default MediaTemp;
+export default MediaTable;

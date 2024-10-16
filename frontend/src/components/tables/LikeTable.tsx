@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import Like_Temp from "../types/Like_Temp";
+import Like from "../../types/Like";
 
-function LikeTest() {
-  const [data, setData] = useState<Like_Temp[]>([]);
+function LikeTable() {
+  const [data, setData] = useState<Like[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchLikes = async () => {
     try {
       const response = await fetch(url + "likes/temp");
       const json = await response.json();
-      const likes: Like_Temp[] = [];
+      const likes: Like[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
-        const Like: Like_Temp = {
+        const Like: Like = {
           post_id: post.postID,
           user_id: post.userID,
         };
@@ -49,4 +50,4 @@ function LikeTest() {
   );
 }
 
-export default LikeTest;
+export default LikeTable;

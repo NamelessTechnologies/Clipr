@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import User from "./types/User";
+import User from "../../types/User";
 
-const User_Table = () => {
+const UserTable = () => {
   const [data, setData] = useState<User[]>([]); // Fetched data will be an array of json
 
   // const handleChange = async () => {
@@ -18,7 +18,7 @@ const User_Table = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/all",
+        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/all"
       );
       const json = (await response.json()) as User[];
       setData(json);
@@ -65,4 +65,4 @@ const User_Table = () => {
   );
 };
 
-export default User_Table;
+export default UserTable;

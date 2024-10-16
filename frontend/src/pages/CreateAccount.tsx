@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
+import User from "../types/User";
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -91,7 +92,20 @@ const CreateAccount: React.FC = () => {
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
+        try {
+          const queryString =
+            "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+            email;
+          const response = await fetch(queryString);
+          const json = (await response.json()) as User;
+          localStorage.setItem("user", JSON.stringify(json));
+          window.dispatchEvent(new Event("storage"));
+          console.log("done.");
+        } catch (error) {
+          console.log(error);
+        }
         navigate("../Clipr/");
+        window.location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
