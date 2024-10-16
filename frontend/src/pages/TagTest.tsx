@@ -2,52 +2,51 @@ import { useEffect, useState } from "react";
 import Tag_Temp from "../types/Tag_Temp";
 
 function TagTest() {
-
-  const [data, setData] = useState<Tag_Temp[]>([]); 
-  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
+  const [data, setData] = useState<Tag_Temp[]>([]);
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchTags = async () => {
     try {
-        const response = await fetch(url + 'tag/temp');
-        const json = await response.json();
-        const tags: Tag_Temp[] = [];
-        json.forEach((tag: any) => {
-            const Save: Tag_Temp = {
-                id: tag.id,
-                name: tag.name
-            };        
-            tags.push(Save);
-        });
-      setData(tags); 
+      const response = await fetch(url + "tag/temp");
+      const json = await response.json();
+      const tags: Tag_Temp[] = [];
+      json.forEach((tag: any) => {
+        const Save: Tag_Temp = {
+          id: tag.id,
+          name: tag.name,
+        };
+        tags.push(Save);
+      });
+      setData(tags);
     } catch (error) {
-        console.error(error);
-        throw new Error("Error getting saves data");
+      console.error(error);
+      throw new Error("Error getting saves data");
     }
-}
+  };
 
   useEffect(() => {
     fetchTags();
   }, []);
 
-    return (
-      <>
+  return (
+    <>
       <hr></hr>
       <h2 className="table_title">Tag Table:</h2>
-        <table>
+      <table>
+        <tr>
+          <th>id</th>
+          <th>name</th>
+        </tr>
+
+        {data?.map((tag) => (
           <tr>
-            <th>id</th>
-            <th>name</th>
+            <td key={tag.id}>{tag.id}</td>
+            <td key={tag.name}>{tag.name}</td>
           </tr>
-  
-          {data?.map(tag => (
-            <tr>
-              <td key={tag.id}>{tag.id}</td>
-              <td key={tag.name}>{tag.name}</td>
-            </tr>
-          ))}
-        </table>
-      </>
-    );
-  }
-  
+        ))}
+      </table>
+    </>
+  );
+}
+
 export default TagTest;

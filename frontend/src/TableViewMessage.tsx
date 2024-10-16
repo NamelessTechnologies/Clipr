@@ -4,27 +4,28 @@ import Message from "./types/Message";
 const Message_Table = () => {
   const [data, setData] = useState<Message[]>([]);
 
-  const fetchData = async() => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/msg/all');
-      const json = await response.json() as Message[];
-      setData(json); 
-    } 
-    catch (error) {
+      const response = await fetch(
+        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/msg/all",
+      );
+      const json = (await response.json()) as Message[];
+      setData(json);
+    } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   const allMessages: Message[] = data;
 
   return (
     <>
-    <hr></hr>
-    <h2 className="table_title">Message Table:</h2>
+      <hr></hr>
+      <h2 className="table_title">Message Table:</h2>
       <table>
         <tr>
           <th>id</th>
@@ -35,7 +36,7 @@ const Message_Table = () => {
         </tr>
 
         {/* Loops through allUsers, returning a row for each user */}
-        {allMessages?.map(message => (
+        {allMessages?.map((message) => (
           <tr>
             <td>{message.id}</td>
             <td>{message.convo_id}</td>

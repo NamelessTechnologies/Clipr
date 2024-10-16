@@ -1,4 +1,4 @@
 export default interface UserMessage {
-    username: string,
-    content: string
+  username: string;
+  content: string;
 }

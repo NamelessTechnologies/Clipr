@@ -1,4 +1,4 @@
 export default interface Tag_Temp {
-    id: number,
-    name: string
+  id: number;
+  name: string;
 }

@@ -2,61 +2,60 @@ import { useEffect, useState } from "react";
 import Comment from "../types/Comment";
 
 function CommentTest() {
-
-  const [data, setData] = useState<Comment[]>([]); 
-  const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
+  const [data, setData] = useState<Comment[]>([]);
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
-        const response = await fetch(url + 'comment/');
-        const json = await response.json();
-        const comments: Comment[] = [];
-        json.forEach((comment: any) => {
-            const NewPost: Comment = {
-                id: comment.id,
-                parent_id: comment.parentID ? comment.parentID : "null",
-                post_id: comment.postID,
-                user_id: comment.userID,
-                content: comment.content
-            };        
-            comments.push(NewPost);
-        });
-      setData(comments); 
+      const response = await fetch(url + "comment/");
+      const json = await response.json();
+      const comments: Comment[] = [];
+      json.forEach((comment: any) => {
+        const NewPost: Comment = {
+          id: comment.id,
+          parent_id: comment.parentID ? comment.parentID : "null",
+          post_id: comment.postID,
+          user_id: comment.userID,
+          content: comment.content,
+        };
+        comments.push(NewPost);
+      });
+      setData(comments);
     } catch (error) {
-        console.error(error);
-        throw new Error("Error getting post data");
+      console.error(error);
+      throw new Error("Error getting post data");
     }
-}
+  };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-    return (
-      <>
+  return (
+    <>
       <hr></hr>
       <h2 className="table_title">Comment Table:</h2>
-        <table>
+      <table>
+        <tr>
+          <th>id</th>
+          <th>parent_id</th>
+          <th>post_id</th>
+          <th>user_id</th>
+          <th>content</th>
+        </tr>
+
+        {data?.map((user) => (
           <tr>
-            <th>id</th>
-            <th>parent_id</th>
-            <th>post_id</th>
-            <th>user_id</th>
-            <th>content</th>
+            <td key={user.user_id}>{user.id}</td>
+            <td key={user.user_id}>{user.parent_id}</td>
+            <td key={user.user_id}>{user.post_id}</td>
+            <td key={user.user_id}>{user.user_id}</td>
+            <td key={user.user_id}>{user.content}</td>
           </tr>
-  
-          {data?.map(user => (
-            <tr>
-              <td key={user.user_id}>{user.id}</td>
-              <td key={user.user_id}>{user.parent_id}</td>
-              <td key={user.user_id}>{user.post_id}</td>
-              <td key={user.user_id}>{user.user_id}</td>
-              <td key={user.user_id}>{user.content}</td>
-            </tr>
-          ))}
-        </table>
-      </>
-    );
-  }
-  
+        ))}
+      </table>
+    </>
+  );
+}
+
 export default CommentTest;
