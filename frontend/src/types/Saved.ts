@@ -1,4 +1,4 @@
-export default interface Saved {
+export default interface SavedModel {
   post_id: number;
   user_id: number;
 }

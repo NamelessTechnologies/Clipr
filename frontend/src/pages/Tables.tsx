@@ -2,7 +2,7 @@ import CommentTable from "../components/tables/CommentTable";
 import CommentLikeTable from "../components/tables/CommentLikeTable";
 import ConversationTable from "../components/tables/ConversationTable";
 import LikeTable from "../components/tables/LikeTable";
-import MediaTable from "../components/tables/Media";
+import MediaTable from "../components/tables/MediaTable";
 import MessageTable from "../components/tables/MessageTable";
 import PostTable from "../components/tables/PostTable";
 import PostTagTable from "../components/tables/PostTagTest";

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import User from "../../types/User";
+import UserModel from "../../types/User";
 
 const UserTable = () => {
-  const [data, setData] = useState<User[]>([]); // Fetched data will be an array of json
+  const [data, setData] = useState<UserModel[]>([]); // Fetched data will be an array of json
 
   // const handleChange = async () => {
   //   try {
@@ -20,7 +20,7 @@ const UserTable = () => {
       const response = await fetch(
         "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/all"
       );
-      const json = (await response.json()) as User[];
+      const json = (await response.json()) as UserModel[];
       setData(json);
     } catch (error) {
       console.error(error);
@@ -31,7 +31,7 @@ const UserTable = () => {
     fetchData();
   }, []);
 
-  const allUsers: User[] = data; // Asserts that allUsers will be a User[] object from data
+  const allUsers: UserModel[] = data; // Asserts that allUsers will be a User[] object from data
 
   return (
     <>

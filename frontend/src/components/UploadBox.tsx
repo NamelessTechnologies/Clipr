@@ -9,10 +9,11 @@ const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
   const [post, setPost] = useState<PostContent>({ content: "" });
   const [currentUser, setCurrentUser] = useState(
-    localStorage.getItem("user") || "",
+    localStorage.getItem("user") || ""
   );
-  var userInfo = JSON.parse(currentUser);
+  let userInfo = JSON.parse(currentUser);
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleStorageChange = (event: any) => {
       if (event.key == "storage") {
         setCurrentUser(localStorage.getItem("user") || "");
@@ -32,7 +33,7 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    var uid = userInfo["user_id"];
+    const uid = userInfo["user_id"];
     console.log("Using id " + uid);
     const newPost = { UserID: uid, Title: title, Content: post.content };
 
@@ -46,7 +47,7 @@ const CreatePost: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        },
+        }
       );
       console.log(response);
       if (response.status === 200) {

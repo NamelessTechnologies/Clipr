@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import User from "../types/User";
-import Conversation from "../types/Conversation";
+import UserModel from "../types/User";
+import ConversationModel from "../types/Conversation";
 import { useNavigate } from "react-router-dom";
 
 const SetReceiver: React.FC = () => {
@@ -14,7 +14,7 @@ const SetReceiver: React.FC = () => {
 
     const queryString = url + "username/" + receiver;
     const response = await fetch(queryString);
-    const json = (await response.json()) as User;
+    const json = (await response.json()) as UserModel;
 
     const queryString2 =
       url +
@@ -23,7 +23,7 @@ const SetReceiver: React.FC = () => {
       "&User_2=" +
       json.user_id;
     const response2 = await fetch(queryString2);
-    const json2 = (await response2.json()) as Conversation;
+    const json2 = (await response2.json()) as ConversationModel;
     let convoid = json2.id;
     const receiverid = json.user_id;
 

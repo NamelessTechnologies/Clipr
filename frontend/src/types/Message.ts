@@ -1,4 +1,4 @@
-export default interface Message {
+export default interface MessageModel {
   id: number;
   convo_id: number;
   content: string;

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Tag from "../../types/Tag";
+import TagModel from "../../types/Tag";
 
 function TagTable() {
-  const [data, setData] = useState<Tag[]>([]);
+  const [data, setData] = useState<TagModel[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchTags = async () => {
     try {
       const response = await fetch(url + "tag/temp");
       const json = await response.json();
-      const tags: Tag[] = [];
+      const tags: TagModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((tag: any) => {
-        const Save: Tag = {
+        const Save: TagModel = {
           id: tag.id,
           name: tag.name,
         };

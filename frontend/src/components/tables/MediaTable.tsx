@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Media from "../../types/Media";
+import MediaModel from "../../types/Media";
 
 function MediaTable() {
-  const [data, setData] = useState<Media[]>([]);
+  const [data, setData] = useState<MediaModel[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchMedia = async () => {
     try {
       const response = await fetch(url + "media/");
       const json = await response.json();
-      const medias: Media[] = [];
+      const medias: MediaModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((media: any) => {
-        const NewMedia: Media = {
+        const NewMedia: MediaModel = {
           media_id: media.mediaID,
           post_id: media.postID,
           url: media.url,

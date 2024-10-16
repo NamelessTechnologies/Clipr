@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
-import User from "../types/User";
+import UserModel from "../types/User";
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -97,7 +97,7 @@ const CreateAccount: React.FC = () => {
             "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
             email;
           const response = await fetch(queryString);
-          const json = (await response.json()) as User;
+          const json = (await response.json()) as UserModel;
           localStorage.setItem("user", JSON.stringify(json));
           window.dispatchEvent(new Event("storage"));
           console.log("done.");

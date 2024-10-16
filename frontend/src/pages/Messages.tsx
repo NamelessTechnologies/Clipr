@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import Message from "../../types/Message";
-import MessageBox from "../MessageBox";
+import MessageModel from "../types/Message";
+import MessageBox from "../components/MessageBox";
 
 const Messages: React.FC = () => {
   // const url = 'http://localhost:5001/';
@@ -10,7 +10,7 @@ const Messages: React.FC = () => {
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
   const [message, setMessage] = useState("");
-  const [convoMessages, setMessages] = useState<Message[]>([]);
+  const [convoMessages, setMessages] = useState<MessageModel[]>([]);
   const location = useLocation();
   const second_user = location.state;
 
@@ -31,9 +31,10 @@ const Messages: React.FC = () => {
           `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`
       );
       const json = await response.json();
-      const messages: Message[] = [];
+      const messages: MessageModel[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((media: any) => {
-        const NewMessage: Message = {
+        const NewMessage: MessageModel = {
           id: media.id,
           convo_id: media.convo_id,
           content: media.content,
@@ -90,7 +91,7 @@ const Messages: React.FC = () => {
     }
   };
 
-  convoMessages.forEach((msg: Message) => {
+  convoMessages.forEach((msg: MessageModel) => {
     console.log(msg.content);
   });
 

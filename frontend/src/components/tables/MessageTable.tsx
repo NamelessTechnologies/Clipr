@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import Message from "../../types/Message";
+import MessageModel from "../../types/Message";
 
 const MessageTable = () => {
-  const [data, setData] = useState<Message[]>([]);
+  const [data, setData] = useState<MessageModel[]>([]);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
         "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/msg/all"
       );
-      const json = (await response.json()) as Message[];
+      const json = (await response.json()) as MessageModel[];
       setData(json);
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ const MessageTable = () => {
     fetchData();
   }, []);
 
-  const allMessages: Message[] = data;
+  const allMessages: MessageModel[] = data;
 
   return (
     <>

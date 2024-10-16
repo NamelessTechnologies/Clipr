@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Comment from "../../types/Comment";
+import CommentModel from "../../types/Comment";
 
 function CommentTable() {
-  const [data, setData] = useState<Comment[]>([]);
+  const [data, setData] = useState<CommentModel[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
       const response = await fetch(url + "comment/");
       const json = await response.json();
-      const comments: Comment[] = [];
+      const comments: CommentModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((comment: any) => {
-        const NewPost: Comment = {
+        const NewPost: CommentModel = {
           id: comment.id,
           parent_id: comment.parentID ? comment.parentID : "null",
           post_id: comment.postID,

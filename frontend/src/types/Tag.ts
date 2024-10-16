@@ -1,4 +1,4 @@
-export default interface Tag {
+export default interface TagModel {
   id: number;
   name: string;
 }

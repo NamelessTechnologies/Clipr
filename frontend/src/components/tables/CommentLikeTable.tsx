@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import CommentLike from "../../types/CommentLike_Temp";
+import CommentLikeModel from "../../types/CommentLike";
 
 function CommentLikeTable() {
-  const [data, setData] = useState<CommentLike[]>([]);
+  const [data, setData] = useState<CommentLikeModel[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchCommentLikes = async () => {
     try {
       const response = await fetch(url + "comment_like/temp");
       const json = await response.json();
-      const commentLikes: CommentLike[] = [];
+      const commentLikes: CommentLikeModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((comment: any) => {
-        const Like: CommentLike = {
+        const Like: CommentLikeModel = {
           comment_id: comment.commentID,
           user_id: comment.userID,
         };

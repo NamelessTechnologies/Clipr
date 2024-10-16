@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import User from "../types/User";
+import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
@@ -18,7 +18,7 @@ const LogIn: React.FC = () => {
         "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
         email;
       const response = await fetch(queryString);
-      const json = (await response.json()) as User;
+      const json = (await response.json()) as UserModel;
 
       if (json?.password == password) {
         setMessage("Correct Password!");

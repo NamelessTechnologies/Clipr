@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Post from "../../types/Post";
+import PostModel from "../../types/Post";
 
 function PostTable() {
-  const [data, setData] = useState<Post[]>([]);
+  const [data, setData] = useState<PostModel[]>([]);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
       const response = await fetch(url + "post/");
       const json = await response.json();
-      const posts: Post[] = [];
+      const posts: PostModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
-        const NewPost: Post = {
+        const NewPost: PostModel = {
           post_id: post.postID,
           user_id: post.userID,
           title: post.title,

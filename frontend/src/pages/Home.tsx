@@ -3,11 +3,11 @@ import { Post } from "../components/Post";
 import logo from "../assets/hsr_logo.png";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import User from "../types/User";
+import UserModel from "../types/User";
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
 
   // This effect loads the user from localStorage
@@ -16,7 +16,7 @@ function Home() {
     if (localStorageUser) {
       setFoundUser(localStorageUser);
       const parsedUser = JSON.parse(localStorageUser);
-      setUserInfo(parsedUser as User);
+      setUserInfo(parsedUser as UserModel);
     }
   }, []);
 

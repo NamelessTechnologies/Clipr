@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 // import PostType from "../types/Post";
-import TEMP_Post from "../types/TEMP_Post";
+import PostModel from "../types/Post";
 
 function Post() {
   // const [post, setPost] = useState<PostType[]>([]);
-  const [post, setPost] = useState<TEMP_Post[]>([]);
+  const [post, setPost] = useState<PostModel[]>([]);
   // const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   // const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
@@ -17,9 +17,10 @@ function Post() {
       const response = await fetch(url + "TEMP_post/"); // must not be hard coded
       const json = await response.json();
 
-      const posts: TEMP_Post[] = [];
+      const posts: PostModel[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
-        const NewPost: TEMP_Post = {
+        const NewPost: PostModel = {
           user_id: post.userID,
           title: post.title,
           content: post.content,

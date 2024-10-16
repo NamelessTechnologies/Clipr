@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import Conversation from "../../types/Conversation";
+import ConversationModel from "../../types/Conversation";
 
 const ConversationTable = () => {
-  const [data, setData] = useState<Conversation[]>([]);
+  const [data, setData] = useState<ConversationModel[]>([]);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
         "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/convo/all"
       );
-      const json = (await response.json()) as Conversation[];
+      const json = (await response.json()) as ConversationModel[];
       setData(json);
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ const ConversationTable = () => {
     fetchData();
   }, []);
 
-  const allConversations: Conversation[] = data;
+  const allConversations: ConversationModel[] = data;
 
   return (
     <>
