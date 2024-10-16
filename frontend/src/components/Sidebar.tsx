@@ -23,20 +23,28 @@ function Sidebar() {
   return (
     <div className="flex">
       <div
-        className={`bg-navbar h-screen p-5 pt-8 ${open ? "w-60" : "w-20"} duration-300 relative border-white border-r`}
+        className={`bg-navbar h-screen p-5 pt-8 ${
+          open ? "w-60" : "w-20"
+        } duration-300 relative border-white border-r`}
       >
         <BsArrowLeftShort
           className={`bg-white text-dark-purple text-3xl rounded-full absolute -right-3 top-1/3 border-2 
-                                          cursor-pointer ${!open && "rotate-180"}`}
+                                          cursor-pointer ${
+                                            !open && "rotate-180"
+                                          }`}
           onClick={() => setOpen(!open)}
         />
 
         <div className="inline-flex">
           <AiFillEnvironment
-            className={`bg-amber-300 text-4xl rounded cursor-pointer block float-left mr-2 duration-300 ${open && "rotate-[360deg]"}`}
+            className={`bg-amber-300 text-4xl rounded cursor-pointer block float-left mr-2 duration-300 ${
+              open && "rotate-[360deg]"
+            }`}
           />
           <h1
-            className={`text-white origin-left font-medium text-2xl duration-300 ${!open && "scale-0"}`}
+            className={`text-white origin-left font-medium text-2xl duration-300 ${
+              !open && "scale-0"
+            }`}
           >
             Clipr
           </h1>
@@ -48,13 +56,17 @@ function Sidebar() {
               <li
                 key={index}
                 className={`text-white text-sm flex item-center gap-x-4 cursor-pointer p-2 
-                                        hover:bg-gray-700 rounded-md ${menu.info ? "mt-96" : "mt-4"}`}
+                                        hover:bg-gray-700 rounded-md ${
+                                          menu.info ? "mt-96" : "mt-4"
+                                        }`}
               >
                 <span className="text-2xl block float-left">
                   {menu.icon ? menu.icon : <RiDashboardFill />}
                 </span>
                 <span
-                  className={`text-lg font-medium flex-1 duration-300 ${!open && "hidden"}`}
+                  className={`text-lg font-medium flex-1 duration-300 ${
+                    !open && "hidden"
+                  }`}
                 >
                   {menu.title}
                 </span>

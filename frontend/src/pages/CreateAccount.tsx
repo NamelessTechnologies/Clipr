@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateAccount: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +13,8 @@ const CreateAccount: React.FC = () => {
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
+
+  const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
@@ -27,7 +29,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -83,12 +85,13 @@ const CreateAccount: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        },
+        }
       );
       console.log(response);
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
+        navigate("../Clipr/");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -125,7 +128,9 @@ const CreateAccount: React.FC = () => {
             placeholder="Username"
           />
           <span
-            className={`block text-red-600 text-xs font-semibold ml-auto ${usernameErrorMsg ? "visible" : "invisible"}`}
+            className={`block text-red-600 text-xs font-semibold ml-auto ${
+              usernameErrorMsg ? "visible" : "invisible"
+            }`}
           >
             {usernameErrorMsg}
           </span>
@@ -144,7 +149,9 @@ const CreateAccount: React.FC = () => {
             placeholder="Email"
           />
           <span
-            className={`block text-red-600 text-xs font-semibold ml-auto ${emailErrorMsg ? "visible" : "invisible"}`}
+            className={`block text-red-600 text-xs font-semibold ml-auto ${
+              emailErrorMsg ? "visible" : "invisible"
+            }`}
           >
             {emailErrorMsg}
           </span>
@@ -163,7 +170,9 @@ const CreateAccount: React.FC = () => {
             placeholder="Create a password"
           />
           <span
-            className={`block text-red-600 text-xs font-semibold ml-auto  max-w-max break-words whitespace-normal ${passwordErrorMsg ? "visible" : "invisible"}`}
+            className={`block text-red-600 text-xs font-semibold ml-auto  max-w-max break-words whitespace-normal ${
+              passwordErrorMsg ? "visible" : "invisible"
+            }`}
           >
             {passwordErrorMsg}
           </span>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import User from "../types/User";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +19,9 @@ const LogIn: React.FC = () => {
         email;
       const response = await fetch(queryString);
       const json = (await response.json()) as User;
-      // setData(json);
 
       if (json?.password == password) {
         setMessage("Correct Password!");
-        console.log("Caching info...");
         try {
           localStorage.setItem("user", JSON.stringify(json));
           window.dispatchEvent(new Event("storage"));
@@ -31,8 +29,8 @@ const LogIn: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
-        navigate("/");
-        console.log("yay");
+        navigate("../Clipr/");
+        window.location.reload();
       } else {
         setMessage("Incorrect Password");
       }
@@ -44,15 +42,18 @@ const LogIn: React.FC = () => {
 
   return (
     <div className="flex justify-center text-white p-10">
-      {message}
       <form
         onSubmit={attemptLogIn}
         className="bg-navbar items-center pt-5 px-10 pb-10 rounded-md shadow-lg border border-white"
       >
-        <div className="px-5 pt-2 pb-10">
+        <div className="px-5 pt-2 pb-3">
           <h1 className="text-4xl">Log In To Account</h1>
         </div>
-
+        {message ? (
+          <span className="text-red-700 pb-5">***{message}</span>
+        ) : (
+          <></>
+        )}
         <div className="flex justify-center flex-col mx-5">
           <label className="">Email:</label>
           <input
@@ -72,13 +73,19 @@ const LogIn: React.FC = () => {
           ></input>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex flex-col text-center justify-center">
           <button
             className="bg-hsr_gold hover:bg-amber-600 rounded-md pl-5 pr-5 pt-2 pb-2 justify-center"
             type="submit"
           >
             Log In
           </button>
+          <div className="flex justify-center mt-4">
+            <span className="text-white text-sm">New to Clipr? </span>
+            <Link to="/Clipr/SignUp" className="text-amber-500 text-sm ml-1">
+              Sign Up
+            </Link>
+          </div>
         </div>
       </form>
     </div>

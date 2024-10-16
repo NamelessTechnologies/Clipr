@@ -16,7 +16,9 @@ function App() {
   return (
     <>
       <Router>
-        <NavBar />
+        <div className="z-50">
+          <NavBar />
+        </div>
         <Routes>
           <Route path="Clipr/" element={<Home />} />
           <Route path="Clipr/SignUp" element={<CreateAccount />} />

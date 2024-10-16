@@ -2,23 +2,38 @@ import { Sidebar } from "../components/Sidebar";
 import { Post } from "../components/Post";
 import logo from "../assets/hsr_logo.png";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import User from "../types/User";
 
 function Home() {
-  const foundUser = localStorage.getItem("user");
-  let userInfo;
-  let uid;
+  const [foundUser, setFoundUser] = useState<string>();
+  const [userInfo, setUserInfo] = useState<User>();
+  const [uid, setUID] = useState<number>();
 
-  if (foundUser) {
-    userInfo = JSON.parse(foundUser);
-    uid = userInfo["user_id"];
-    console.log(uid);
-  }
+  // This effect loads the user from localStorage
+  useEffect(() => {
+    const localStorageUser = localStorage.getItem("user");
+    if (localStorageUser) {
+      setFoundUser(localStorageUser);
+      const parsedUser = JSON.parse(localStorageUser);
+      setUserInfo(parsedUser as User);
+    }
+  }, []);
+
+  // This effect updates the UID once `userInfo` is set
+  useEffect(() => {
+    if (userInfo && userInfo.user_id) {
+      setUID(userInfo.user_id);
+    }
+  }, [userInfo]);
 
   return (
     <>
       {foundUser ? (
         <div className="flex">
-          <Sidebar />
+          <div className="fixed top-0 left-0 h-screen z-10">
+            <Sidebar />
+          </div>
           <Post />
           <div className="flex-1 p-5">
             <h1 className="text-white">The Nameless</h1>

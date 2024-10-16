@@ -1,8 +1,23 @@
 import { Link } from "react-router-dom";
 import { HiMiniPencilSquare } from "react-icons/hi2";
+import { useEffect, useState } from "react";
 
 function NavBar() {
-  const foundUser = localStorage.getItem("user");
+  const [foundUser, setFoundUser] = useState<string>();
+  const logout = () => {
+    if (!foundUser) {
+      return;
+    }
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const localStorageUser = localStorage.getItem("user");
+    if (localStorageUser) {
+      setFoundUser(localStorageUser);
+    }
+  }, [foundUser]);
 
   return (
     <>
@@ -32,27 +47,27 @@ function NavBar() {
               </li>
               <li>
                 <Link
-                  to="Clipr/SignUp"
-                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
-                >
-                  Sign Up
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="Clipr/LogIn"
-                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
-                >
-                  Log In
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="Clipr/SetReceiver"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   Messages
                 </Link>
+              </li>
+              <li>
+                <Link
+                  to="./"
+                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                >
+                  View Profile
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={logout}
+                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
