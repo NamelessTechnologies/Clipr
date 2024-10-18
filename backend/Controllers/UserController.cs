@@ -24,6 +24,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
 
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -68,7 +69,8 @@ public class UserController : ControllerBase
     public async void postUser([FromBody] User user) {
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
-        await using (var cmd = new NpgsqlCommand(sql, conn)) {
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
             cmd.Parameters.AddWithValue("username", user.Username);
             cmd.Parameters.AddWithValue("email", user.Email);
             cmd.Parameters.AddWithValue("password", user.Password);
@@ -127,18 +129,21 @@ public class UserController : ControllerBase
 
         var saves = new List<Post>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Post newPost = new Post {
+        while (reader.Read())
+        {
+            Post newPost = new Post
+            {
                 PostID = reader.GetInt32(0),
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
                 Description = reader.GetString(3),
                 DatePosted = reader.GetDateTime(4),
-                MediaType = reader.GetString(5)  
+                MediaType = reader.GetString(5)
             };
             saves.Add(newPost);
         }
@@ -146,7 +151,7 @@ public class UserController : ControllerBase
     }
 
 
-// TEMPORARY
+    // TEMPORARY
     [HttpGet("/saved/temp")]
     public IActionResult getSaveDataTEMP() {
         var sql = "SELECT * FROM save";
@@ -156,12 +161,15 @@ public class UserController : ControllerBase
 
         var saves = new List<Saved_Temp>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Saved_Temp newPost = new Saved_Temp {
+        while (reader.Read())
+        {
+            Saved_Temp newPost = new Saved_Temp
+            {
                 PostID = reader.GetInt32(0),
                 UserID = reader.GetInt32(1)
             };
@@ -238,6 +246,105 @@ public class UserController : ControllerBase
                 allMessages.Add(singleMessage);
             }
             return Ok(allMessages);
+        }
+    }
+
+    [HttpGet("/email/{e}")]
+    public IActionResult getPassword(string e)
+    {
+        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "SELECT * FROM users WHERE email = '" + e + "'";
+        Console.WriteLine(sql);
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (rdr.Read())
+            {
+                var user_id = rdr.GetInt32(0);
+                var username = rdr.GetString(1);
+                var email = rdr.GetString(2);
+                var password = rdr.GetString(3);
+                var biography = rdr.GetString(4);
+                var nickname = rdr.GetString(5);
+                var pfp = rdr.GetString(6);
+
+                Console.WriteLine(user_id);
+                Console.WriteLine(username);
+                Console.WriteLine(email);
+                Console.WriteLine(password);
+                Console.WriteLine(biography);
+                Console.WriteLine(nickname);
+                Console.WriteLine(pfp);
+
+                return Ok(new User
+                {
+                    User_id = user_id,
+                    Username = username,
+                    Email = email,
+                    Password = password,
+                    Biography = biography,
+                    Nickname = nickname,
+                    Pfp = pfp,
+                });
+            }
+            else
+            {
+                return Ok("Error");
+            }
+        }
+    }
+
+    [HttpGet("/username/{u}")]
+    public IActionResult getUserFromUsername(string u)
+    {
+        var sql = "SELECT * FROM users WHERE username = '" + u + "'";
+        Console.WriteLine(sql);
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (rdr.Read())
+            {
+                var user_id = rdr.GetInt32(0);
+                var username = rdr.GetString(1);
+                var email = rdr.GetString(2);
+                var password = rdr.GetString(3);
+                var biography = rdr.GetString(4);
+                var nickname = rdr.GetString(5);
+                var pfp = rdr.GetString(6);
+
+                Console.WriteLine(user_id);
+                Console.WriteLine(username);
+                Console.WriteLine(email);
+                Console.WriteLine(password);
+                Console.WriteLine(biography);
+                Console.WriteLine(nickname);
+                Console.WriteLine(pfp);
+
+                return Ok(new User
+                {
+                    User_id = user_id,
+                    Username = username,
+                    Email = email,
+                    Password = password,
+                    Biography = biography,
+                    Nickname = nickname,
+                    Pfp = pfp,
+                });
+            }
+            else
+            {
+                return Ok("Error");
+            }
         }
     }
 }

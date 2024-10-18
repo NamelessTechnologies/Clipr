@@ -4,9 +4,7 @@
   "tools": {
     "swashbuckle.aspnetcore.cli": {
       "version": "6.4.0",
-      "commands": [
-        "swagger"
-      ],
+      "commands": ["swagger"],
       "rollForward": false
     }
   }

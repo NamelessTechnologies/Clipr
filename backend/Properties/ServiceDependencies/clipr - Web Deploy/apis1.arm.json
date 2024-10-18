@@ -39,9 +39,7 @@
       "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('Clipr2-API', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
-      "dependsOn": [
-        "[parameters('resourceGroupName')]"
-      ],
+      "dependsOn": ["[parameters('resourceGroupName')]"],
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -103,9 +101,7 @@
                 "subscriptionRequired": true,
                 "serviceUrl": null,
                 "path": "clipr",
-                "protocols": [
-                  "https"
-                ],
+                "protocols": ["https"],
                 "authenticationSettings": {
                   "oAuth2": null,
                   "openid": null
@@ -117,9 +113,7 @@
                 "isCurrent": true
               },
               "apiVersion": "2019-12-01",
-              "dependsOn": [
-                "Clipr2-APIapi"
-              ]
+              "dependsOn": ["Clipr2-APIapi"]
             }
           ]
         }
