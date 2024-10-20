@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useEffect, useState } from "react";
+import UserModel from "../types/User";
 
 function NavBar() {
   const [foundUser, setFoundUser] = useState<string>();
+  const [userProfileURL, setUserProfileURL] =
+    useState<string>("Clipr/Profile/");
   const logout = () => {
     if (!foundUser) {
       return;
@@ -16,6 +19,8 @@ function NavBar() {
     const localStorageUser = localStorage.getItem("user");
     if (localStorageUser) {
       setFoundUser(localStorageUser);
+      const parsed = JSON.parse(localStorageUser) as UserModel;
+      setUserProfileURL(`Clipr/Profile?profile_id=${parsed.user_id}`);
     }
   }, [foundUser]);
 
@@ -55,7 +60,7 @@ function NavBar() {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to={userProfileURL}
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   View Profile
