@@ -45,7 +45,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       {lookingAtOwnProfile ? (
         <div className="flex flex-row">
           <div className="pt-3">
-            <div className="circle">
+            <div className="circle-big">
               <img
                 src="https://ih1.redbubble.net/image.5503365970.2431/flat,750x,075,f-pad,750x1000,f8f8f8.u1.jpg"
                 alt="you are my sunshine"
@@ -55,7 +55,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           <div className="flex flex-col pl-5">
             <div className="flex flex-row pt-20">
               <div className="text-yellow-100 italic text-5xl pr-2">
-                {props.userData.username}
+                <b>{props.userData.username}</b> -
+              </div>
+              <div className="text-yellow-100 italic text-3xl pr-2 pt-2">
+                <i>{props.userData.nickname}</i>
               </div>
             </div>
             <TripleFs></TripleFs>
