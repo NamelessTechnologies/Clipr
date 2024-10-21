@@ -264,7 +264,6 @@ public class UserController : ControllerBase
     }
 
 
-
     [HttpDelete("following")]
     public async Task<IActionResult> UnfollowUser([FromQuery]FollowingPairQuery unfollowQuery) {
         var sql = "DELETE FROM following WHERE from_id = @from_id AND to_id = @to_id";
@@ -677,4 +676,71 @@ public class UserController : ControllerBase
         }
         return Ok(allFriends);
     }
+
+    //endpoint to follow someone
+    [HttpPost("followuser")]
+    public async void followUser([FromBody] FollowingPairQuery pair)
+    {
+
+        var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("from", pair.User_1);
+            cmd.Parameters.AddWithValue("to", pair.User_2);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+    }
+
+    // endpoint to check if someone is following you
+    [HttpGet("checkfollow")]
+    public IActionResult CheckFollow([FromQuery] FollowingPairQuery pair)
+    {
+        Console.WriteLine(pair.User_1);
+        Console.WriteLine(pair.User_2);
+
+        var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (rdr.Read())
+            {
+                var from_id = rdr.GetInt32(0);
+                var to_id = rdr.GetInt32(1);
+
+                Console.WriteLine(from_id);
+                Console.WriteLine(to_id);
+
+                return Ok(new FollowingPairQuery
+                {
+                    User_1 = from_id,
+                    User_2 = to_id
+                });
+            }
+            else
+            {
+                return Ok(new FollowingPairQuery {
+                    User_1 = -1,
+                    User_2 = -1
+                });
+            }
+        }
+
+    }
+
 }
