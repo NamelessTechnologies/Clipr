@@ -685,6 +685,10 @@ public class UserController : ControllerBase
         var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
 
         using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("from", pair.User_1);
@@ -692,12 +696,16 @@ public class UserController : ControllerBase
 
             await cmd.ExecuteNonQueryAsync();
         }
+
     }
 
     // endpoint to check if someone is following you
     [HttpGet("checkfollow")]
     public IActionResult CheckFollow([FromQuery] FollowingPairQuery pair)
     {
+        Console.WriteLine(pair.User_1);
+        Console.WriteLine(pair.User_2);
+
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
         using var conn = new NpgsqlConnection(connString);
@@ -726,7 +734,10 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return Ok(new FollowingPairQuery {
+                    User_1 = -1,
+                    User_2 = -1
+                });
             }
         }
 
