@@ -527,4 +527,42 @@ public class UserController : ControllerBase
             }
         }
     }
+
+    [HttpGet("/searchname/{u}")]
+    public IActionResult getUserFromSearchName(string u)
+    {
+        var sql = "SELECT user_id,username,nickname FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
+        Console.WriteLine(sql);
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        var allUsers = new List<User>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+
+                User singleUser = new User
+                {
+                    User_id = rdr.GetInt32(0),
+                    Username = rdr.GetString(1),
+                    Nickname = rdr.GetString(2)
+                };
+
+                allUsers.Add(singleUser);
+            }
+            return Ok(allUsers);
+        }
+    }
 }

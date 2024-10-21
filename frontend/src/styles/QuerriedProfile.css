@@ -1,7 +1,7 @@
-.circle-big {
+.circle-small {
   border-radius: 50%;
-  height: 15em;
-  width: 15em;
+  height: 5em;
+  width: 5em;
   overflow: hidden;
   display: flex;
   justify-content: center;

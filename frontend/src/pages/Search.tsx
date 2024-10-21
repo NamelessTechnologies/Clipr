@@ -1,9 +1,38 @@
+import { useState } from "react";
 import shouldBeLoggedIn from "../components/Authenticate";
+import QuerriedProfile from "../components/search/QuerriedProfile";
+
+type Category = "Users" | "Videos" | "Tags";
 
 function Search() {
   shouldBeLoggedIn(true);
-  
-  return <div className="flex justify-center w-screen h-screen"></div>;
+
+  const [category, setCategory] = useState<Category>();
+
+  return (
+    <>
+      <div className="flex flex-col justify-start w-screen h-screen">
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+        <QuerriedProfile></QuerriedProfile>
+      </div>
+    </>
+  );
 }
 
 export default Search;
