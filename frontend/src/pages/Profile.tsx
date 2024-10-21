@@ -20,12 +20,15 @@ function Profile() {
         const json = (await response.json()) as UserModel;
         console.log(json);
         setUserData(json);
-      } catch {
-        console.error();
+      } catch (error) {
+        console.error(error);
       }
     }
-    fetchData();
-  }, [profile_id, userData]);
+
+    if (profile_id) {
+      fetchData();
+    }
+  }, [profile_id]);
 
   return (
     <>

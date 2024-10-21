@@ -1,6 +1,10 @@
 import "../../styles/QuerriedProfile.css";
 
-function QuerriedProfile() {
+function QuerriedProfile(props: {
+  user_id: string;
+  username: string;
+  nickname: string;
+}) {
   return (
     <div className="flex justify-center w-screen h-screen">
       <div className="flex flex-row">
@@ -12,10 +16,13 @@ function QuerriedProfile() {
             ></img>
           </div>
         </div>
-        <div className="flex flex-col pl-5 pt-3">
-          <div className="text-yellow-100 italic text-xl pr-2">Username</div>
-          <div className="text-yellow-100 italic text-m pr-2">Nickname</div>
-          <div className="text-yellow-100 italic text-xs pr-2">Biography</div>
+        <div className="flex flex-col pl-5 pt-5">
+          <div className="text-yellow-100 italic text-xl pr-2">
+            {props.username}
+          </div>
+          <div className="text-yellow-100 italic text-m pr-2">
+            {props.nickname}
+          </div>
         </div>
       </div>
     </div>
