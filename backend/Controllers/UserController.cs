@@ -4,6 +4,7 @@ using System;
 using Npgsql;
 using System.Threading.Tasks.Dataflow;
 using System.Data.SqlClient;
+using Azure.Core.Serialization;
 
 namespace backend.Controllers;
 
@@ -531,7 +532,7 @@ public class UserController : ControllerBase
     [HttpGet("/searchname/{u}")]
     public IActionResult getUserFromSearchName(string u)
     {
-        var sql = "SELECT user_id,username,nickname FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
+        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
         Console.WriteLine(sql);
         using var conn = new NpgsqlConnection(connString);
         if (conn.State != System.Data.ConnectionState.Open)
@@ -557,7 +558,8 @@ public class UserController : ControllerBase
                 {
                     User_id = rdr.GetInt32(0),
                     Username = rdr.GetString(1),
-                    Nickname = rdr.GetString(2)
+                    Nickname = rdr.GetString(2),
+                    Pfp = rdr.GetString(3)
                 };
 
                 allUsers.Add(singleUser);
@@ -646,4 +648,60 @@ public class UserController : ControllerBase
         }
         return Ok(allFriends);
     }
+
+    //endpoint to follow someone
+    [HttpPost("followuser")]
+    public async void followUser([FromBody] FollowingPair pair)
+    {
+
+        var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
+
+        using var conn = new NpgsqlConnection(connString);
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("from", pair.FromID);
+            cmd.Parameters.AddWithValue("to", pair.ToID);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+    }
+
+    // endpoint to check if someone is following you
+    [HttpGet("checkfollow")]
+    public IActionResult CheckFollow([FromQuery] FollowingPair pair)
+    {
+        var sql = "SELECT * FROM following WHERE from_id = " + pair.FromID + " AND to_id = " + pair.ToID;
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (rdr.Read())
+            {
+                var from_id = rdr.GetInt32(0);
+                var to_id = rdr.GetInt32(1);
+
+                Console.WriteLine(from_id);
+                Console.WriteLine(to_id);
+
+                return Ok(new FollowingPair
+                {
+                    FromID = from_id,
+                    ToID = to_id
+                });
+            }
+            else
+            {
+                return Ok("Error");
+            }
+        }
+
+    }
+
 }
