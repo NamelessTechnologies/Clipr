@@ -1,4 +1,4 @@
-import "../styles/QuerriedProfile.css";
+import "../../styles/QuerriedProfile.css";
 
 function QuerriedProfile() {
   return (
