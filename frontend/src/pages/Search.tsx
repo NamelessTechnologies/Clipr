@@ -51,15 +51,12 @@ function Search() {
             Search Results for: {query}
           </div>
           {searchResults.map((result) => (
-            <button
+            <QuerriedProfile
               onClick={() => goToTheProfile(result.user_id.toString())}
-            >
-              <QuerriedProfile
-                user_id={result.user_id as unknown as string}
-                username={result.username}
-                nickname={result.nickname}
-              ></QuerriedProfile>
-            </button>
+              user_id={result.user_id as unknown as string}
+              username={result.username}
+              nickname={result.nickname}
+            ></QuerriedProfile>
           ))}
         </div>
       ) : (

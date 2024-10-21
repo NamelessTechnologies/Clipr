@@ -4,9 +4,13 @@ function QuerriedProfile(props: {
   user_id: string;
   username: string;
   nickname: string;
+  onClick?: () => void;
 }) {
   return (
-    <div className="flex justify-center w-screen h-screen">
+    <div
+      onClick={props.onClick}
+      className="flex justify-center w-screen h-scree hover:cursor-pointer"
+    >
       <div className="flex flex-row">
         <div className="pt-3">
           <div className="circle-small">
