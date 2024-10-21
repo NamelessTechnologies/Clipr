@@ -4,14 +4,30 @@ import UserModel from "../../types/User";
 import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 
+type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
+
 function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   shouldBeLoggedIn(true);
   const id = props.profile_id;
   const [lookingAtOwnProfile, setLookingAtOwnProfile] =
     useState<boolean>(false);
+  const [status, setStatus] = useState<status>("Error");
 
   //Checking if the user is looking at their own profile
   useEffect(() => {
+    async function fetchData() {
+      try {
+        const queryString =
+          "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/get/" +
+          id;
+        const response = await fetch(queryString);
+        const json = (await response.json()) as UserModel;
+        console.log(json);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     const getUser = localStorage.getItem("user");
     if (getUser) {
       const parsedUser = JSON.parse(getUser) as UserModel;
@@ -95,7 +111,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
             <div className="flex flex-row pt-2 pb-2">
               <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
-                Filler
+                {status}
               </button>
             </div>
             <TripleFs></TripleFs>

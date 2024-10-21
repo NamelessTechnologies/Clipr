@@ -263,6 +263,7 @@ public class UserController : ControllerBase
     }
 
 
+
     [HttpDelete("following")]
     public async Task<IActionResult> UnfollowUser([FromQuery]FollowingPairQuery unfollowQuery) {
         var sql = "DELETE FROM following WHERE from_id = @from_id AND to_id = @to_id";
@@ -674,4 +675,10 @@ public class UserController : ControllerBase
         }
         return Ok(allFriends);
     }
+}
+
+public class FollowingPairQuery 
+{ 
+    public int User_1 { get; set; } 
+    public int User_2 { get; set; } 
 }
