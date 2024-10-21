@@ -116,12 +116,6 @@ public class PostController : ControllerBase {
         // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM TEMP_Post";
 
-        using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
-        conn.Open();
-
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
