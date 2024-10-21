@@ -11,14 +11,14 @@ import Upload from "./pages/Upload.tsx";
 import Messages from "./pages/Messages.tsx";
 import SetReceiver from "./pages/SetReceiver.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Profile from "./pages/Profile.tsx";
+import Search from "./pages/Search.tsx";
 
 function App() {
   return (
     <>
       <Router>
-        <div className="z-50">
-          <NavBar />
-        </div>
+        <NavBar />
         <Routes>
           <Route path="Clipr/" element={<Home />} />
           <Route path="Clipr/SignUp" element={<CreateAccount />} />
@@ -27,6 +27,8 @@ function App() {
           <Route path="Clipr/Upload" element={<Upload />} />
           <Route path="Clipr/Messages" element={<Messages />} />
           <Route path="Clipr/SetReceiver" element={<SetReceiver />} />
+          <Route path="Clipr/Profile" element={<Profile />} />
+          <Route path="Clipr/Search" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
