@@ -84,6 +84,109 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   //     </div>
   //   );
   // };
+  const clickButton = async () => {
+    if (status === 'Friends') {
+        // unfollow profileID
+        setStatus("Follow Back");
+        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}, `
+        try {
+            const response = await fetch(queryString, {
+              method: "DELETE",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("unfollowed user!");
+            } else {
+              console.log("did not unfollow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
+      } else if (status === 'Follow') {
+        // follow profileID
+        setStatus("Following");
+        const followBody = {
+            User_1: userID,
+            User_2: profileID
+        };
+        let queryString = `http://localhost:5001/User/followuser`;
+        console.log(queryString);   
+        try {
+            const response = await fetch(queryString, {
+              body: JSON.stringify(followBody),
+              method: "POST",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("followed user!");
+            } else {
+              console.log("did not follow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
+      } else if (status === 'Follow Back') {
+        // follow profileID
+        setStatus("Friends");
+        const followBody = {
+            User_1: userID,
+            User_2: profileID
+        };
+        let queryString = `http://localhost:5001/User/followuser`;
+        console.log(queryString);
+        try {
+            const response = await fetch(queryString, {
+              body: JSON.stringify(followBody),
+              method: "POST",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("followed user!");
+            } else {
+              console.log("did not follow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
+      } else if (status === 'Following') {
+        // unfollow profileID
+        setStatus("Follow");
+        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}, `
+        try {
+            const response = await fetch(queryString, {
+              method: "DELETE",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("unfollowed user!");
+            } else {
+              console.log("did not unfollow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
+      }
+  }
 
   return (
     <div className="flex justify-center w-screen h-screen">
@@ -138,7 +241,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </div>
             </div>
             <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
+              <button onClick={clickButton} className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
                 {status}
               </button>
             </div>
