@@ -146,6 +146,123 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpGet("followers/{id}")]
+    public IActionResult GetAllFollowers(int id) 
+    {
+        // --- query list of follower IDs ---
+        var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(follower_query, conn);
+
+        List<int> followerIDs = [];
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+                followerIDs.Add(rdr.GetInt32(0));
+            }
+        }
+
+        // --- query each follower's basic info ---
+        var followers = new List<Follower>();
+        foreach (int follower_id in followerIDs) 
+        {
+            var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
+            using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
+
+            using var rdr = cmd2.ExecuteReader();
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+
+                Follower follower = new Follower
+                {
+                    UserID = rdr.GetInt32(0),
+                    Username = rdr.GetString(1),
+                    Nickname = rdr.GetString(2),
+                    PFP_URL = rdr.GetString(3)
+                };
+
+                followers.Add(follower);
+            }
+        }
+        return Ok(followers);
+    }
+
+    [HttpGet("following/{id}")]
+    public IActionResult GetAllFollowing(int id) 
+    {
+        // --- query list of IDs for following ---
+        var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(follower_query, conn);
+
+        List<int> followerIDs = [];
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+                followerIDs.Add(rdr.GetInt32(0));
+            }
+        }
+
+        // --- query each person you're following's basic info ---
+        var followers = new List<Follower>();
+        foreach (int follower_id in followerIDs) 
+        {
+            var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
+            using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
+
+            using var rdr = cmd2.ExecuteReader();
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+
+                Follower follower = new Follower
+                {
+                    UserID = rdr.GetInt32(0),
+                    Username = rdr.GetString(1),
+                    Nickname = rdr.GetString(2),
+                    PFP_URL = rdr.GetString(3)
+                };
+
+                followers.Add(follower);
+            }
+        }
+        return Ok(followers);
+    }
+
+
     [HttpGet("{id}/saved/")]
     public IActionResult getUserSaves(int id)
     {
