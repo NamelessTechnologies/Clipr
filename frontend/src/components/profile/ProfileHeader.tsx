@@ -8,54 +8,82 @@ type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
 function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   shouldBeLoggedIn(true);
-  const id = props.profile_id;
+
+  const profileID = props.profile_id;
+  const [userID, setUserID] = useState<string>();
   const [lookingAtOwnProfile, setLookingAtOwnProfile] =
     useState<boolean>(false);
+
+  const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
+  const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
 
-  //Checking if the user is looking at their own profile
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const queryString =
-          "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/get/" +
-          id;
-        const response = await fetch(queryString);
-        const json = (await response.json()) as UserModel;
-        console.log(json);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
     const getUser = localStorage.getItem("user");
     if (getUser) {
       const parsedUser = JSON.parse(getUser) as UserModel;
 
-      // Move the profile-checking logic here
       const currentUserID = parsedUser.user_id.toString();
-      console.log(currentUserID, id);
-      if (currentUserID === id) {
+      setUserID(currentUserID);
+      if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
       } else {
         setLookingAtOwnProfile(false);
       }
     }
-  }, [id]);
+  }, [profileID]);
 
-  const TripleFs = () => {
-    return (
-      <div className="flex flex-row">
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Followers: 69
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Following: 1738
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-      </div>
-    );
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        let queryString = `http://localhost:5001/checkfollow/?User_1=${userID}&User_2=${profileID}`;
+        console.log(queryString);
+        let response = await fetch(queryString);
+        let json = await response.json();
+        if (json.user_1 == -1) {
+          setUserFollwingProfile(false);
+        } else {
+          setUserFollwingProfile(true);
+        }
+        queryString = `http://localhost:5001/checkfollow/?User_1=${profileID}&User_2=${userID}`;
+        console.log(queryString);
+        response = await fetch(queryString);
+        json = await response.json();
+        if (json.user_1 == -1) {
+          setProfileFollwingUser(false);
+        } else {
+          setProfileFollwingUser(true);
+        }
+
+        if (profileFollowingUser && userFollowingProfile) {
+          setStatus("Friends");
+        } else if (profileFollowingUser && !userFollowingProfile) {
+          setStatus("Follow Back");
+        } else if (!profileFollowingUser && userFollowingProfile) {
+          setStatus("Following");
+        } else if (!profileFollowingUser && !userFollowingProfile) {
+          setStatus("Follow");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
+
+  // const TripleFs = () => {
+  //   return (
+  //     <div className="flex flex-row">
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Followers: 69
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Following: 1738
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="flex justify-center w-screen h-screen">
@@ -87,7 +115,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Settings
               </button>
             </div>
-            <TripleFs></TripleFs>
+            {/* <TripleFs></TripleFs> */}
           </div>
         </div>
       ) : (
@@ -114,7 +142,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 {status}
               </button>
             </div>
-            <TripleFs></TripleFs>
+            {/* <TripleFs></TripleFs> */}
           </div>
         </div>
       )}

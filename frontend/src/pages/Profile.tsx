@@ -18,7 +18,6 @@ function Profile() {
           profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;
-        console.log(json);
         setUserData(json);
       } catch (error) {
         console.error(error);
