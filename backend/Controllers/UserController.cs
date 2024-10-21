@@ -4,6 +4,7 @@ using System;
 using Npgsql;
 using System.Threading.Tasks.Dataflow;
 using System.Data.SqlClient;
+using Azure.Core.Serialization;
 
 namespace backend.Controllers;
 
@@ -560,7 +561,7 @@ public class UserController : ControllerBase
     [HttpGet("/searchname/{u}")]
     public IActionResult getUserFromSearchName(string u)
     {
-        var sql = "SELECT user_id,username,nickname FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
+        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
         Console.WriteLine(sql);
         using var conn = new NpgsqlConnection(connString);
         if (conn.State != System.Data.ConnectionState.Open)
@@ -586,7 +587,8 @@ public class UserController : ControllerBase
                 {
                     User_id = rdr.GetInt32(0),
                     Username = rdr.GetString(1),
-                    Nickname = rdr.GetString(2)
+                    Nickname = rdr.GetString(2),
+                    Pfp = rdr.GetString(3)
                 };
 
                 allUsers.Add(singleUser);
@@ -675,10 +677,4 @@ public class UserController : ControllerBase
         }
         return Ok(allFriends);
     }
-}
-
-public class FollowingPairQuery 
-{ 
-    public int User_1 { get; set; } 
-    public int User_2 { get; set; } 
 }
