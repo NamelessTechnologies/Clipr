@@ -147,7 +147,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("followers/{id}")]
-    public IActionResult GetAllFollowers(int id) 
+    public IActionResult GetAllFollowers(int id)
     {
         // --- query list of follower IDs ---
         var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
@@ -176,7 +176,7 @@ public class UserController : ControllerBase
 
         // --- query each follower's basic info ---
         var followers = new List<Follower>();
-        foreach (int follower_id in followerIDs) 
+        foreach (int follower_id in followerIDs)
         {
             var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
             using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
@@ -205,7 +205,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("following/{id}")]
-    public IActionResult GetAllFollowing(int id) 
+    public IActionResult GetAllFollowing(int id)
     {
         // --- query list of IDs for following ---
         var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
@@ -234,7 +234,7 @@ public class UserController : ControllerBase
 
         // --- query each person you're following's basic info ---
         var followers = new List<Follower>();
-        foreach (int follower_id in followerIDs) 
+        foreach (int follower_id in followerIDs)
         {
             var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
             using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
@@ -564,5 +564,86 @@ public class UserController : ControllerBase
             }
             return Ok(allUsers);
         }
+    }
+
+    [HttpGet("friendsof/{id}")]
+    public IActionResult getAllFriends(int id)
+    {
+        var sql = "SELECT * FROM following WHERE from_id = " + id + " OR to_id = " + id;
+
+        using var conn = new NpgsqlConnection(connString);
+        if (conn.State != System.Data.ConnectionState.Open)
+        {
+            conn.Open();
+        }
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        var allFollowingID = new List<int>();
+        var allFollowersID = new List<int>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            while (rdr.Read())
+            {
+
+                if (!rdr.HasRows)
+                {
+                    return BadRequest("Error querying for user data.");
+                }
+                if (rdr.GetInt32(0) == id)
+                {
+                    allFollowingID.Add(rdr.GetInt32(1));
+                }
+                else
+                {
+                    allFollowersID.Add(rdr.GetInt32(0));
+                }
+            }
+        }
+
+        var intersection = allFollowersID.Intersect(allFollowingID);
+
+        var allFriends = new List<User>();
+        foreach (int friend_id in intersection)
+        {
+            var sql2 = "SELECT * FROM users WHERE user_id = " + friend_id;
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
+            {
+                if (rdr.Read())
+                {
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    Console.WriteLine(user_id);
+                    Console.WriteLine(username);
+                    Console.WriteLine(email);
+                    Console.WriteLine(password);
+                    Console.WriteLine(biography);
+                    Console.WriteLine(nickname);
+                    Console.WriteLine(pfp);
+
+                    User oneFriend = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFriends.Add(oneFriend);
+                }
+            }
+        }
+        return Ok(allFriends);
     }
 }
