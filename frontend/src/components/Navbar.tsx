@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
+import SearchBar from "./SearchBar";
 
 function NavBar() {
   const [foundUser, setFoundUser] = useState<string>();
@@ -31,18 +32,20 @@ function NavBar() {
           <div className="flex justify-between items-center">
             <Link
               to="Clipr/"
-              className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300"
+              className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300"
             >
-              The Nameless
+              Clipr
             </Link>
-
             <ul className="flex space-x-4">
               <li>
+                <SearchBar></SearchBar>
+              </li>
+              <li className="pt-3">
                 <Link to="Clipr/Upload">
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
                 </Link>
               </li>
-              <li>
+              <li className="pt-3">
                 <Link
                   to="Clipr/Tables"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
@@ -50,7 +53,7 @@ function NavBar() {
                   Tables
                 </Link>
               </li>
-              <li>
+              <li className="pt-3">
                 <Link
                   to="Clipr/SetReceiver"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
@@ -58,7 +61,7 @@ function NavBar() {
                   Messages
                 </Link>
               </li>
-              <li>
+              <li className="pt-3">
                 <Link
                   to={userProfileURL}
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
@@ -66,7 +69,7 @@ function NavBar() {
                   View Profile
                 </Link>
               </li>
-              <li>
+              <li className="pt-3">
                 <button
                   onClick={logout}
                   className="text-lg hover:bg-gray-600 px-3 rounded"
