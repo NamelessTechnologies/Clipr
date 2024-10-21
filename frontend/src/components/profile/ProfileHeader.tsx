@@ -36,7 +36,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let queryString = `http://localhost:5001/checkfollow/?User_1=${userID}&User_2=${profileID}`;
+        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;
         console.log(queryString);
         let response = await fetch(queryString);
         let json = await response.json();
@@ -45,7 +45,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         } else {
           setUserFollwingProfile(true);
         }
-        queryString = `http://localhost:5001/checkfollow/?User_1=${profileID}&User_2=${userID}`;
+        queryString = `http://localhost:5001/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
         console.log(queryString);
         response = await fetch(queryString);
         json = await response.json();
