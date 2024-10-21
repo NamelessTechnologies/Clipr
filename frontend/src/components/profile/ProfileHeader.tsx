@@ -88,11 +88,25 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     if (status === 'Friends') {
         // unfollow profileID
         setStatus("Follow Back");
-        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`
-        console.log(queryString);
-        let response = await fetch(queryString);
-        let json = response.json();
-        console.log(json);
+        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}, `
+        try {
+            const response = await fetch(queryString, {
+              method: "DELETE",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("unfollowed user!");
+            } else {
+              console.log("did not unfollow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
       } else if (status === 'Follow') {
         // follow profileID
         setStatus("Following");
@@ -152,11 +166,25 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       } else if (status === 'Following') {
         // unfollow profileID
         setStatus("Follow");
-        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`
-        console.log(queryString);
-        let response = await fetch(queryString);
-        let json = response.json();
-        console.log(json);
+        let queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}, `
+        try {
+            const response = await fetch(queryString, {
+              method: "DELETE",
+              headers: {
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json;charset=UTF-8",
+              },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              console.log("unfollowed user!");
+            } else {
+              console.log("did not unfollow user");
+            }
+          } catch (error) {
+            alert(error);
+            console.error(error);
+          }
       }
   }
 
