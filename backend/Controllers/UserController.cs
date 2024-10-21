@@ -703,8 +703,8 @@ public class UserController : ControllerBase
     [HttpGet("checkfollow")]
     public IActionResult CheckFollow([FromQuery] FollowingPairQuery pair)
     {
-        Console.WriteLine(pair.User_1);
-        Console.WriteLine(pair.User_2);
+        // Console.WriteLine(pair.User_1);
+        // Console.WriteLine(pair.User_2);
 
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
