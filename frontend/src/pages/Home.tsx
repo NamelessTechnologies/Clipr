@@ -36,7 +36,7 @@ function Home() {
           </div> */}
           <Post />
           <div className="flex-1 p-5">
-            <h1 className="text-white">The Nameless</h1>
+            <h1 className="text-white">Clipr</h1>
             <h1 className="text-white">
               {uid ? "ID " + uid + " currently logged in!" : ""}
             </h1>
@@ -46,7 +46,7 @@ function Home() {
         <div className="flex flex-row items-center justify-center">
           <img src={logo} alt="The Nameless Logo" className="pt-6 mt-6 " />
           <div className="flex flex-col items-center justify-center">
-            <h1 className="text-yellow-200 italic text-8xl">The Nameless</h1>
+            <h1 className="text-yellow-200 italic text-8xl">Clipr</h1>
             <h2 className="text-yellow-100 italic text-2xl">
               Doomscrolling has never been better...
             </h2>

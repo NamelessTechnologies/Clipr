@@ -1,0 +1,9 @@
+.circle {
+  border-radius: 50%;
+  height: 15em;
+  width: 15em;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
