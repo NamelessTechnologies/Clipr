@@ -13,6 +13,7 @@ import SetReceiver from "./pages/SetReceiver.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
+import FriendsPage from "./pages/FriendsPage.tsx";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="Clipr/Messages" element={<Messages />} />
           <Route path="Clipr/SetReceiver" element={<SetReceiver />} />
           <Route path="Clipr/Profile" element={<Profile />} />
+          <Route path="Clipr/Friends" element={<FriendsPage />} />
           <Route path="Clipr/Search" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
