@@ -723,8 +723,8 @@ public class UserController : ControllerBase
                 var from_id = rdr.GetInt32(0);
                 var to_id = rdr.GetInt32(1);
 
-                Console.WriteLine(from_id);
-                Console.WriteLine(to_id);
+                // Console.WriteLine(from_id);
+                // Console.WriteLine(to_id);
 
                 return Ok(new FollowingPairQuery
                 {
