@@ -52,6 +52,7 @@ function Search() {
           </div>
           {searchResults.map((result) => (
             <QuerriedProfile
+              key={result.user_id}
               onClick={() => goToTheProfile(result.user_id.toString())}
               user_id={result.user_id as unknown as string}
               username={result.username}
