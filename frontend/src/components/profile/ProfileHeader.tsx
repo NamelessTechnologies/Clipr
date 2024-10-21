@@ -4,41 +4,188 @@ import UserModel from "../../types/User";
 import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 
+type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
+
 function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   shouldBeLoggedIn(true);
-  const id = props.profile_id;
+
+  const profileID = props.profile_id;
+  const [userID, setUserID] = useState<string>();
   const [lookingAtOwnProfile, setLookingAtOwnProfile] =
     useState<boolean>(false);
 
-  //Checking if the user is looking at their own profile
+  const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
+  const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
+  const [status, setStatus] = useState<status>("Error");
+
   useEffect(() => {
     const getUser = localStorage.getItem("user");
     if (getUser) {
       const parsedUser = JSON.parse(getUser) as UserModel;
 
-      // Move the profile-checking logic here
       const currentUserID = parsedUser.user_id.toString();
-      console.log(currentUserID, id);
-      if (currentUserID === id) {
+      setUserID(currentUserID);
+      if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
       } else {
         setLookingAtOwnProfile(false);
       }
     }
-  }, [id]);
+  }, [profileID]);
 
-  const TripleFs = () => {
-    return (
-      <div className="flex flex-row">
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Followers: 69
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Following: 1738
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-      </div>
-    );
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;
+        console.log(queryString);
+        let response = await fetch(queryString);
+        let json = await response.json();
+        if (json.user_1 == -1) {
+          setUserFollwingProfile(false);
+        } else {
+          setUserFollwingProfile(true);
+        }
+        queryString = `http://localhost:5001/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+        console.log(queryString);
+        response = await fetch(queryString);
+        json = await response.json();
+        if (json.user_1 == -1) {
+          setProfileFollwingUser(false);
+        } else {
+          setProfileFollwingUser(true);
+        }
+
+        if (profileFollowingUser && userFollowingProfile) {
+          setStatus("Friends");
+        } else if (profileFollowingUser && !userFollowingProfile) {
+          setStatus("Follow Back");
+        } else if (!profileFollowingUser && userFollowingProfile) {
+          setStatus("Following");
+        } else if (!profileFollowingUser && !userFollowingProfile) {
+          setStatus("Follow");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
+
+  // const TripleFs = () => {
+  //   return (
+  //     <div className="flex flex-row">
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Followers: 69
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Following: 1738
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+  //     </div>
+  //   );
+  // };
+  const clickButton = async () => {
+    if (status === "Friends") {
+      // unfollow profileID
+      setStatus("Follow Back");
+      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      try {
+        const response = await fetch(queryString, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        console.log(response);
+        if (response.status === 200) {
+          console.log("unfollowed user!");
+        } else {
+          console.log("did not unfollow user");
+        }
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    } else if (status === "Follow") {
+      // follow profileID
+      setStatus("Following");
+      const followBody = {
+        User_1: userID,
+        User_2: profileID,
+      };
+      const queryString = `http://localhost:5001/User/followuser`;
+      console.log(queryString);
+      try {
+        const response = await fetch(queryString, {
+          body: JSON.stringify(followBody),
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        console.log(response);
+        if (response.status === 200) {
+          console.log("followed user!");
+        } else {
+          console.log("did not follow user");
+        }
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    } else if (status === "Follow Back") {
+      // follow profileID
+      setStatus("Friends");
+      const followBody = {
+        User_1: userID,
+        User_2: profileID,
+      };
+      const queryString = `http://localhost:5001/User/followuser`;
+      console.log(queryString);
+      try {
+        const response = await fetch(queryString, {
+          body: JSON.stringify(followBody),
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        console.log(response);
+        if (response.status === 200) {
+          console.log("followed user!");
+        } else {
+          console.log("did not follow user");
+        }
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    } else if (status === "Following") {
+      // unfollow profileID
+      setStatus("Follow");
+      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      try {
+        const response = await fetch(queryString, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        console.log(response);
+        if (response.status === 200) {
+          console.log("unfollowed user!");
+        } else {
+          console.log("did not unfollow user");
+        }
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -71,7 +218,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Settings
               </button>
             </div>
-            <TripleFs></TripleFs>
+            {/* <TripleFs></TripleFs> */}
           </div>
         </div>
       ) : (
@@ -94,11 +241,14 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </div>
             </div>
             <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
-                Filler
+              <button
+                onClick={clickButton}
+                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+              >
+                {status}
               </button>
             </div>
-            <TripleFs></TripleFs>
+            {/* <TripleFs></TripleFs> */}
           </div>
         </div>
       )}

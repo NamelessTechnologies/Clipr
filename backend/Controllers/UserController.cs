@@ -703,8 +703,8 @@ public class UserController : ControllerBase
     [HttpGet("checkfollow")]
     public IActionResult CheckFollow([FromQuery] FollowingPairQuery pair)
     {
-        Console.WriteLine(pair.User_1);
-        Console.WriteLine(pair.User_2);
+        // Console.WriteLine(pair.User_1);
+        // Console.WriteLine(pair.User_2);
 
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
@@ -723,8 +723,8 @@ public class UserController : ControllerBase
                 var from_id = rdr.GetInt32(0);
                 var to_id = rdr.GetInt32(1);
 
-                Console.WriteLine(from_id);
-                Console.WriteLine(to_id);
+                // Console.WriteLine(from_id);
+                // Console.WriteLine(to_id);
 
                 return Ok(new FollowingPairQuery
                 {

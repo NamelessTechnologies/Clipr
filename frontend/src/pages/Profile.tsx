@@ -18,14 +18,16 @@ function Profile() {
           profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;
-        console.log(json);
         setUserData(json);
-      } catch {
-        console.error();
+      } catch (error) {
+        console.error(error);
       }
     }
-    fetchData();
-  }, [profile_id, userData]);
+
+    if (profile_id) {
+      fetchData();
+    }
+  }, [profile_id]);
 
   return (
     <>
