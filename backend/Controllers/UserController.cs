@@ -263,6 +263,34 @@ public class UserController : ControllerBase
     }
 
 
+    [HttpDelete("following")]
+    public async Task<IActionResult> UnfollowUser([FromQuery]FollowingPairQuery unfollowQuery) {
+        var sql = "DELETE FROM following WHERE from_id = @from_id AND to_id = @to_id";
+
+        try {
+            using var conn = new NpgsqlConnection(connString);
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                conn.Open();
+            }
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("from_id", unfollowQuery.User_1);
+            cmd.Parameters.AddWithValue("to_id", unfollowQuery.User_2);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + unfollowQuery.User_1 + " is not following user id " +  unfollowQuery.User_2);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to unfollow user");
+        }
+    }
+
+
     [HttpGet("{id}/saved/")]
     public IActionResult getUserSaves(int id)
     {
