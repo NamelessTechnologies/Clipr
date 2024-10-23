@@ -10,10 +10,6 @@ namespace backend.Controllers;
 
 public class PostController : ControllerBase {
 
-    private NpgsqlConnection conn;
-    public PostController(){
-        conn = DBConn.GetConn();
-    }
 
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
@@ -42,6 +38,7 @@ public class PostController : ControllerBase {
     public IActionResult getAllPosts() {
         var sql = "SELECT * FROM post";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
