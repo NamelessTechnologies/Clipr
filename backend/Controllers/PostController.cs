@@ -68,13 +68,13 @@ public class PostController : ControllerBase {
     [HttpPost]
     public async void postTEMPTextPost([FromBody] TEMP_Post post) {
 
-        var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
 
-        using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open) {
-            conn.Open();
-        }
+        // using var conn = new NpgsqlConnection(connString);
+        // if (conn.State != System.Data.ConnectionState.Open) {
+        //     conn.Open();
+        // }
 
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", post.UserID);
@@ -88,12 +88,12 @@ public class PostController : ControllerBase {
 
     [HttpGet("/TEMP_post/{id}")]
     public IActionResult getTEMPTextPost(int id) {
-        var connString1 = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        // var connString1 = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         var sql = "SELECT * FROM temp_post WHERE temp_post_id = " + id;
 
-        using var conn = new NpgsqlConnection(connString1);
-        conn.Open();
+        // using var conn = new NpgsqlConnection(connString1);
+        // conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
