@@ -8,6 +8,7 @@ drop table if exists comment_like;
 drop table if exists post;
 drop table if exists message cascade;
 drop table if exists conversation cascade;
+drop table if exists following;
 drop table if exists users;
 
 -- Users Table
@@ -198,3 +199,12 @@ CREATE TABLE save(
 			CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 INSERT INTO save (post_id, user_id) VALUES (1, 2), (2, 5), (3, 8), (4, 1), (5, 7), (6, 3), (7, 9), (8, 4), (9, 10), (2, 6);
+
+-- Following Table
+CREATE TABLE following(
+			from_id INTEGER,
+			to_id INTEGER,
+			FOREIGN KEY (from_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+			FOREIGN KEY (to_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+INSERT INTO following (from_id, to_id) VALUES (1, 2), (2, 1), (3, 1), (4, 1), (5, 1), (1, 6), (6,3),(7, 9), (8, 4), (9, 10), (2, 6);
