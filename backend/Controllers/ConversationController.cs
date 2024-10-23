@@ -63,7 +63,7 @@ public class ConversationController : ControllerBase
 
     [HttpGet("convoid")]
     public IActionResult GetConvoID([FromQuery]ConversationMessagesQuery conversation) {
-        var sql = "select * FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or "+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + ");"
+        var sql = "select * FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or "+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + ");";
 
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
