@@ -10,11 +10,6 @@ namespace backend.Controllers;
 
 public class TestDataController : ControllerBase
 {
-    private NpgsqlConnection conn;
-
-    public TestDataController() {
-        conn = DBConn.GetConn();
-    }
 
 
     [HttpGet("user")]
@@ -28,6 +23,7 @@ public class TestDataController : ControllerBase
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM users";
         
+        using var conn = DBConn.GetConn();
         // Create a command object
         using var cmd = new NpgsqlCommand(sql, conn);
 

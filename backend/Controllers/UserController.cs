@@ -13,19 +13,13 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
-    private NpgsqlConnection conn;
-
-    public UserController() {
-        conn = DBConn.GetConn();
-    }
-
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
         var sql = "SELECT * FROM users WHERE user_id = " + id;
         Console.WriteLine(sql);
 
-
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -70,6 +64,7 @@ public class UserController : ControllerBase
     public async void postUser([FromBody] User user) {
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
+        using var conn = DBConn.GetConn();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -90,6 +85,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM users";
         Console.WriteLine(sql);
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var allUsers = new List<User>();
@@ -127,11 +123,7 @@ public class UserController : ControllerBase
         // --- query list of follower IDs ---
         var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
 
-        // using var conn = new NpgsqlConnection(connString);
-        if (conn.State != System.Data.ConnectionState.Open)
-        {
-            conn.Open();
-        }
+        using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
@@ -185,11 +177,7 @@ public class UserController : ControllerBase
         // --- query list of IDs for following ---
         var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+       using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
@@ -243,11 +231,7 @@ public class UserController : ControllerBase
         var sql = "DELETE FROM following WHERE from_id = @from_id AND to_id = @to_id";
 
         try {
-            // using var conn = new NpgsqlConnection(connString);
-            // if (conn.State != System.Data.ConnectionState.Open)
-            // {
-            //     conn.Open();
-            // }
+            using var conn = DBConn.GetConn();
 
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("from_id", unfollowQuery.User_1);
@@ -270,6 +254,7 @@ public class UserController : ControllerBase
     public IActionResult getUserSaves(int id) {
         var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -302,6 +287,7 @@ public class UserController : ControllerBase
     public IActionResult getSaveDataTEMP() {
         var sql = "SELECT * FROM save";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -330,6 +316,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM conversation";
         Console.WriteLine(sql);
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -364,6 +351,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM message";
         Console.WriteLine(sql);
         
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -402,11 +390,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM users WHERE email = '" + e + "'";
         Console.WriteLine(sql);
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+       using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -454,6 +438,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM users WHERE username = '" + u + "'";
         Console.WriteLine(sql);
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -499,11 +484,7 @@ public class UserController : ControllerBase
     {
         var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
         Console.WriteLine(sql);
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+        using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -538,11 +519,7 @@ public class UserController : ControllerBase
     {
         var sql = "SELECT * FROM following WHERE from_id = " + id + " OR to_id = " + id;
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+        using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -621,11 +598,7 @@ public class UserController : ControllerBase
 
         var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+        using var conn = DBConn.GetConn();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("from", pair.User_1);
@@ -645,11 +618,7 @@ public class UserController : ControllerBase
 
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open)
-        // {
-        //     conn.Open();
-        // }
+        using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 

@@ -19,6 +19,7 @@ public class PostController : ControllerBase {
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
 
+        using var conn = DBConn.GetConn();
         // execute command
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -71,10 +72,7 @@ public class PostController : ControllerBase {
         // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
 
-        // using var conn = new NpgsqlConnection(connString);
-        // if (conn.State != System.Data.ConnectionState.Open) {
-        //     conn.Open();
-        // }
+        using var conn = DBConn.GetConn();
 
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", post.UserID);
@@ -88,12 +86,10 @@ public class PostController : ControllerBase {
 
     [HttpGet("/TEMP_post/{id}")]
     public IActionResult getTEMPTextPost(int id) {
-        // var connString1 = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
 
         var sql = "SELECT * FROM temp_post WHERE temp_post_id = " + id;
 
-        // using var conn = new NpgsqlConnection(connString1);
-        // conn.Open();
+        using var conn = DBConn.GetConn();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -116,6 +112,7 @@ public class PostController : ControllerBase {
         // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM TEMP_Post";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -142,6 +139,7 @@ public class PostController : ControllerBase {
     public IActionResult getTagDataTEMP() {
         var sql = "SELECT * FROM tag";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -166,6 +164,7 @@ public class PostController : ControllerBase {
     public IActionResult getLikeDataTEMP() {
         var sql = "SELECT * FROM likes";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -190,6 +189,7 @@ public class PostController : ControllerBase {
     public IActionResult getPostTagsTEMP() {
         var sql = "SELECT * FROM post_tag";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -214,6 +214,7 @@ public class PostController : ControllerBase {
     public IActionResult getMedia() {
         var sql = "SELECT * FROM media";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
