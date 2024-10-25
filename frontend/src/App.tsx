@@ -2,11 +2,7 @@
 import './index.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { socket } from './socket.tsx';
-import { ConnectionState } from './components/ConnectionState';
-import { ConnectionManager } from './components/ConnectionManager';
-import { Events } from "./components/Events";
-import { MyForm } from './components/MyForm';
+import { socket } from './types/socket.tsx';
 
 import { NavBar } from "./components/Navbar";
 import CreateAccount from "./pages/CreateAccount";
@@ -23,12 +19,12 @@ import FriendsPage from "./pages/FriendsPage.tsx";
 
 function App() {
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [fooEvents, setFooEvents] = useState([]);
+    const [fooEvents, setFooEvents] = useState<any[]>([]);
 
     useEffect(() => {
         function onConnect() {
           setIsConnected(true);
-    }
+        }
 
     function onDisconnect() {
         setIsConnected(false);
@@ -41,6 +37,7 @@ function App() {
       socket.on('connect', onConnect);
       socket.on('disconnect', onDisconnect);
       socket.on('foo', onFooEvent);
+    });
   return (
     <>
       <Router>

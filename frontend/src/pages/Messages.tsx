@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
 import MessageBox from "../components/MessageBox";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { socket } from "../types/socket.tsx";
 
 const Messages: React.FC = () => {
   shouldBeLoggedIn(true);
