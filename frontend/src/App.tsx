@@ -1,7 +1,7 @@
 // import hsr_logo from './assets/hsr_logo.png'
 import './index.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { socket } from './types/socket.tsx';
 
 import { NavBar } from "./components/Navbar";
