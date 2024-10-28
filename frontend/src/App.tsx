@@ -9,7 +9,6 @@ import Home from "./pages/Home.tsx";
 import TablesTEMP from "./pages/Tables.tsx";
 import Upload from "./pages/Upload.tsx";
 import Messages from "./pages/Messages.tsx";
-import SetReceiver from "./pages/SetReceiver.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
@@ -27,7 +26,7 @@ function App() {
           <Route path="Clipr/LogIn" element={<LogIn />} />
           <Route path="Clipr/Upload" element={<Upload />} />
           <Route path="Clipr/Messages" element={<Messages />} />
-          <Route path="Clipr/SetReceiver" element={<SetReceiver />} />
+          <Route path="Clipr/NewMessages" element={<Messages />} />
           <Route path="Clipr/Profile" element={<Profile />} />
           <Route path="Clipr/Friends" element={<FriendsPage />} />
           <Route path="Clipr/Search" element={<Search />} />

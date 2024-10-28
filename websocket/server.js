@@ -5,5 +5,11 @@ const io = require("socket.io")(3000, {
 });
 
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  const userId = socket.handshake.query.userId;
+  socket.on("send-message", (message) => {
+    if (message.user_id != userId) {
+      io.emit("recieve-message", message);
+    }
+    console.log(message);
+  });
 });

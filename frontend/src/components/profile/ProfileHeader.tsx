@@ -13,13 +13,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   const profileID = props.profile_id;
   const [userID, setUserID] = useState<string>();
-  const [lookingAtOwnProfile, setLookingAtOwnProfile] = useState<boolean>(false);
+  const [lookingAtOwnProfile, setLookingAtOwnProfile] =
+    useState<boolean>(false);
   const navigate = useNavigate();
 
   const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
-
 
   // FOR NAVIGATING TO MESSAGES PAGE
   const [currentUser] = useState(localStorage.getItem("user") || "");
@@ -243,9 +243,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       convoid = json2.id;
     }
 
-    navigate("/Clipr/Messages", { state: [props.userData.username, profileID, convoid] });
-  } // end NavigateToMessagePage
-
+    navigate("/Clipr/Messages", {
+      state: [props.userData.username, profileID, convoid],
+    });
+  }; // end NavigateToMessagePage
 
   return (
     <div className="flex justify-center w-screen h-screen">
@@ -307,8 +308,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 {status}
               </button>
 
-              <button className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-                onClick={NavigateToMessagePage}>
+              <button
+                className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+                onClick={NavigateToMessagePage}
+              >
                 Message
               </button>
             </div>
