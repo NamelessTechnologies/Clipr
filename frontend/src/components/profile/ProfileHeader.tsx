@@ -57,8 +57,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;
-        console.log(queryString);
+        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
         let response = await fetch(queryString);
         let json = await response.json();
         if (json.user_1 == -1) {
@@ -67,7 +66,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           setUserFollwingProfile(true);
         }
         queryString = `http://localhost:5001/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
-        console.log(queryString);
         response = await fetch(queryString);
         json = await response.json();
         if (json.user_1 == -1) {
@@ -118,12 +116,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
-        if (response.status === 200) {
-          console.log("unfollowed user!");
-        } else {
-          console.log("did not unfollow user");
-        }
       } catch (error) {
         alert(error);
         console.error(error);
@@ -146,12 +138,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
-        if (response.status === 200) {
-          console.log("followed user!");
-        } else {
-          console.log("did not follow user");
-        }
       } catch (error) {
         alert(error);
         console.error(error);
@@ -164,7 +150,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_2: profileID,
       };
       const queryString = `http://localhost:5001/User/followuser`;
-      console.log(queryString);
       try {
         const response = await fetch(queryString, {
           body: JSON.stringify(followBody),
@@ -174,12 +159,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
-        if (response.status === 200) {
-          console.log("followed user!");
-        } else {
-          console.log("did not follow user");
-        }
       } catch (error) {
         alert(error);
         console.error(error);
@@ -196,12 +175,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
-        if (response.status === 200) {
-          console.log("unfollowed user!");
-        } else {
-          console.log("did not unfollow user");
-        }
       } catch (error) {
         alert(error);
         console.error(error);
@@ -225,7 +198,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
     if (convoid == -1) {
       // post new convo
-      console.log("Making new convo...");
       try {
         const newConvo = {
           user_id: userID,
@@ -241,13 +213,9 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         });
 
         if (response.ok) {
-          console.log("Success!");
           const json = await response.json();
-          console.log("obtained id: " + json.id);
           convoid = parseInt(json.id);
-        } else {
-          console.log(`${response.status}: ${response.statusText}`);
-        }
+        } 
       } catch (error) {
         console.log(error);
         console.error(error);
