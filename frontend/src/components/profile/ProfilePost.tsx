@@ -48,7 +48,6 @@ function ProfilePost(props: { userData: UserModel }) {
         <div className="post-container">
             {post?.map((post) => (
                 <div className=" p-4 text-white " key={post.user_id}>
-                    <div className="text-sm">User ID: {post.user_id}</div>
                     <div className="text-2xl font-bold">{post.title}</div>
                     <p className="text-base">{post.content}</p>
                 </div>
