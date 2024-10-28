@@ -53,7 +53,7 @@ function PostTable() {
             <td key={user.user_id}>{user.post_id}</td>
             <td key={user.user_id}>{user.title}</td>
             <td key={user.user_id}>{user.description}</td>
-            <td key={user.user_id}>{user.datePosted.toString()}</td>
+            {/* <td key={user.user_id}>{user.datePosted.toString()}</td> */}
             <td key={user.user_id}>{user.mediaType}</td>
           </tr>
         ))}

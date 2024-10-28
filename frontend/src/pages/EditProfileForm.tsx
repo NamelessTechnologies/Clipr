@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
-import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
 
@@ -22,7 +22,7 @@ const EditProfileForm: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
