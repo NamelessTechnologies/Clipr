@@ -57,7 +57,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
+        let queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
         let response = await fetch(queryString);
         let json = await response.json();
         if (json.user_1 == -1) {
@@ -65,7 +65,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         } else {
           setUserFollwingProfile(true);
         }
-        queryString = `http://localhost:5001/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+        queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
         response = await fetch(queryString);
         json = await response.json();
         if (json.user_1 == -1) {
@@ -107,7 +107,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     if (status === "Friends") {
       // unfollow profileID
       setStatus("Follow Back");
-      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",
@@ -127,7 +127,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `http://localhost:5001/User/followuser`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
       console.log(queryString);
       try {
         const response = await fetch(queryString, {
@@ -149,7 +149,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `http://localhost:5001/User/followuser`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
       try {
         const response = await fetch(queryString, {
           body: JSON.stringify(followBody),
@@ -166,7 +166,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     } else if (status === "Following") {
       // unfollow profileID
       setStatus("Follow");
-      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",

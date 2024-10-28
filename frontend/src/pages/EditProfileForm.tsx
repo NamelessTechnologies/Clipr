@@ -5,7 +5,7 @@ import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
 
 const hosted_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local_link = "http://localhost:5001/";
+const local_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
 const EditProfileForm: React.FC = () => {
   shouldBeLoggedIn(true);

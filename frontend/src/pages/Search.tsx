@@ -21,7 +21,7 @@ function Search() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = "http://localhost:5001/searchname/" + query;
+        const queryString = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);
