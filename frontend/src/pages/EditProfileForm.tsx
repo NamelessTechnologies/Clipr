@@ -4,14 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
 
+const hosted_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+const local_link = "http://localhost:5001/";
+
 const EditProfileForm: React.FC = () => {
   shouldBeLoggedIn(true);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [biography, setBiography] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [pfp, setPfp] = useState("");
+  const [currentUser] = useState(localStorage.getItem("user") || "");
+  const userInfo = JSON.parse(currentUser);
+  const [username, setUsername] = useState(userInfo['username']);
+  const [email, setEmail] = useState(userInfo['email']);
+  const [password, setPassword] = useState(userInfo['password']);
+  const [biography, setBiography] = useState(userInfo['biography']);
+  const [nickname, setNickname] = useState(userInfo['nickname']);
+  const [pfp, setPfp] = useState(userInfo['pfp']);
 
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
@@ -71,6 +76,7 @@ const EditProfileForm: React.FC = () => {
     }
 
     const newUser = {
+      User_id: userInfo['user_id'],
       Username: username,
       Email: email,
       Password: password,
@@ -79,11 +85,12 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp,
     };
     try {
+        console.log(JSON.stringify(newUser));
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/",
+        local_link+"user/",
         {
           body: JSON.stringify(newUser),
-          method: "POST",
+          method: "PUT",
           headers: {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
@@ -96,7 +103,7 @@ const EditProfileForm: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+            hosted_link+ "email/" +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;
@@ -106,7 +113,7 @@ const EditProfileForm: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
-        navigate("../Clipr/");
+        // navigate("./Clipr/");
         window.location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
@@ -125,7 +132,7 @@ const EditProfileForm: React.FC = () => {
       >
         <img src={stelle} className="w-28 h-28 mx-auto"></img>
         <div className="w-full text-amber-500 text-center text-4xl mb-6">
-          Edit Profile
+          Edit {userInfo['username']}'s Profile
         </div>
 
         <div className="mb-4">
