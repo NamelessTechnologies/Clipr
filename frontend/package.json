@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "clean": "gh-pages-clean gh-pages -d build"
+    "clean": "gh-pages-clean gh-pages -d build",
+    "prettier": "npx prettier . --write"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",

@@ -1,0 +1,9 @@
+.circle-small {
+  border-radius: 50%;
+  height: 5em;
+  width: 5em;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

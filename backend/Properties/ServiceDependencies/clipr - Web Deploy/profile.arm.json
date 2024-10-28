@@ -50,9 +50,7 @@
       "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat(parameters('resourceName'), subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
-      "dependsOn": [
-        "[parameters('resourceGroupName')]"
-      ],
+      "dependsOn": ["[parameters('resourceGroupName')]"],
       "properties": {
         "mode": "Incremental",
         "template": {
@@ -67,9 +65,7 @@
               "tags": {
                 "[concat('hidden-related:', variables('appServicePlan_ResourceId'))]": "empty"
               },
-              "dependsOn": [
-                "[variables('appServicePlan_ResourceId')]"
-              ],
+              "dependsOn": ["[variables('appServicePlan_ResourceId')]"],
               "kind": "app",
               "properties": {
                 "name": "[parameters('resourceName')]",

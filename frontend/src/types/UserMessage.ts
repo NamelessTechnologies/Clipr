@@ -1,4 +1,4 @@
-export default interface UserMessage {
-    username: string,
-    content: string
+export default interface UserMessageModel {
+  username: string;
+  content: string;
 }
