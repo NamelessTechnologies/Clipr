@@ -231,4 +231,29 @@ public class PostController : ControllerBase {
         }
         return Ok(medias);
     }
+
+    [HttpGet("/TEMP_post/user_id/{id}")]
+    public IActionResult getPostByUserId(int id) {
+        var sql = "SELECT * FROM temp_post WHERE user_id = " + id;
+
+       using var conn = DBConn.GetConn();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var posts = new List<TEMP_Post>();
+
+        if (!reader.HasRows) {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read()) {
+            TEMP_Post newPost = new TEMP_Post {
+                UserID = reader.GetInt32(1),
+                Title = reader.GetString(2),
+                Content = reader.GetString(3), 
+            };
+            posts.Add(newPost);
+        }
+        return Ok(posts);
+    }
 }
