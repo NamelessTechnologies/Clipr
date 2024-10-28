@@ -3,16 +3,19 @@ import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
 import SearchBar from "./SearchBar";
+import { socket } from "../socket";
 
 function NavBar() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userProfileURL, setUserProfileURL] =
     useState<string>("Clipr/Profile/");
+
   const logout = () => {
     if (!foundUser) {
       return;
     }
     localStorage.removeItem("user");
+    socket.disconnect();
     window.location.reload();
   };
 

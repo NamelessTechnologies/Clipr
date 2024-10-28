@@ -3,6 +3,7 @@ import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { socket } from "../socket";
 
 const CreateAccount: React.FC = () => {
   shouldBeLoggedIn(false);
@@ -32,7 +33,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -88,7 +89,7 @@ const CreateAccount: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        },
+        }
       );
       console.log(response);
       if (response.status === 200) {
@@ -106,6 +107,7 @@ const CreateAccount: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../Clipr/");
         window.location.reload();
       } else {
