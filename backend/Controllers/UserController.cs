@@ -78,6 +78,25 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpPut]
+    public async void editUser([FromBody] User user) {
+        var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
+        Console.WriteLine(sql);
+        using var conn = DBConn.GetConn();
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("username", user.Username);
+            cmd.Parameters.AddWithValue("email", user.Email);
+            cmd.Parameters.AddWithValue("password", user.Password);
+            cmd.Parameters.AddWithValue("biography", user.Biography);
+            cmd.Parameters.AddWithValue("nickname", user.Nickname);
+            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+            cmd.Parameters.AddWithValue("user_id",user.User_id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+    }
+
 
     [HttpGet("all")]
     public IActionResult getAllUsers()
