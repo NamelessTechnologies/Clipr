@@ -3,6 +3,8 @@ import "../../styles/ProfileHeader.css";
 import UserModel from "../../types/User";
 import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ConversationModel from "../../types/Conversation";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -11,12 +13,18 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   const profileID = props.profile_id;
   const [userID, setUserID] = useState<string>();
-  const [lookingAtOwnProfile, setLookingAtOwnProfile] =
-    useState<boolean>(false);
+  const [lookingAtOwnProfile, setLookingAtOwnProfile] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
+
+
+  // FOR NAVIGATING TO MESSAGES PAGE
+  const [currentUser] = useState(localStorage.getItem("user") || "");
+  const userInfo = JSON.parse(currentUser);
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   useEffect(() => {
     const getUser = localStorage.getItem("user");
@@ -188,6 +196,57 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     }
   };
 
+  const NavigateToMessagePage = async () => {
+    const queryString = url + "username/" + props.userData.username;
+    const response = await fetch(queryString);
+    const json = (await response.json()) as UserModel;
+    const queryString2 =
+      url +
+      "conversation/convoid?User_1=" +
+      userInfo["user_id"] +
+      "&User_2=" +
+      json.user_id;
+    const response2 = await fetch(queryString2);
+    const json2 = (await response2.json()) as ConversationModel;
+    let convoid = json2.id;
+
+    if (convoid == -1) {
+      // post new convo
+      console.log("Making new convo...");
+      try {
+        const newConvo = {
+          user_id: userID,
+          user_id_2: profileID,
+        };
+        const response = await fetch(url + "conversation/", {
+          body: JSON.stringify(newConvo),
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+
+        if (response.ok) {
+          console.log("Success!");
+          const json = await response.json();
+          console.log("obtained id: " + json.id);
+          convoid = parseInt(json.id);
+        } else {
+          console.log(`${response.status}: ${response.statusText}`);
+        }
+      } catch (error) {
+        console.log(error);
+        console.error(error);
+      }
+    } else {
+      convoid = json2.id;
+    }
+
+    navigate("/Clipr/Messages", { state: [props.userData.username, profileID, convoid] });
+  } // end NavigateToMessagePage
+
+
   return (
     <div className="flex justify-center w-screen h-screen">
       {lookingAtOwnProfile ? (
@@ -246,6 +305,11 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
               >
                 {status}
+              </button>
+
+              <button className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+                onClick={NavigateToMessagePage}>
+                Message
               </button>
             </div>
             {/* <TripleFs></TripleFs> */}
