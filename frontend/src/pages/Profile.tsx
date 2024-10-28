@@ -3,6 +3,7 @@ import shouldBeLoggedIn from "../components/Authenticate";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
+import ProfilePost from "../components/profile/ProfilePost";
 
 function Profile() {
   shouldBeLoggedIn(true);
@@ -37,6 +38,9 @@ function Profile() {
             profile_id={profile_id}
             userData={userData}
           ></ProfileHeader>
+          <ProfilePost 
+            userData={userData}
+          ></ProfilePost>
         </div>
       ) : (
         <div>Error: Profile Not Found</div>
