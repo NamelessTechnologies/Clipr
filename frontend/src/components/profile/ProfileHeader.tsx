@@ -5,6 +5,7 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
+import EditProfileModal from "./EditProfileModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -26,6 +27,18 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const userInfo = JSON.parse(currentUser);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
+  // FOR SHOWING EDIT PROFILE MODAL
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+    // console.log(isModalVisible);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
   useEffect(() => {
     const getUser = localStorage.getItem("user");
     if (getUser) {
@@ -44,7 +57,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let queryString = `http://localhost:5001/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
+        let queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
         let response = await fetch(queryString);
         let json = await response.json();
         if (json.user_1 == -1) {
@@ -52,7 +65,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         } else {
           setUserFollwingProfile(true);
         }
-        queryString = `http://localhost:5001/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+        queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
         response = await fetch(queryString);
         json = await response.json();
         if (json.user_1 == -1) {
@@ -94,7 +107,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     if (status === "Friends") {
       // unfollow profileID
       setStatus("Follow Back");
-      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",
@@ -114,7 +127,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `http://localhost:5001/User/followuser`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
       console.log(queryString);
       try {
         const response = await fetch(queryString, {
@@ -136,7 +149,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `http://localhost:5001/User/followuser`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
       try {
         const response = await fetch(queryString, {
           body: JSON.stringify(followBody),
@@ -153,7 +166,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     } else if (status === "Following") {
       // unfollow profileID
       setStatus("Follow");
-      const queryString = `http://localhost:5001/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",
@@ -238,7 +251,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               <FaCrown className="text-yellow-600" />
             </div>
             <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
+              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+              onClick={handleShowModal}>
                 Edit Profile
               </button>
               <button className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
@@ -246,6 +260,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
             {/* <TripleFs></TripleFs> */}
+            {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
       ) : (

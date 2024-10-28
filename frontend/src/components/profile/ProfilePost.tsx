@@ -13,7 +13,7 @@ function ProfilePost(props: { userData: UserModel }) {
     const [post, setPost] = useState<PostModel[]>();
     
     // const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-    const url = "http://localhost:5001/";
+    const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
     useEffect(() => {
         console.log('hi');

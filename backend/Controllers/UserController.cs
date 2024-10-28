@@ -79,7 +79,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public async void updateUser([FromBody] User user) {
+    public async void editUser([FromBody] User user) {
         var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
