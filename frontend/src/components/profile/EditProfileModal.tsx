@@ -1,4 +1,3 @@
-import CreateAccount from "../../pages/CreateAccount";
 import EditProfileForm from "../../pages/EditProfileForm";
 
 interface ModalProps {
