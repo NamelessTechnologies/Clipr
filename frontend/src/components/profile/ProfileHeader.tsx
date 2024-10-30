@@ -116,6 +116,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
+        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -138,6 +139,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
+        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -159,6 +161,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
+        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -175,6 +178,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
+        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
