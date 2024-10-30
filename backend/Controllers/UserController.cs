@@ -20,6 +20,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -65,6 +66,7 @@ public class UserController : ControllerBase
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -83,6 +85,7 @@ public class UserController : ControllerBase
         var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -105,6 +108,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var allUsers = new List<User>();
@@ -143,6 +147,7 @@ public class UserController : ControllerBase
         var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
@@ -197,6 +202,7 @@ public class UserController : ControllerBase
         var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
 
        using var conn = DBConn.GetConn();
+       conn.Open();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
@@ -251,6 +257,7 @@ public class UserController : ControllerBase
 
         try {
             using var conn = DBConn.GetConn();
+            conn.Open();
 
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("from_id", unfollowQuery.User_1);
@@ -274,6 +281,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -307,6 +315,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM save";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -336,6 +345,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -371,6 +381,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
         
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -410,6 +421,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
+       conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -458,6 +470,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -504,6 +517,7 @@ public class UserController : ControllerBase
         var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -539,6 +553,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM following WHERE from_id = " + id + " OR to_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -618,6 +633,7 @@ public class UserController : ControllerBase
         var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("from", pair.User_1);
@@ -638,6 +654,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 

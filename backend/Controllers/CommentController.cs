@@ -9,10 +9,6 @@ namespace backend.Controllers;
 [Route("[controller]")]
 
 public class CommentController : ControllerBase {
-    private NpgsqlConnection conn;
-    public CommentController(){
-        conn = DBConn.GetConn();
-    }
 
     [HttpGet("{id}")]
     public IActionResult getComment(int id) {
@@ -21,7 +17,9 @@ public class CommentController : ControllerBase {
         var sql = "SELECT * FROM comment WHERE id = " + id;
 
         // Create a command object
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
+        conn.Open();
 
         var reader = cmd.ExecuteReader();
 
@@ -43,7 +41,10 @@ public class CommentController : ControllerBase {
     public IActionResult getAllComments() {
         var sql = "SELECT * FROM comment";
 
+        // Create a command object
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
+        conn.Open();
         var reader = cmd.ExecuteReader();
 
         var comments = new List<Comment>();
@@ -70,7 +71,10 @@ public class CommentController : ControllerBase {
     public IActionResult getCommentLikeDataTEMP() {
         var sql = "SELECT * FROM comment_like";
 
+        // Create a command object
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
+        conn.Open();
         var reader = cmd.ExecuteReader();
 
         var commentLikes = new List<Comment_Like_Temp>();
