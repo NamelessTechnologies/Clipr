@@ -24,6 +24,7 @@ public class TestDataController : ControllerBase
         var sql = "SELECT * FROM users";
         
         using var conn = DBConn.GetConn();
+        conn.Open();
         // Create a command object
         using var cmd = new NpgsqlCommand(sql, conn);
 

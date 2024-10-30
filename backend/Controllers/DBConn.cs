@@ -11,8 +11,7 @@ public class DBConn
 
     public static NpgsqlConnection GetConn()
     {
-        NpgsqlConnection conn = new NpgsqlConnection(connString);
-        conn.Open();
+        NpgsqlConnection conn = new NpgsqlConnection(connString);   
         return conn;
     }
 
