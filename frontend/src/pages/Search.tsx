@@ -12,6 +12,8 @@ interface PartialUserModel {
 }
 function Search() {
   shouldBeLoggedIn(true);
+  //   const hosted_url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+  const local_url = "http://localhost:5001/"
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
   const [searchResults, setSearchResults] = useState<PartialUserModel[]>([]);
@@ -21,7 +23,7 @@ function Search() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/searchname/" + query;
+        const queryString = local_url + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);

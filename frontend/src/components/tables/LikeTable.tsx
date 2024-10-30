@@ -3,11 +3,12 @@ import LikeModel from "../../types/Like";
 
 function LikeTable() {
   const [data, setData] = useState<LikeModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+//   const hosted = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+  const local_url = "http://localhost:5001/"
 
   const fetchLikes = async () => {
     try {
-      const response = await fetch(url + "likes/temp");
+      const response = await fetch(local_url + "likes/temp");
       const json = await response.json();
       const likes: LikeModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

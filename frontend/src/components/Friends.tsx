@@ -7,7 +7,8 @@ function Friends() {
 
   const [user, setUser] = useState<UserModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  // const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
+  const hosted = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+//   const local_url = "http://localhost:5001/"
 
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
@@ -31,7 +32,7 @@ function Friends() {
  
   const fetchUsers = async () => {
     try {
-      const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/friendsof/";
+      const url = hosted + "User/friendsof/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
 

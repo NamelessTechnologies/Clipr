@@ -4,20 +4,23 @@ import { Link, useNavigate } from "react-router-dom";
 import shouldBeLoggedIn from "../components/Authenticate";
 
 const LogIn: React.FC = () => {
-  shouldBeLoggedIn(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const[data, setData] = useState<User>(); // Fetched data will be an array of json
-  const [message, setMessage] = useState("");
+    shouldBeLoggedIn(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    // const[data, setData] = useState<User>(); // Fetched data will be an array of json
+    const [message, setMessage] = useState("");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+//   const hosted_url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+    const local_url = "http://localhost:5001/"
+
 
   const attemptLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       const queryString =
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+        local_url + "email/" +
         email;
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;
