@@ -62,7 +62,7 @@ const SetReceiver: React.FC = () => {
       convoid = json2.id;
     }
 
-    navigate("/Clipr/Messages", { state: [receiver, receiverid, convoid] });
+    navigate("/Messages", { state: [receiver, receiverid, convoid] });
   };
 
   return (
