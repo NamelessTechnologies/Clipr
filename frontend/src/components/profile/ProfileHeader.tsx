@@ -228,7 +228,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       convoid = json2.id;
     }
 
-    navigate("/Clipr/Messages", { state: [props.userData.username, profileID, convoid] });
+    navigate("/Messages", { state: [props.userData.username, profileID, convoid] });
   } // end NavigateToMessagePage
 
 

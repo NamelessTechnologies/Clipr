@@ -2,7 +2,7 @@ function SearchBar() {
   function goToSearchPage(): void {
     const input = (document.getElementById("search") as HTMLInputElement).value;
     if (input) {
-      window.location.href = `/Clipr/Search?q=${input}`;
+      window.location.href = `/Search?q=${input}`;
     }
   }
 

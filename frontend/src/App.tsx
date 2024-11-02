@@ -21,16 +21,16 @@ function App() {
       <Router>
         <NavBar />
         <Routes>
-          <Route path="Clipr/" element={<Home />} />
-          <Route path="Clipr/SignUp" element={<CreateAccount />} />
-          <Route path="Clipr/Tables" element={<TablesTEMP />} />
-          <Route path="Clipr/LogIn" element={<LogIn />} />
-          <Route path="Clipr/Upload" element={<Upload />} />
-          <Route path="Clipr/Messages" element={<Messages />} />
-          <Route path="Clipr/SetReceiver" element={<SetReceiver />} />
-          <Route path="Clipr/Profile" element={<Profile />} />
-          <Route path="Clipr/Friends" element={<FriendsPage />} />
-          <Route path="Clipr/Search" element={<Search />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/SignUp" element={<CreateAccount />} />
+          <Route path="/Tables" element={<TablesTEMP />} />
+          <Route path="/LogIn" element={<LogIn />} />
+          <Route path="/Upload" element={<Upload />} />
+          <Route path="/Messages" element={<Messages />} />
+          <Route path="/SetReceiver" element={<SetReceiver />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route path="/Friends" element={<FriendsPage />} />
+          <Route path="/Search" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
