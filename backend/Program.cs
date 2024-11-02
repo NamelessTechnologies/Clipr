@@ -30,6 +30,9 @@ app.UseCors(builder =>
     builder.WithOrigins("https://namelesstechnologies.github.io")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
+    builder.WithOrigins("https://clipr.vercel.app/")    // for deployed site
+           .AllowAnyHeader()
+           .AllowAnyMethod();
 });
 
 app.UseHttpsRedirection();
