@@ -56,7 +56,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("Error");
             }
         }
     }
