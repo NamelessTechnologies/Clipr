@@ -52,6 +52,30 @@ public class UserLiveTest : IDisposable
         Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
     }
 
+    [Theory]
+    [InlineData("[{\"userID\": 10, \"username\": \"charlie.brown\", \"nickname\": \"Charlie\", \"pfP_URL\": \"https://random.image/img10.jpg\"}]")]
+    public async Task Test_User_ReturnsCorrectJsonOfFollowers(string expectedJson)
+    {
+        // Arrange: Deserialize the expected JSON into a List<Follower> object
+        var expectedFollowers = JsonSerializer.Deserialize<List<Follower>>(expectedJson);
+
+        // Act: Call the API to get the actual result
+        var response = await _httpClient.GetAsync("/user/following/9");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualFollowers = JsonSerializer.Deserialize<List<Follower>>(content);
+
+        // Assert: Compare the expected and actual followers
+        Assert.Equal(expectedFollowers.Count, actualFollowers.Count);
+        for (int i = 0; i < expectedFollowers.Count; i++)
+        {
+            Assert.Equal(expectedFollowers[i].UserID, actualFollowers[i].UserID);
+            Assert.Equal(expectedFollowers[i].Username, actualFollowers[i].Username);
+            Assert.Equal(expectedFollowers[i].Nickname, actualFollowers[i].Nickname);
+            Assert.Equal(expectedFollowers[i].PFP_URL, actualFollowers[i].PFP_URL);
+        }
+    }
+
+
     public void Dispose()
     {
         // Only delete or reset state if required by the application
