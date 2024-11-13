@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CliprBackendTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9047209ba2bffc586d21a9c3c86968a68e5f6626")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e3e6c60b7de434f8c0a79756f497f72eefbdf017")]
 [assembly: System.Reflection.AssemblyProductAttribute("CliprBackendTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CliprBackendTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
