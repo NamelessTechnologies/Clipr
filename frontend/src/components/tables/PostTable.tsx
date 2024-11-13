@@ -3,11 +3,12 @@ import PostModel from "../../types/Post";
 
 function PostTable() {
   const [data, setData] = useState<PostModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+const local = "http://localhost:5001/";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(url + "post/");
+      const response = await fetch(local + "post/");
       const json = await response.json();
       const posts: PostModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +54,7 @@ function PostTable() {
             <td key={user.user_id}>{user.post_id}</td>
             <td key={user.user_id}>{user.title}</td>
             <td key={user.user_id}>{user.description}</td>
-            <td key={user.user_id}>{user.datePosted.toString()}</td>
+            {/* <td key={user.user_id}>{user.datePosted.toString()}</td> */}
             <td key={user.user_id}>{user.mediaType}</td>
           </tr>
         ))}

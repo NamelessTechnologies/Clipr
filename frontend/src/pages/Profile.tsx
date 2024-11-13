@@ -10,12 +10,13 @@ function Profile() {
   const [searchParams] = useSearchParams();
   const profile_id = searchParams.get("profile_id") as string;
   const [userData, setUserData] = useState<UserModel>();
+  const local = "http://localhost:5001/";
 
   useEffect(() => {
     async function fetchData() {
       try {
         const queryString =
-          "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/" +
+          local + "User/" +
           profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;

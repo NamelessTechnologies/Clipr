@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import CommentLikeModel from "../../types/CommentLike";
 
 function CommentLikeTable() {
-  const [data, setData] = useState<CommentLikeModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+    const [data, setData] = useState<CommentLikeModel[]>([]);
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+    const local = "http://localhost:5001/";
 
   const fetchCommentLikes = async () => {
     try {
-      const response = await fetch(url + "comment_like/temp");
+      const response = await fetch(local + "comment_like/temp");
       const json = await response.json();
       const commentLikes: CommentLikeModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

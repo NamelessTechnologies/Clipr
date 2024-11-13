@@ -3,11 +3,12 @@ import CommentModel from "../../types/Comment";
 
 function CommentTable() {
   const [data, setData] = useState<CommentModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+const local = "http://localhost:5001/";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(url + "comment/");
+      const response = await fetch(local + "comment/");
       const json = await response.json();
       const comments: CommentModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

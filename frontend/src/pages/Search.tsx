@@ -17,11 +17,12 @@ function Search() {
   const [searchResults, setSearchResults] = useState<PartialUserModel[]>([]);
   const [foundResults, setFoundResults] = useState<boolean>(false);
   // const [category, setCategory] = useState<Category>(); Later
+  const local = "http://localhost:5001/";
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = "http://localhost:5001/searchname/" + query;
+        const queryString = local + "searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);

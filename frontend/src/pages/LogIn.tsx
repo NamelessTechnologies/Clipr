@@ -9,6 +9,8 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState("");
   // const[data, setData] = useState<User>(); // Fetched data will be an array of json
   const [message, setMessage] = useState("");
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+const local = "http://localhost:5001/";
 
   const navigate = useNavigate();
 
@@ -17,7 +19,7 @@ const LogIn: React.FC = () => {
 
     try {
       const queryString =
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+        local + "email/" +
         email;
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;

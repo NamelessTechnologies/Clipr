@@ -103,7 +103,7 @@ const EditProfileForm: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            hosted_link+ "email/" +
+            local_link + "email/" +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;

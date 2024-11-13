@@ -7,14 +7,14 @@ function Post() {
   const [post, setPost] = useState<PostModel[]>([]);
   // const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  // const url = 'https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/';
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+  const local = "http://localhost:5001/";
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   // const image = "https://admin.esports.gg/wp-content/uploads/2024/03/robin-honkai-star-rail.jpg-968x544.jpg";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(url + "TEMP_post/"); // must not be hard coded
+      const response = await fetch(local + "TEMP_post/"); // must not be hard coded
       const json = await response.json();
 
       const posts: PostModel[] = [];

@@ -3,11 +3,13 @@ import ConversationModel from "../../types/Conversation";
 
 const ConversationTable = () => {
   const [data, setData] = useState<ConversationModel[]>([]);
+//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+    const local = "http://localhost:5001/";
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/convo/all",
+        local + "User/convo/all",
       );
       const json = (await response.json()) as ConversationModel[];
       setData(json);
