@@ -3,14 +3,12 @@ module.exports = {
     "@babel/preset-typescript",
     [
       "@babel/preset-env",
-
       {
         targets: {
           node: "current",
         },
       },
     ],
-
     [
       "@babel/preset-react",
       {
@@ -18,6 +16,5 @@ module.exports = {
       },
     ],
   ],
-
   plugins: [],
 };

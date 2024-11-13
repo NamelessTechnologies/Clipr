@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { NavBar } from "./components/Navbar";
 import CreateAccount from "./pages/CreateAccount";
 import LogIn from "./pages/LogIn";
-import Home from "./pages/Home.tsx";
+import { Home } from "./pages/Home.tsx";
 import TablesTEMP from "./pages/Tables.tsx";
 import Upload from "./pages/Upload.tsx";
 import Messages from "./pages/Messages.tsx";
