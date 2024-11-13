@@ -117,24 +117,4 @@ describe("NavBar Component", () => {
     fireEvent.click(link);
     expect(window.location.pathname).toBe("/");
   });
-
-  // test("search bar correctly routes", () => {
-  //   //Setting Login
-  //   const mockUser = { user_id: 123 };
-  //   localStorage.setItem("user", JSON.stringify(mockUser));
-
-  //   render(
-  //     <BrowserRouter>
-  //       <NavBar />
-  //     </BrowserRouter>
-  //   );
-
-  //   //Clicking on View Profile
-  //   const searchInput = screen.getByPlaceholderText("Search");
-  //   const link = screen.getByRole("button", { name: "Search" });
-  //   console.log(searchInput);
-  //   fireEvent.keyDown(searchInput, { key: "A", code: "KeyA" });
-  //   fireEvent.click(link);
-  //   expect(window.location.pathname).toBe("/Search");
-  // });
 });

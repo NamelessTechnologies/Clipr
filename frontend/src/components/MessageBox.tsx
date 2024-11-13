@@ -11,4 +11,4 @@ const MessageBox = ({ username, content }: UserMessageModel) => {
   );
 };
 
-export default MessageBox;
+export { MessageBox };
