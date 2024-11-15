@@ -33,7 +33,7 @@ public class PostController : ControllerBase {
                 MediaType = reader.GetString(5)
             });
         } else {
-            return NotFound("User not found.");
+            return NotFound("User not found/No posts.");
         }
     }
 
