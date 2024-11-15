@@ -14,8 +14,11 @@ public class PostController : ControllerBase {
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
+        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+        
         // execute command
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -30,7 +33,7 @@ public class PostController : ControllerBase {
                 MediaType = reader.GetString(5)
             });
         } else {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
     }
 
@@ -242,6 +245,7 @@ public class PostController : ControllerBase {
     [HttpGet("/TEMP_post/user_id/{id}")]
     public IActionResult getPostByUserId(int id) {
         var sql = "SELECT * FROM temp_post WHERE user_id = " + id;
+        Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
        conn.Open();
@@ -251,7 +255,7 @@ public class PostController : ControllerBase {
         var posts = new List<TEMP_Post>();
 
         if (!reader.HasRows) {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
         while (reader.Read()) {

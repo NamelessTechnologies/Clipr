@@ -154,13 +154,14 @@ public class UserController : ControllerBase
         List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
 
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
                 followerIDs.Add(rdr.GetInt32(0));
             }
         }
@@ -200,6 +201,7 @@ public class UserController : ControllerBase
     {
         // --- query list of IDs for following ---
         var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
+        Console.WriteLine(follower_query);
 
        using var conn = DBConn.GetConn();
        conn.Open();
@@ -209,13 +211,13 @@ public class UserController : ControllerBase
         List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
-
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
                 followerIDs.Add(rdr.GetInt32(0));
             }
         }
@@ -289,7 +291,7 @@ public class UserController : ControllerBase
 
         if (!reader.HasRows)
         {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
         while (reader.Read())
@@ -323,7 +325,7 @@ public class UserController : ControllerBase
 
         if (!reader.HasRows)
         {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
         while (reader.Read())
@@ -458,7 +460,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("User not found.");
             }
         }
     }
@@ -506,7 +508,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("User not found.");
             }
         }
     }
@@ -525,13 +527,13 @@ public class UserController : ControllerBase
 
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
-
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
 
                 User singleUser = new User
                 {
@@ -562,13 +564,15 @@ public class UserController : ControllerBase
 
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
 
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
+                
                 if (rdr.GetInt32(0) == id)
                 {
                     allFollowingID.Add(rdr.GetInt32(1));
