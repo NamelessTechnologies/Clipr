@@ -69,4 +69,17 @@ describe("Log In Page", () => {
 
     expect(screen.getByText("Password:")).toBeInTheDocument();
   });
+
+  test("Placeholder text exists", () => {
+    render(
+      <BrowserRouter>
+        <LogIn />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByPlaceholderText(/Email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Password/i)).toBeInTheDocument();
+  });
+
+  
 });
