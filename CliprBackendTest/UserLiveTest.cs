@@ -123,7 +123,20 @@ public class UserLiveTest : IDisposable
         var content = await response.Content.ReadAsStringAsync();
 
         // Assert
-        Assert.Equal("User not found.", content);
+        Assert.Equal("No friends found.", content);
+        this.Dispose();
+    }
+
+    [Fact]
+    public async Task GetFriendsOfValidUserNoFriends_ReturnsNotFound()
+    {
+        // Act
+        var response = await _httpClient.GetAsync("/user/friendsof/4");
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal("No friends found.", content);
         this.Dispose();
     }
 
@@ -271,6 +284,61 @@ public class UserLiveTest : IDisposable
         this.Dispose();
     }
 
+    [Theory]
+    [InlineData("[{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": null, \"password\": null, \"biography\": null, \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}]")]
+    public async Task Test_UserOneSearchNameAlonzo_ReturnsCorrectJson(string expectedJson)
+    {
+        // Arrange: Deserialize the expected JSON into an object
+        var expectedUsers = JsonSerializer.Deserialize<List<User>>(expectedJson);
+
+        // Act: Call the API to get the actual result 
+        var response = await _httpClient.GetAsync("/searchname/alonzo");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualUsers = JsonSerializer.Deserialize<List<User>>(content);
+
+        // Assert: Compare the actual and expected results
+        Assert.Equal(expectedUsers.Count, actualUsers.Count);
+        for (int i = 0; i < expectedUsers.Count; i++)
+        {
+            Assert.Equal(expectedUsers[i].User_id, actualUsers[i].User_id);
+            Assert.Equal(expectedUsers[i].Username, actualUsers[i].Username);
+            Assert.Equal(expectedUsers[i].Email, actualUsers[i].Email);
+            Assert.Equal(expectedUsers[i].Password, actualUsers[i].Password);
+            Assert.Equal(expectedUsers[i].Biography, actualUsers[i].Biography);
+            Assert.Equal(expectedUsers[i].Nickname, actualUsers[i].Nickname);
+            Assert.Equal(expectedUsers[i].Pfp, actualUsers[i].Pfp);
+        }
+
+        this.Dispose();
+    }
+
+    [Theory]
+    [InlineData("[{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": \"jpalonzo@cpp.edu\", \"password\": \"password123\", \"biography\": \"I love CS!\", \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}, {\"user_id\": 19, \"username\": \"chrisjlo\", \"email\": \"cjlo@cpp.edu\", \"password\": \"Password123\", \"biography\": \"My middle name is Ji-Chek!\", \"nickname\": \"cheky\", \"pfp\": \"http://chris.png\"}]")]
+    public async Task Test_FriendsofUserTwo_ReturnsCorrectJsonArray(string expectedJson)
+    {
+        // Arrange: Deserialize the expected JSON into an object
+        var expectedUsers = JsonSerializer.Deserialize<List<User>>(expectedJson);
+
+        // Act: Call the API to get the actual result 
+        var response = await _httpClient.GetAsync("/user/friendsof/2");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualUsers = JsonSerializer.Deserialize<List<User>>(content);
+
+        // Assert: Compare the actual and expected results
+        Assert.Equal(expectedUsers.Count, actualUsers.Count);
+        for (int i = 0; i < expectedUsers.Count; i++)
+        {
+            Assert.Equal(expectedUsers[i].User_id, actualUsers[i].User_id);
+            Assert.Equal(expectedUsers[i].Username, actualUsers[i].Username);
+            Assert.Equal(expectedUsers[i].Email, actualUsers[i].Email);
+            Assert.Equal(expectedUsers[i].Password, actualUsers[i].Password);
+            Assert.Equal(expectedUsers[i].Biography, actualUsers[i].Biography);
+            Assert.Equal(expectedUsers[i].Nickname, actualUsers[i].Nickname);
+            Assert.Equal(expectedUsers[i].Pfp, actualUsers[i].Pfp);
+        }
+
+        this.Dispose();
+    }
 
     public void Dispose()
     {
