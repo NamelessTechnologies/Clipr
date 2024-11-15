@@ -33,7 +33,7 @@ const local = "http://localhost:5001/";
         } catch (error) {
           console.log(error);
         }
-        navigate("../Clipr/");
+        navigate("../");
         window.location.reload();
       } else {
         setMessage("Incorrect Password");
@@ -63,6 +63,7 @@ const local = "http://localhost:5001/";
           <input
             className="p-2 text-black mb-6 rounded-md"
             type="email"
+            placeholder="Email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -71,6 +72,7 @@ const local = "http://localhost:5001/";
           <input
             className="p-2 text-black mb-10 rounded-md"
             type="password"
+            placeholder="Password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -86,7 +88,7 @@ const local = "http://localhost:5001/";
           </button>
           <div className="flex justify-center mt-4">
             <span className="text-white text-sm">New to Clipr? </span>
-            <Link to="/Clipr/SignUp" className="text-amber-500 text-sm ml-1">
+            <Link to="/Signup" className="text-amber-500 text-sm ml-1">
               Sign Up
             </Link>
           </div>
@@ -96,4 +98,4 @@ const local = "http://localhost:5001/";
   );
 };
 
-export default LogIn;
+export { LogIn };

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
-import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
 
 const hosted_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local_link = "http://localhost:5001/";
+const local_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
 const EditProfileForm: React.FC = () => {
   shouldBeLoggedIn(true);
@@ -22,7 +22,7 @@ const EditProfileForm: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
@@ -103,7 +103,7 @@ const EditProfileForm: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            local_link + "email/" +
+            hosted_link+ "email/" +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;

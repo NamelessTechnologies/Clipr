@@ -3,8 +3,17 @@ import UserModel from "../../types/User";
 
 const UserTable = () => {
   const [data, setData] = useState<UserModel[]>([]); // Fetched data will be an array of json
-  //   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local = "http://localhost:5001/";
+
+  // const handleChange = async () => {
+  //   try {
+  //       const response = await fetch('https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/1');
+  //       const json = await response.json() as User;
+  //       setData(json);
+
+  //     } catch (error) {
+  //       console.error(error);
+  //       }
+  // };
 
   const fetchData = async () => {
     try {

@@ -22,7 +22,7 @@ function Search() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = local + "searchname/" + query;
+        const queryString = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);
@@ -41,7 +41,7 @@ function Search() {
   }, [query]);
 
   const goToTheProfile = (index: string) => {
-    window.location.href = `/Clipr/Profile?profile_id=${index}`;
+    window.location.href = `/Profile?profile_id=${index}`;
   };
 
   return (
