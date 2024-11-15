@@ -33,7 +33,7 @@ public class CommentController : ControllerBase {
                 Content = reader.GetString(4)
             });
         }  else {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
     }
