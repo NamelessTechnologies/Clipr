@@ -567,7 +567,7 @@ public class UserController : ControllerBase
         {
             if (!rdr.HasRows)
             {
-                return NotFound("User not found.");
+                return NotFound("No friends found.");
             }
 
             while (rdr.Read())
@@ -586,6 +586,11 @@ public class UserController : ControllerBase
         }
 
         var intersection = allFollowersID.Intersect(allFollowingID);
+
+        if (intersection.Count() == 0)
+        {
+            return NotFound("No friends found.");
+        }
 
         var allFriends = new List<User>();
         foreach (int friend_id in intersection)
