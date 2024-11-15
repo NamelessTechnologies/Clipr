@@ -132,4 +132,17 @@ describe("NavBar Component", () => {
     fireEvent.click(link)
     expect(window.location.pathname).toBe("/Upload");
   });
+
+  test("renders search bar when user is logged in", () => {
+    const mockUser = { user_id: 123 };
+    localStorage.setItem("user", JSON.stringify(mockUser));
+
+    render(
+      <BrowserRouter>
+        <NavBar />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId("search-bar")).toBeInTheDocument();
+  })
 });

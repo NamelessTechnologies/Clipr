@@ -37,7 +37,7 @@ function NavBar() {
             </Link>
             <ul className="flex space-x-4">
               <li>
-                <SearchBar></SearchBar>
+                <SearchBar data-testid="search-bar"></SearchBar>
               </li>
               <li className="pt-3">
                 <Link to="/Upload" data-testid="upload-link">
