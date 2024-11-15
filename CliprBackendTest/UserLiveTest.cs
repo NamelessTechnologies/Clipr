@@ -248,6 +248,29 @@ public class UserLiveTest : IDisposable
         this.Dispose();
     }
 
+    [Theory]
+    [InlineData("{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": \"jpalonzo@cpp.edu\", \"password\": \"password123\", \"biography\": \"I love CS!\", \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}")]
+    public async Task Test_UserOneUsername_ReturnsCorrectJson(string expectedJson)
+    {
+        // Arrange: Deserialize the expected JSON into an object
+        var expectedUser = JsonSerializer.Deserialize<User>(expectedJson);
+
+        // Act: Call the API to get the actual result 
+        var response = await _httpClient.GetAsync("/username/alonzojp");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualUser = JsonSerializer.Deserialize<User>(content);
+
+        // Assert: Compare the actual and expected results
+        Assert.Equal(expectedUser.User_id, actualUser.User_id);
+        Assert.Equal(expectedUser.Username, actualUser.Username);
+        Assert.Equal(expectedUser.Email, actualUser.Email);
+        Assert.Equal(expectedUser.Password, actualUser.Password);
+        Assert.Equal(expectedUser.Biography, actualUser.Biography);
+        Assert.Equal(expectedUser.Nickname, actualUser.Nickname);
+        Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
+        this.Dispose();
+    }
+
 
     public void Dispose()
     {
