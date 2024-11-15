@@ -32,7 +32,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -88,7 +88,7 @@ const CreateAccount: React.FC = () => {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        },
+        }
       );
       console.log(response);
       if (response.status === 200) {
@@ -245,7 +245,7 @@ const CreateAccount: React.FC = () => {
 
         <div className="flex justify-center mt-4">
           <span className="text-white text-sm">Already a member?</span>
-          <Link to="/LogIn" className="text-amber-500 text-sm ml-1">
+          <Link to="/Login" className="text-amber-500 text-sm ml-1">
             Log in
           </Link>
         </div>
@@ -254,4 +254,4 @@ const CreateAccount: React.FC = () => {
   );
 };
 
-export default CreateAccount;
+export { CreateAccount };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
-import MessageBox from "../components/MessageBox";
+import { MessageBox } from "../components/MessageBox";
 import shouldBeLoggedIn from "../components/Authenticate";
 
 const Messages: React.FC = () => {
@@ -29,7 +29,7 @@ const Messages: React.FC = () => {
     try {
       const response = await fetch(
         url +
-          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`,
+          `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`
       );
       const json = await response.json();
       const messages: MessageModel[] = [];

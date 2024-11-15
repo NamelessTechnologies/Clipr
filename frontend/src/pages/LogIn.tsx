@@ -84,7 +84,7 @@ const LogIn: React.FC = () => {
           </button>
           <div className="flex justify-center mt-4">
             <span className="text-white text-sm">New to Clipr? </span>
-            <Link to="/SignUp" className="text-amber-500 text-sm ml-1">
+            <Link to="/Signup" className="text-amber-500 text-sm ml-1">
               Sign Up
             </Link>
           </div>
@@ -94,4 +94,4 @@ const LogIn: React.FC = () => {
   );
 };
 
-export default LogIn;
+export { LogIn };
