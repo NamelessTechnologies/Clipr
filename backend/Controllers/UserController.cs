@@ -145,6 +145,7 @@ public class UserController : ControllerBase
     {
         // --- query list of follower IDs ---
         var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
+        Console.WriteLine(follower_query);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -156,7 +157,7 @@ public class UserController : ControllerBase
         {
             if (!rdr.HasRows)
             {
-                return NotFound("User not found.");
+                return NotFound("No followers found.");
             }
 
             while (rdr.Read())
@@ -291,7 +292,7 @@ public class UserController : ControllerBase
 
         if (!reader.HasRows)
         {
-            return NotFound("User not found.");
+            return NotFound("No saves found.");
         }
 
         while (reader.Read())
