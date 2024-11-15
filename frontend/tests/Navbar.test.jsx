@@ -117,4 +117,19 @@ describe("NavBar Component", () => {
     fireEvent.click(link);
     expect(window.location.pathname).toBe("/");
   });
+
+  test("upload correctly routes", () => {
+    const mockUser = { user_id: 123 };
+    localStorage.setItem("user", JSON.stringify(mockUser));
+
+    render(
+      <BrowserRouter>
+        <NavBar />
+      </BrowserRouter>
+    );
+
+    const link = screen.getByTestId("upload-link");
+    fireEvent.click(link)
+    expect(window.location.pathname).toBe("/Upload");
+  });
 });

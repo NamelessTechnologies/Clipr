@@ -40,7 +40,7 @@ function NavBar() {
                 <SearchBar></SearchBar>
               </li>
               <li className="pt-3">
-                <Link to="/Upload">
+                <Link to="/Upload" data-testid="upload-link">
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
                 </Link>
               </li>
