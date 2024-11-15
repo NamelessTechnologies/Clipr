@@ -105,7 +105,7 @@ public class PostController : ControllerBase {
                 Content = reader.GetString(3)
             });
         } else {
-            return BadRequest("no data");
+            return NotFound("TempPost not found.");
         }
     }
 
