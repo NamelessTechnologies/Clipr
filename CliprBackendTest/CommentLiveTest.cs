@@ -10,16 +10,16 @@ using System.Text.Json;
 using backend.Models;
 using Xunit;
 
-public class PostLiveTest : IDisposable
+public class CommentLiveTest : IDisposable
 {
     private readonly HttpClient _httpClient = new() { BaseAddress = new Uri("http://localhost:5001") };
 
     [Fact]
-    public async Task GetPostsOfUser_ReturnsError_WhenUserDoesNotExist()
+    public async Task GetCommentssOfUser_ReturnsError_WhenUserDoesNotExist()
     {
 
         // Act
-        var response = await _httpClient.GetAsync("/post/9999"); // Adjust path as needed
+        var response = await _httpClient.GetAsync("/comment/9999"); // Adjust path as needed
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
 
@@ -27,21 +27,6 @@ public class PostLiveTest : IDisposable
         Assert.Equal("User not found.", content);
         this.Dispose();
     }
-
-    [Fact]
-    public async Task GetTempPostsOfUser_ReturnsError_WhenUserDoesNotExist()
-    {
-
-        // Act
-        var response = await _httpClient.GetAsync("/TEMP_post/user_id/9999"); // Adjust path as needed
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        var content = await response.Content.ReadAsStringAsync();
-
-        // Assert
-        Assert.Equal("User not found.", content);
-        this.Dispose();
-    }
-
     public void Dispose()
     {
         // Only delete or reset state if required by the application

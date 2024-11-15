@@ -25,6 +25,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("Error", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -38,6 +39,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -51,6 +53,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -64,6 +67,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -77,6 +81,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -90,6 +95,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -103,6 +109,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Fact]
@@ -116,6 +123,7 @@ public class UserLiveTest : IDisposable
 
         // Assert
         Assert.Equal("User not found.", content);
+        this.Dispose();
     }
 
     [Theory]
@@ -138,6 +146,7 @@ public class UserLiveTest : IDisposable
         Assert.Equal(expectedUser.Biography, actualUser.Biography);
         Assert.Equal(expectedUser.Nickname, actualUser.Nickname);
         Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
+        this.Dispose();
     }
 
     [Theory]
@@ -161,6 +170,7 @@ public class UserLiveTest : IDisposable
             Assert.Equal(expectedFollowers[i].Nickname, actualFollowers[i].Nickname);
             Assert.Equal(expectedFollowers[i].PFP_URL, actualFollowers[i].PFP_URL);
         }
+        this.Dispose();
     }
 
 
