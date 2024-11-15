@@ -27,6 +27,28 @@ public class CommentLiveTest : IDisposable
         Assert.Equal("User not found.", content);
         this.Dispose();
     }
+
+    [Theory]
+    [InlineData("{\"id\": 1, \"parentID\": null, \"postID\": 5, \"userID\": 1, \"content\": \"This is a great post!\"}")]
+    public async Task GetCommentOne_ReturnsCorrectJson(string expectedJson)
+    {
+        // Arrange
+        var ExpectedComment = JsonSerializer.Deserialize<Comment>(expectedJson);
+
+        // Act
+        var response = await _httpClient.GetAsync("/comment/1");
+        var content = await response.Content.ReadAsStringAsync();
+        var ActualComment = JsonSerializer.Deserialize<Comment>(content);
+
+        // Assert
+        Assert.Equal(ExpectedComment.ID, ActualComment.ID);
+        Assert.Equal(ExpectedComment.ParentID, ActualComment.ParentID);
+        Assert.Equal(ExpectedComment.PostID, ActualComment.PostID);
+        Assert.Equal(ExpectedComment.UserID, ActualComment.UserID);
+        Assert.Equal(ExpectedComment.Content, ActualComment.Content);
+
+        this.Dispose();
+    }
     public void Dispose()
     {
         // Only delete or reset state if required by the application
