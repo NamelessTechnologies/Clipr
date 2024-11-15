@@ -255,7 +255,7 @@ public class PostController : ControllerBase {
         var posts = new List<TEMP_Post>();
 
         if (!reader.HasRows) {
-            return NotFound("User not found.");
+            return NotFound("No posts found.");
         }
 
         while (reader.Read()) {

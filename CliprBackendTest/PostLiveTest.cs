@@ -41,7 +41,21 @@ public class PostLiveTest : IDisposable
         var content = await response.Content.ReadAsStringAsync();
 
         // Assert
-        Assert.Equal("User not found.", content);
+        Assert.Equal("No posts found.", content);
+        this.Dispose();
+    }
+
+    [Fact]
+    public async Task GetTempPostsOfValidUser_ReturnsNotFound_WhenUserHasNoPosts()
+    {
+
+        // Act
+        var response = await _httpClient.GetAsync("/TEMP_post/user_id/4"); // Adjust path as needed
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal("No posts found.", content);
         this.Dispose();
     }
 
