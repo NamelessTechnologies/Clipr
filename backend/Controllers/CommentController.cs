@@ -27,7 +27,7 @@ public class CommentController : ControllerBase {
         if (reader.Read()) {
             return Ok(new Comment {
                 ID = reader.GetInt32(0),
-                ParentID = reader.GetInt32(1),
+                ParentID = reader.IsDBNull(reader.GetOrdinal("parent_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_id")),
                 PostID = reader.GetInt32(2),
                 UserID = reader.GetInt32(3),
                 Content = reader.GetString(4)
