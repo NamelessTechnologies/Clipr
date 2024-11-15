@@ -52,20 +52,40 @@ public class PostLiveTest : IDisposable
     public async Task GetPost1_ReturnsCorrectJson(string expectedJson)
     {
         // Arrange
-        var expectedPosts = JsonSerializer.Deserialize<Post>(expectedJson);
+        var expectedPost = JsonSerializer.Deserialize<Post>(expectedJson);
 
         // Act
         var response = await _httpClient.GetAsync("/post/1");
         var content = await response.Content.ReadAsStringAsync();
-        var ActualPosts = JsonSerializer.Deserialize<Post>(content);
+        var ActualPost = JsonSerializer.Deserialize<Post>(content);
 
         // Assert: Compare the expected and actual Post
-            Assert.Equal(expectedPosts.PostID, ActualPosts.PostID);
-            Assert.Equal(expectedPosts.UserID, ActualPosts.UserID);
-            Assert.Equal(expectedPosts.Title, ActualPosts.Title);
-            Assert.Equal(expectedPosts.Description, ActualPosts.Description);
-            Assert.Equal(expectedPosts.DatePosted, ActualPosts.DatePosted);
-            Assert.Equal(expectedPosts.MediaType, ActualPosts.MediaType);
+            Assert.Equal(expectedPost.PostID, ActualPost.PostID);
+            Assert.Equal(expectedPost.UserID, ActualPost.UserID);
+            Assert.Equal(expectedPost.Title, ActualPost.Title);
+            Assert.Equal(expectedPost.Description, ActualPost.Description);
+            Assert.Equal(expectedPost.DatePosted, ActualPost.DatePosted);
+            Assert.Equal(expectedPost.MediaType, ActualPost.MediaType);
+
+        this.Dispose();
+    }
+
+    [Theory]
+    [InlineData("{\"userID\": 1, \"title\": \"pls work\", \"content\": \"jwoeafpijsd\"}")]
+    public async Task GetTempPost1_ReturnsCorrectJson(string expectedJson)
+    {
+        // Arrange
+        var expectedPost = JsonSerializer.Deserialize<TEMP_Post>(expectedJson);
+
+        // Act
+        var response = await _httpClient.GetAsync("/TEMP_post/1");
+        var content = await response.Content.ReadAsStringAsync();
+        var ActualPost = JsonSerializer.Deserialize<TEMP_Post>(content);
+
+        // Assert: Compare the expected and actual Post
+            Assert.Equal(expectedPost.UserID, ActualPost.UserID);
+            Assert.Equal(expectedPost.Title, ActualPost.Title);
+            Assert.Equal(expectedPost.Content, ActualPost.Content);
 
         this.Dispose();
     }
