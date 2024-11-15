@@ -104,6 +104,30 @@ public class PostLiveTest : IDisposable
         this.Dispose();
     }
 
+    [Theory]
+    [InlineData("[{\"userID\": 10, \"title\": \"now it'll work\", \"content\": \"surely\\n\"}]")]
+    public async Task GetTempPostsFromUser10_ReturnsCorrectJsonArray(string expectedJson)
+    {
+        // Arrange
+        var expectedPosts = JsonSerializer.Deserialize<List<TEMP_Post>>(expectedJson);
+
+        // Act
+        var response = await _httpClient.GetAsync("/TEMP_Post/user_id/10");
+        var content = await response.Content.ReadAsStringAsync();
+        var ActualPosts = JsonSerializer.Deserialize<List<TEMP_Post>>(content);
+
+        // Assert: Compare the expected and actual followers
+        Assert.Equal(expectedPosts.Count, ActualPosts.Count);
+        for (int i = 0; i < expectedPosts.Count; i++)
+        {
+            Assert.Equal(expectedPosts[i].UserID, ActualPosts[i].UserID);
+            Assert.Equal(expectedPosts[i].Title, ActualPosts[i].Title);
+            Assert.Equal(expectedPosts[i].Content, ActualPosts[i].Content);
+        }
+
+        this.Dispose();
+    }
+
     public void Dispose()
     {
         // Only delete or reset state if required by the application
