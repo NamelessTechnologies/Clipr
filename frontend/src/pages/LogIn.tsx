@@ -32,6 +32,7 @@ const LogIn: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        navigate("../");
         socket.connect();
         navigate("../Clipr/");
         window.location.reload();
@@ -86,7 +87,7 @@ const LogIn: React.FC = () => {
           </button>
           <div className="flex justify-center mt-4">
             <span className="text-white text-sm">New to Clipr? </span>
-            <Link to="/Clipr/SignUp" className="text-amber-500 text-sm ml-1">
+            <Link to="/Signup" className="text-amber-500 text-sm ml-1">
               Sign Up
             </Link>
           </div>
@@ -96,4 +97,4 @@ const LogIn: React.FC = () => {
   );
 };
 
-export default LogIn;
+export { LogIn };

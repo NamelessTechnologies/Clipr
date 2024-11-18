@@ -31,7 +31,7 @@ function Friends() {
  
   const fetchUsers = async () => {
     try {
-      const url = "http://localhost:5001/User/friendsof/";
+      const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/friendsof/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
 

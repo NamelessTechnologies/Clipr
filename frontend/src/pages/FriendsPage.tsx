@@ -1,7 +1,7 @@
 // import { Sidebar } from "../components/Sidebar";
 import { Friends } from "../components/Friends";
-import logo from "../assets/hsr_logo.png";
-import { Link } from "react-router-dom";
+// import logo from "../assets/hsr_logo.png";
+// import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
 
@@ -9,6 +9,9 @@ function FriendsPage() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
+
+  console.log(foundUser);
+  console.log(uid);
 
   // This effect loads the user from localStorage
   useEffect(() => {

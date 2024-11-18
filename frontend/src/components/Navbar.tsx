@@ -7,16 +7,13 @@ import { socket } from "../socket";
 
 function NavBar() {
   const [foundUser, setFoundUser] = useState<string>();
-  const [userProfileURL, setUserProfileURL] =
-    useState<string>("Clipr/Profile/");
-
+  const [userProfileURL, setUserProfileURL] = useState<string>("/Profile/");
   const logout = () => {
     if (!foundUser) {
       return;
     }
     localStorage.removeItem("user");
-    socket.disconnect();
-    window.location.reload();
+    // window.location.reload();
   };
 
   useEffect(() => {
@@ -24,7 +21,7 @@ function NavBar() {
     if (localStorageUser) {
       setFoundUser(localStorageUser);
       const parsed = JSON.parse(localStorageUser) as UserModel;
-      setUserProfileURL(`Clipr/Profile?profile_id=${parsed.user_id}`);
+      setUserProfileURL(`/Profile?profile_id=${parsed.user_id}`);
     }
   }, [foundUser]);
 
@@ -34,7 +31,7 @@ function NavBar() {
         <nav className="bg-navbar text-white py-6 px-6 border-b border-white">
           <div className="flex justify-between items-center">
             <Link
-              to="Clipr/"
+              to="/"
               className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300"
             >
               Clipr
@@ -44,13 +41,13 @@ function NavBar() {
                 <SearchBar></SearchBar>
               </li>
               <li className="pt-3">
-                <Link to="Clipr/Upload">
+                <Link to="/Upload">
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
                 </Link>
               </li>
               <li className="pt-3">
                 <Link
-                  to="Clipr/Tables"
+                  to="/Tables"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   Tables
@@ -58,7 +55,7 @@ function NavBar() {
               </li>
               <li className="pt-3">
                 <Link
-                  to="Clipr/Friends"
+                  to="/Friends"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   Friends

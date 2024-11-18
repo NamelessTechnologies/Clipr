@@ -3,9 +3,9 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { NavBar } from "./components/Navbar";
-import CreateAccount from "./pages/CreateAccount";
-import LogIn from "./pages/LogIn";
-import Home from "./pages/Home.tsx";
+import { CreateAccount } from "./pages/CreateAccount";
+import { LogIn } from "./pages/LogIn.tsx";
+import { Home } from "./pages/Home.tsx";
 import TablesTEMP from "./pages/Tables.tsx";
 import Upload from "./pages/Upload.tsx";
 import Messages from "./pages/Messages.tsx";
@@ -26,7 +26,6 @@ function App() {
           <Route path="Clipr/LogIn" element={<LogIn />} />
           <Route path="Clipr/Upload" element={<Upload />} />
           <Route path="Clipr/Messages" element={<Messages />} />
-          <Route path="Clipr/NewMessages" element={<Messages />} />
           <Route path="Clipr/Profile" element={<Profile />} />
           <Route path="Clipr/Friends" element={<FriendsPage />} />
           <Route path="Clipr/Search" element={<Search />} />

@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
-import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
-import { socket } from "../socket";
 
-const CreateAccount: React.FC = () => {
-  shouldBeLoggedIn(false);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [biography, setBiography] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [pfp, setPfp] = useState("");
+const hosted_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+const local_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+
+const EditProfileForm: React.FC = () => {
+  shouldBeLoggedIn(true);
+  const [currentUser] = useState(localStorage.getItem("user") || "");
+  const userInfo = JSON.parse(currentUser);
+  const [username, setUsername] = useState(userInfo['username']);
+  const [email, setEmail] = useState(userInfo['email']);
+  const [password, setPassword] = useState(userInfo['password']);
+  const [biography, setBiography] = useState(userInfo['biography']);
+  const [nickname, setNickname] = useState(userInfo['nickname']);
+  const [pfp, setPfp] = useState(userInfo['pfp']);
 
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const validate = () => {
     let valid = true;
@@ -33,7 +37,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
       );
       valid = false;
     }
@@ -72,6 +76,7 @@ const CreateAccount: React.FC = () => {
     }
 
     const newUser = {
+      User_id: userInfo['user_id'],
       Username: username,
       Email: email,
       Password: password,
@@ -80,16 +85,17 @@ const CreateAccount: React.FC = () => {
       Pfp: pfp,
     };
     try {
+        console.log(JSON.stringify(newUser));
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/",
+        local_link+"user/",
         {
           body: JSON.stringify(newUser),
-          method: "POST",
+          method: "PUT",
           headers: {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
-        }
+        },
       );
       console.log(response);
       if (response.status === 200) {
@@ -97,7 +103,7 @@ const CreateAccount: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+            hosted_link+ "email/" +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;
@@ -107,7 +113,7 @@ const CreateAccount: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
-        navigate("../");
+        // navigate("./Clipr/");
         window.location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
@@ -125,11 +131,8 @@ const CreateAccount: React.FC = () => {
         className="bg-navbar rounded px-20 pt-5 pb-5 mt-10 mb-4 items-center border border-x-gray-300 max-w-md"
       >
         <img src={stelle} className="w-28 h-28 mx-auto"></img>
-        <div className="w-full text-white text-center text-4xl mb-6">
-          Welcome to Clipr
-        </div>
-        <div className="w-full text-amber-500 text-center text-2xl mb-6">
-          Create Account
+        <div className="w-full text-amber-500 text-center text-4xl mb-6">
+          Edit {userInfo['username']}'s Profile
         </div>
 
         <div className="mb-4">
@@ -231,7 +234,7 @@ const CreateAccount: React.FC = () => {
             value={pfp}
             onChange={(e) => setPfp(e.target.value)}
             required
-            placeholder="Temp"
+            placeholder="Insert Image URL..."
           />
         </div>
 
@@ -244,15 +247,15 @@ const CreateAccount: React.FC = () => {
           </button>
         </div>
 
-        <div className="flex justify-center mt-4">
+        {/* <div className="flex justify-center mt-4">
           <span className="text-white text-sm">Already a member?</span>
-          <Link to="/Login" className="text-amber-500 text-sm ml-1">
+          <Link to="/Clipr/LogIn" className="text-amber-500 text-sm ml-1">
             Log in
           </Link>
-        </div>
+        </div> */}
       </form>
     </div>
   );
 };
 
-export { CreateAccount };
+export default EditProfileForm;
