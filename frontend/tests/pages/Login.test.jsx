@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { LogIn } from "../src/pages/Login.tsx";
+import { LogIn } from "../../src/pages/Login.tsx";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 describe("Log In Page", () => {
