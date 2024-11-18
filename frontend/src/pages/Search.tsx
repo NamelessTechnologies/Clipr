@@ -42,7 +42,7 @@ function Search() {
   }, [query]);
 
   const goToTheProfile = (index: string) => {
-    window.location.href = `/Clipr/Profile?profile_id=${index}`;
+    window.location.href = `/Profile?profile_id=${index}`;
   };
 
   return (
