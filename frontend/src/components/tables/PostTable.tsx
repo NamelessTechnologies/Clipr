@@ -3,12 +3,11 @@ import PostModel from "../../types/Post";
 
 function PostTable() {
   const [data, setData] = useState<PostModel[]>([]);
-//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local = "http://localhost:5001/";
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(local + "post/");
+      const response = await fetch(url + "post/");
       const json = await response.json();
       const posts: PostModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

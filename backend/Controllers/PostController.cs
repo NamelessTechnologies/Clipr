@@ -116,6 +116,7 @@ public class PostController : ControllerBase {
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -144,6 +145,7 @@ public class PostController : ControllerBase {
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -170,6 +172,7 @@ public class PostController : ControllerBase {
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -196,6 +199,7 @@ public class PostController : ControllerBase {
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -222,6 +226,7 @@ public class PostController : ControllerBase {
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -249,6 +254,7 @@ public class PostController : ControllerBase {
 
        using var conn = DBConn.GetConn();
        conn.Open();
+       
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 

@@ -21,6 +21,7 @@ public class UserController : ControllerBase
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -67,6 +68,7 @@ public class UserController : ControllerBase
 
         using var conn = DBConn.GetConn();
         conn.Open();
+
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -109,6 +111,7 @@ public class UserController : ControllerBase
 
         using var conn = DBConn.GetConn();
         conn.Open();
+        
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var allUsers = new List<User>();

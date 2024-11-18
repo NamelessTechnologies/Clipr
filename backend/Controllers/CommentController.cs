@@ -16,6 +16,8 @@ public class CommentController : ControllerBase {
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM comment WHERE id = " + id;
 
+        using var conn = DBConn.GetConn();
+        conn.Open();
         // Create a command object
         using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
@@ -41,8 +43,6 @@ public class CommentController : ControllerBase {
     public IActionResult getAllComments() {
         var sql = "SELECT * FROM comment";
 
-        // Create a command object
-        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         conn.Open();
         var reader = cmd.ExecuteReader();
@@ -71,8 +71,6 @@ public class CommentController : ControllerBase {
     public IActionResult getCommentLikeDataTEMP() {
         var sql = "SELECT * FROM comment_like";
 
-        // Create a command object
-        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         conn.Open();
         var reader = cmd.ExecuteReader();

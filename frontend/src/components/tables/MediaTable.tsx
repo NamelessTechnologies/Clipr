@@ -3,12 +3,11 @@ import MediaModel from "../../types/Media";
 
 function MediaTable() {
   const [data, setData] = useState<MediaModel[]>([]);
-//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local = "http://localhost:5001/";
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchMedia = async () => {
     try {
-      const response = await fetch(local + "media/");
+      const response = await fetch(url + "media/");
       const json = await response.json();
       const medias: MediaModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

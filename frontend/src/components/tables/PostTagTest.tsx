@@ -3,12 +3,11 @@ import PostTagModel from "../../types/PostTag";
 
 function PostTagTable() {
   const [data, setData] = useState<PostTagModel[]>([]);
-//   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local = "http://localhost:5001/";
+  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPostTags = async () => {
     try {
-      const response = await fetch(local + "post_tag/temp");
+      const response = await fetch(url + "post_tag/temp");
       const json = await response.json();
       const postTags: PostTagModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

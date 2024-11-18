@@ -5,7 +5,6 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
-import EditProfileModal from "./EditProfileModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -26,18 +25,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
   const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-
-  // FOR SHOWING EDIT PROFILE MODAL
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const handleShowModal = () => {
-    setIsModalVisible(true);
-    // console.log(isModalVisible);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalVisible(false);
-  };
 
   useEffect(() => {
     const getUser = localStorage.getItem("user");
@@ -255,8 +242,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               <FaCrown className="text-yellow-600" />
             </div>
             <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-              onClick={handleShowModal}>
+              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
                 Edit Profile
               </button>
               <button className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
@@ -264,7 +250,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
             {/* <TripleFs></TripleFs> */}
-            {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
       ) : (
