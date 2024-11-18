@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MessageBox } from "../src/components/MessageBox.tsx";
+import { MessageBox } from "../../src/components/MessageBox.tsx";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 test("Message Box Exists", () => {
