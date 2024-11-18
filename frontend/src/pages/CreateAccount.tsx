@@ -107,6 +107,7 @@ const CreateAccount: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../");
         window.location.reload();
       } else {

@@ -32,6 +32,7 @@ const LogIn: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../");
         socket.connect();
         navigate("../Clipr/");

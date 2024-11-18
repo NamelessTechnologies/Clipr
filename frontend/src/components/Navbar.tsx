@@ -13,7 +13,7 @@ function NavBar() {
       return;
     }
     localStorage.removeItem("user");
-    // window.location.reload();
+    socket.disconnect();
   };
 
   useEffect(() => {
