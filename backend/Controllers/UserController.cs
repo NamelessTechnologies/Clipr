@@ -85,6 +85,7 @@ public class UserController : ControllerBase
         var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
