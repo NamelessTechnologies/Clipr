@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { CreateAccount } from "../src/pages/CreateAccount.tsx";
+import { CreateAccount } from "../../src/pages/CreateAccount.tsx";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 describe("Log In Page", () => {

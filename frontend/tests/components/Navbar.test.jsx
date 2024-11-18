@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { NavBar } from "../src/components/Navbar";
+import { NavBar } from "../../src/components/Navbar";
 import { MemoryRouter, BrowserRouter } from "react-router-dom"; // Use MemoryRouter to control the route history
 
 // Wrapper function to render NavBar with Router context
