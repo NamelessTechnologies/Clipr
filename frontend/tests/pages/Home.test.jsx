@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { Home } from "../src/pages/Home.tsx";
+import { Home } from "../../src/pages/Home.tsx";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 describe("logged out: shows main home page", () => {
