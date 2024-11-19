@@ -3,6 +3,7 @@ import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { uri } from "../App";
 
 const CreateAccount: React.FC = () => {
   shouldBeLoggedIn(false);
@@ -80,7 +81,7 @@ const CreateAccount: React.FC = () => {
     };
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/",
+        `${uri}user/`,
         {
           body: JSON.stringify(newUser),
           method: "POST",
@@ -96,7 +97,7 @@ const CreateAccount: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+            `${uri}email/` +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;

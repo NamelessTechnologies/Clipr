@@ -20,6 +20,8 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -55,7 +57,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("Error");
             }
         }
     }
@@ -65,6 +67,8 @@ public class UserController : ControllerBase
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -83,6 +87,7 @@ public class UserController : ControllerBase
         var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("username", user.Username);
@@ -105,6 +110,8 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+        
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var allUsers = new List<User>();
@@ -141,21 +148,24 @@ public class UserController : ControllerBase
     {
         // --- query list of follower IDs ---
         var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
+        Console.WriteLine(follower_query);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
         List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("No followers found.");
+            }
+
             while (rdr.Read())
             {
 
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
                 followerIDs.Add(rdr.GetInt32(0));
             }
         }
@@ -195,21 +205,23 @@ public class UserController : ControllerBase
     {
         // --- query list of IDs for following ---
         var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
+        Console.WriteLine(follower_query);
 
        using var conn = DBConn.GetConn();
+       conn.Open();
 
         using var cmd = new NpgsqlCommand(follower_query, conn);
 
         List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
-
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
                 followerIDs.Add(rdr.GetInt32(0));
             }
         }
@@ -251,6 +263,7 @@ public class UserController : ControllerBase
 
         try {
             using var conn = DBConn.GetConn();
+            conn.Open();
 
             using var cmd = new NpgsqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("from_id", unfollowQuery.User_1);
@@ -274,6 +287,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM post JOIN save ON save.post_id = post.post_id JOIN users ON save.user_id = users.user_id WHERE users.user_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -281,7 +295,7 @@ public class UserController : ControllerBase
 
         if (!reader.HasRows)
         {
-            return BadRequest("no data");
+            return NotFound("No saves found.");
         }
 
         while (reader.Read())
@@ -307,6 +321,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM save";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -314,7 +329,7 @@ public class UserController : ControllerBase
 
         if (!reader.HasRows)
         {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
         while (reader.Read())
@@ -336,6 +351,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -371,6 +387,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
         
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
 
@@ -410,6 +427,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
+       conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -446,7 +464,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("User not found.");
             }
         }
     }
@@ -458,6 +476,7 @@ public class UserController : ControllerBase
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         using (var rdr = cmd.ExecuteReader())
@@ -493,7 +512,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return Ok("Error");
+                return NotFound("User not found.");
             }
         }
     }
@@ -504,6 +523,7 @@ public class UserController : ControllerBase
         var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
         Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -511,13 +531,13 @@ public class UserController : ControllerBase
 
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("User not found.");
+            }
+
             while (rdr.Read())
             {
-
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
 
                 User singleUser = new User
                 {
@@ -539,6 +559,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM following WHERE from_id = " + id + " OR to_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -547,13 +568,15 @@ public class UserController : ControllerBase
 
         using (var rdr = cmd.ExecuteReader())
         {
+            if (!rdr.HasRows)
+            {
+                return NotFound("No friends found.");
+            }
+
             while (rdr.Read())
             {
 
-                if (!rdr.HasRows)
-                {
-                    return BadRequest("Error querying for user data.");
-                }
+                
                 if (rdr.GetInt32(0) == id)
                 {
                     allFollowingID.Add(rdr.GetInt32(1));
@@ -566,6 +589,11 @@ public class UserController : ControllerBase
         }
 
         var intersection = allFollowersID.Intersect(allFollowingID);
+
+        if (intersection.Count() == 0)
+        {
+            return NotFound("No friends found.");
+        }
 
         var allFriends = new List<User>();
         foreach (int friend_id in intersection)
@@ -618,6 +646,7 @@ public class UserController : ControllerBase
         var sql = "INSERT INTO following(from_id, to_id) VALUES (@from, @to)";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
         {
             cmd.Parameters.AddWithValue("from", pair.User_1);
@@ -638,6 +667,7 @@ public class UserController : ControllerBase
         var sql = "SELECT * FROM following WHERE from_id = " + pair.User_1 + " AND to_id = " + pair.User_2;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 

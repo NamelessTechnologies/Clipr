@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import PostModel from "../../types/Post";
+import { uri } from "../../App";
 
 function PostTable() {
   const [data, setData] = useState<PostModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(url + "post/");
+      const response = await fetch(uri + "post/");
       const json = await response.json();
       const posts: PostModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

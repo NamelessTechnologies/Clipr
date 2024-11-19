@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import shouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
+import { uri } from "../App";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
 
@@ -12,6 +13,7 @@ interface PartialUserModel {
 }
 function Search() {
   shouldBeLoggedIn(true);
+
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
   const [searchResults, setSearchResults] = useState<PartialUserModel[]>([]);
@@ -21,7 +23,7 @@ function Search() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/searchname/" + query;
+        const queryString = uri + 'searchname/' + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);

@@ -19,6 +19,7 @@ public class ConversationController : ControllerBase
         var sql = "INSERT INTO conversation (user_id, user_id_2) VALUES(@user_id, @user_id_2) returning id;";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", conversation.User_id);
             cmd.Parameters.AddWithValue("user_id_2", conversation.User_id_2);
@@ -36,7 +37,7 @@ public class ConversationController : ControllerBase
         var sql = "SELECT * FROM Message WHERE convo_id = (select id FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or"+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + "));";
 
         using var conn = DBConn.GetConn();
-
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -64,6 +65,8 @@ public class ConversationController : ControllerBase
         var sql = "select * FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or "+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + ");";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
         Conversation convo = new Conversation();
@@ -91,6 +94,8 @@ public class ConversationController : ControllerBase
 
         var sql = "INSERT INTO message (convo_id, content, datesent, user_id) VALUES (@convo_id, @content, @datesent, @user_id);";
         using var conn = DBConn.GetConn();
+        conn.Open();
+        
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("convo_id", message.Convo_id);
             cmd.Parameters.AddWithValue("content", message.Content);

@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { uri } from "../App";
 
 const LogIn: React.FC = () => {
-  shouldBeLoggedIn(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // const[data, setData] = useState<User>(); // Fetched data will be an array of json
-  const [message, setMessage] = useState("");
+    shouldBeLoggedIn(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    // const[data, setData] = useState<User>(); // Fetched data will be an array of json
+    const [message, setMessage] = useState("");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+
+
 
   const attemptLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       const queryString =
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+        `${uri}email/` +
         email;
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;
@@ -61,6 +64,7 @@ const LogIn: React.FC = () => {
           <input
             className="p-2 text-black mb-6 rounded-md"
             type="email"
+            placeholder="Email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -69,6 +73,7 @@ const LogIn: React.FC = () => {
           <input
             className="p-2 text-black mb-10 rounded-md"
             type="password"
+            placeholder="Password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}

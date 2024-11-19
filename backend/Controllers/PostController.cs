@@ -14,8 +14,11 @@ public class PostController : ControllerBase {
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
+        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+        
         // execute command
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -30,15 +33,17 @@ public class PostController : ControllerBase {
                 MediaType = reader.GetString(5)
             });
         } else {
-            return BadRequest("no data");
+            return NotFound("User not found/No posts.");
         }
     }
 
     [HttpGet]
     public IActionResult getAllPosts() {
         var sql = "SELECT * FROM post";
+        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -70,6 +75,7 @@ public class PostController : ControllerBase {
         var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", post.UserID);
@@ -87,6 +93,7 @@ public class PostController : ControllerBase {
         var sql = "SELECT * FROM temp_post WHERE temp_post_id = " + id;
 
         using var conn = DBConn.GetConn();
+        conn.Open();
 
         using var cmd = new NpgsqlCommand(sql, conn);
 
@@ -98,18 +105,18 @@ public class PostController : ControllerBase {
                 Content = reader.GetString(3)
             });
         } else {
-            return BadRequest("no data");
+            return NotFound("TempPost not found.");
         }
     }
 
     [HttpGet("/TEMP_post/")]
     public IActionResult getAllTEMP_Posts() {
 
-        // DatabaseConnection con1 = new DatabaseConnection();
-        // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM TEMP_Post";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -137,6 +144,8 @@ public class PostController : ControllerBase {
         var sql = "SELECT * FROM tag";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -162,6 +171,8 @@ public class PostController : ControllerBase {
         var sql = "SELECT * FROM likes";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -187,6 +198,8 @@ public class PostController : ControllerBase {
         var sql = "SELECT * FROM post_tag";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -212,6 +225,8 @@ public class PostController : ControllerBase {
         var sql = "SELECT * FROM media";
 
         using var conn = DBConn.GetConn();
+        conn.Open();
+
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
@@ -235,15 +250,18 @@ public class PostController : ControllerBase {
     [HttpGet("/TEMP_post/user_id/{id}")]
     public IActionResult getPostByUserId(int id) {
         var sql = "SELECT * FROM temp_post WHERE user_id = " + id;
+        Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
+       conn.Open();
+       
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
         var posts = new List<TEMP_Post>();
 
         if (!reader.HasRows) {
-            return BadRequest("no data");
+            return NotFound("No posts found.");
         }
 
         while (reader.Read()) {
