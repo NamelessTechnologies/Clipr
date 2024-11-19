@@ -3,6 +3,7 @@ import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
 import SearchBar from "./SearchBar";
+import { socket } from "../socket";
 
 function NavBar() {
   const [foundUser, setFoundUser] = useState<string>();
@@ -12,7 +13,8 @@ function NavBar() {
       return;
     }
     localStorage.removeItem("user");
-    // window.location.reload();
+    socket.disconnect();
+    window.location.reload();
   };
 
   useEffect(() => {

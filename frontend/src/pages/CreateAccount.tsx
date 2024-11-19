@@ -3,6 +3,7 @@ import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { socket } from "../socket";
 
 const CreateAccount: React.FC = () => {
   shouldBeLoggedIn(false);
@@ -106,6 +107,7 @@ const CreateAccount: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../");
         window.location.reload();
       } else {

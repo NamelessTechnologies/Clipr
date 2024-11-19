@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { socket } from "../socket";
 
 const LogIn: React.FC = () => {
   shouldBeLoggedIn(false);
@@ -31,6 +32,7 @@ const LogIn: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../");
         window.location.reload();
       } else {
