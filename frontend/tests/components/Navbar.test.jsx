@@ -53,7 +53,7 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     //Clicking on Tables
@@ -70,7 +70,7 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     //Clicking on Friends
@@ -87,7 +87,7 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     //Clicking on View Profile
@@ -104,7 +104,7 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     //Clicking on View Profile
@@ -125,11 +125,11 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByTestId("upload-link");
-    fireEvent.click(link)
+    fireEvent.click(link);
     expect(window.location.pathname).toBe("/Upload");
   });
 
@@ -140,9 +140,9 @@ describe("NavBar Component", () => {
     render(
       <BrowserRouter>
         <NavBar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByTestId("search-bar")).toBeInTheDocument();
-  })
+  });
 });

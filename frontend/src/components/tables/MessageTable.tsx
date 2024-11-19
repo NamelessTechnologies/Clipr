@@ -7,9 +7,7 @@ const MessageTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${uri}User/msg/all`,
-      );
+      const response = await fetch(`${uri}User/msg/all`);
       const json = (await response.json()) as MessageModel[];
       setData(json);
     } catch (error) {

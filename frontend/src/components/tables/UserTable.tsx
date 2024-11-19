@@ -5,12 +5,9 @@ import { uri } from "../../App";
 const UserTable = () => {
   const [data, setData] = useState<UserModel[]>([]); // Fetched data will be an array of json
 
-
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${uri}User/all`,
-      );
+      const response = await fetch(`${uri}User/all`);
       const json = (await response.json()) as UserModel[];
       setData(json);
     } catch (error) {

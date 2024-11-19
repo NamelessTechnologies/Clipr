@@ -28,7 +28,6 @@ function Friends() {
     }
   }, [userInfo]);
 
- 
   const fetchUsers = async () => {
     try {
       const url = uri + "User/friendsof/";
@@ -45,7 +44,7 @@ function Friends() {
           password: user.password,
           biography: user.biography,
           nickname: user.nickname,
-          pfp: user.pfp
+          pfp: user.pfp,
         };
         users.push(newUser);
       });

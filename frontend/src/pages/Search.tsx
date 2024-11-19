@@ -23,7 +23,7 @@ function Search() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = uri + 'searchname/' + query;
+        const queryString = uri + "searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);

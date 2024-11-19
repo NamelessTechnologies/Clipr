@@ -12,11 +12,11 @@ describe("logged out: shows main home page", () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(
-      screen.getByText("Doomscrolling has never been better...")
+      screen.getByText("Doomscrolling has never been better..."),
     ).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe("logged out: shows main home page", () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Login");
@@ -35,7 +35,7 @@ describe("logged out: shows main home page", () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Signup");
@@ -46,7 +46,7 @@ describe("logged out: shows main home page", () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Login");
@@ -58,7 +58,7 @@ describe("logged out: shows main home page", () => {
     render(
       <BrowserRouter>
         <Home />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Signup");

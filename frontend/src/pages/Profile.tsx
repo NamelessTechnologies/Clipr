@@ -15,9 +15,7 @@ function Profile() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString =
-          uri + "User/" +
-          profile_id;
+        const queryString = uri + "User/" + profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;
         setUserData(json);
@@ -39,9 +37,7 @@ function Profile() {
             profile_id={profile_id}
             userData={userData}
           ></ProfileHeader>
-          <ProfilePost 
-            userData={userData}
-          ></ProfilePost>
+          <ProfilePost userData={userData}></ProfilePost>
         </div>
       ) : (
         <div>Error: Profile Not Found</div>

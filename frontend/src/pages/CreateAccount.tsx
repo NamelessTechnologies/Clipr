@@ -3,6 +3,7 @@ import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { socket } from "../socket";
 import { uri } from "../App";
 
 const CreateAccount: React.FC = () => {
@@ -33,7 +34,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
       );
       valid = false;
     }
@@ -80,25 +81,20 @@ const CreateAccount: React.FC = () => {
       Pfp: pfp,
     };
     try {
-      const response = await fetch(
-        `${uri}user/`,
-        {
-          body: JSON.stringify(newUser),
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      );
+      const response = await fetch(`${uri}user/`, {
+        body: JSON.stringify(newUser),
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+      });
       console.log(response);
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
         try {
-          const queryString =
-            `${uri}email/` +
-            email;
+          const queryString = `${uri}email/` + email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;
           localStorage.setItem("user", JSON.stringify(json));
@@ -107,6 +103,7 @@ const CreateAccount: React.FC = () => {
         } catch (error) {
           console.log(error);
         }
+        socket.connect();
         navigate("../");
         window.location.reload();
       } else {
