@@ -1,24 +1,15 @@
 import { useEffect, useState } from "react";
 import UserModel from "../../types/User";
+import { uri } from "../../App";
 
 const UserTable = () => {
   const [data, setData] = useState<UserModel[]>([]); // Fetched data will be an array of json
 
-  // const handleChange = async () => {
-  //   try {
-  //       const response = await fetch('https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/1');
-  //       const json = await response.json() as User;
-  //       setData(json);
-
-  //     } catch (error) {
-  //       console.error(error);
-  //       }
-  // };
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/all",
+        `${uri}User/all`,
       );
       const json = (await response.json()) as UserModel[];
       setData(json);

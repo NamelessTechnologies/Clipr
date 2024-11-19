@@ -4,6 +4,7 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
 import ProfilePost from "../components/profile/ProfilePost";
+import { uri } from "../App";
 
 function Profile() {
   shouldBeLoggedIn(true);
@@ -15,7 +16,7 @@ function Profile() {
     async function fetchData() {
       try {
         const queryString =
-          "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/" +
+          uri + "User/" +
           profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;

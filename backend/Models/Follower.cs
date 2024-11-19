@@ -1,12 +1,19 @@
-namespace backend.Models;
+using System.Text.Json.Serialization;
 
-public class Follower
+namespace backend.Models
 {
-    public int? UserID { get; set; }
+    public class Follower
+    {
+        [JsonPropertyName("userID")]
+        public int? UserID { get; set; }
 
-    public string? Username { get; set; }
+        [JsonPropertyName("username")]
+        public string? Username { get; set; }
 
-    public string? Nickname { get; set; }
+        [JsonPropertyName("nickname")]
+        public string? Nickname { get; set; }
 
-    public string? PFP_URL { get; set; }
+        [JsonPropertyName("pfP_URL")]
+        public string? PFP_URL { get; set; }
+    }
 }

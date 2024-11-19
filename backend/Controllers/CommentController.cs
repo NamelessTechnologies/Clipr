@@ -9,10 +9,6 @@ namespace backend.Controllers;
 [Route("[controller]")]
 
 public class CommentController : ControllerBase {
-    private NpgsqlConnection conn;
-    public CommentController(){
-        conn = DBConn.GetConn();
-    }
 
     [HttpGet("{id}")]
     public IActionResult getComment(int id) {
@@ -20,7 +16,8 @@ public class CommentController : ControllerBase {
         // Define your SQL query (e.g., retrieving a single value from a specific column)
         var sql = "SELECT * FROM comment WHERE id = " + id;
 
-        // Create a command object
+        using var conn = DBConn.GetConn();
+        conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var reader = cmd.ExecuteReader();
@@ -29,13 +26,13 @@ public class CommentController : ControllerBase {
         if (reader.Read()) {
             return Ok(new Comment {
                 ID = reader.GetInt32(0),
-                ParentID = reader.GetInt32(1),
+                ParentID = reader.IsDBNull(reader.GetOrdinal("parent_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_id")),
                 PostID = reader.GetInt32(2),
                 UserID = reader.GetInt32(3),
                 Content = reader.GetString(4)
             });
         }  else {
-            return BadRequest("no data");
+            return NotFound("User not found.");
         }
 
     }
@@ -43,7 +40,9 @@ public class CommentController : ControllerBase {
     public IActionResult getAllComments() {
         var sql = "SELECT * FROM comment";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
+        conn.Open();
         var reader = cmd.ExecuteReader();
 
         var comments = new List<Comment>();
@@ -70,7 +69,9 @@ public class CommentController : ControllerBase {
     public IActionResult getCommentLikeDataTEMP() {
         var sql = "SELECT * FROM comment_like";
 
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
+        conn.Open();
         var reader = cmd.ExecuteReader();
 
         var commentLikes = new List<Comment_Like_Temp>();

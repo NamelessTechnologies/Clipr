@@ -4,10 +4,10 @@ import MessageModel from "../types/Message";
 import { MessageBox } from "../components/MessageBox";
 import shouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
+import { uri } from "../App";
 
 const Messages: React.FC = () => {
   shouldBeLoggedIn(true);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
@@ -26,7 +26,7 @@ const Messages: React.FC = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          url + `conversation?User_1=${userID}&User_2=${secondUserID}`
+          uri + `conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
         const messages: MessageModel[] = [];
@@ -49,7 +49,8 @@ const Messages: React.FC = () => {
       }
     };
     fetchMessages();
-  }, [secondUserID, userID]);
+  }, []);
+
 
   // saves message sent by current user in database
   const postMessage = async () => {
@@ -61,7 +62,7 @@ const Messages: React.FC = () => {
     };
 
     try {
-      await fetch(url + "conversation/message", {
+      await fetch(uri + "conversation/message", {
         body: JSON.stringify(newMessage),
         method: "POST",
         headers: {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 import { Link } from "react-router-dom";
+import { uri } from "../App";
 
 const CreateAccount2: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ const CreateAccount2: React.FC = () => {
     };
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/",
+        `${uri}user/`,
         {
           body: JSON.stringify(newUser),
           method: "POST",

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { uri } from "../App";
 // import User from '../types/User';
 
 interface PostContent {
@@ -6,11 +7,11 @@ interface PostContent {
 }
 
 const CreatePost: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [post, setPost] = useState<PostContent>({ content: "" });
-  const [currentUser, setCurrentUser] = useState(
+    const [title, setTitle] = useState("");
+    const [post, setPost] = useState<PostContent>({ content: "" });
+    const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("user") || "",
-  );
+    );
   let userInfo = JSON.parse(currentUser);
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +40,7 @@ const CreatePost: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/post/",
+        uri + "post/",
         {
           body: JSON.stringify(newPost),
           method: "POST",

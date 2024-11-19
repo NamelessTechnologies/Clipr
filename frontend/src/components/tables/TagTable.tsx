@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import TagModel from "../../types/Tag";
+import { uri } from "../../App";
 
 function TagTable() {
   const [data, setData] = useState<TagModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-
   const fetchTags = async () => {
     try {
-      const response = await fetch(url + "tag/temp");
+      const response = await fetch(uri + "tag/temp");
       const json = await response.json();
       const tags: TagModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

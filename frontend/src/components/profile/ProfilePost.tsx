@@ -6,21 +6,19 @@ import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import ConversationModel from "../../types/Conversation";
 import PostModel from "../../types/Post";
+import { uri } from "../../App";
 
 function ProfilePost(props: { userData: UserModel }) {
     shouldBeLoggedIn(true);
     
     const [post, setPost] = useState<PostModel[]>();
-    
-    // const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-    const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
     useEffect(() => {
         console.log('hi');
         const fetchPosts = async () => {
             try {
                 const userID = props.userData.user_id;
-                const response = await fetch(url + `TEMP_post/user_id/${userID}`);
+                const response = await fetch(uri + `TEMP_post/user_id/${userID}`);
                 const json = await response.json();
             
                 const posts: PostModel[] = [];

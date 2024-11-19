@@ -3,6 +3,7 @@ import UserModel from "../types/User";
 import ConversationModel from "../types/Conversation";
 import { useNavigate } from "react-router-dom";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { uri } from "../App";
 
 const SetReceiver: React.FC = () => {
   shouldBeLoggedIn(true);
@@ -10,16 +11,15 @@ const SetReceiver: React.FC = () => {
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
   const navigate = useNavigate();
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const queryString = url + "username/" + receiver;
+    const queryString = uri + "username/" + receiver;
     const response = await fetch(queryString);
     const json = (await response.json()) as UserModel;
 
     const queryString2 =
-      url +
+      uri +
       "conversation/convoid?User_1=" +
       userInfo["user_id"] +
       "&User_2=" +
@@ -37,7 +37,7 @@ const SetReceiver: React.FC = () => {
           user_id: userInfo["user_id"],
           user_id_2: receiverid,
         };
-        const response = await fetch(url + "conversation/", {
+        const response = await fetch(uri + "conversation/", {
           body: JSON.stringify(newConvo),
           method: "POST",
           headers: {
