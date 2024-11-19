@@ -20,8 +20,16 @@ const Messages: React.FC = () => {
   const secondUser = location.state;
   const secondUserID = location.state[1];
 
+  const convoID = secondUser[2];
+  const [incomingMessage, setIncomingMessage] = useState<MessageModel>();
+
   const scrollToBottom = useRef<HTMLDivElement | null>(null);
 
+  socket.on("recieve-message", (message: MessageModel) => {
+    setIncomingMessage(message);
+  });
+
+  //Querying All Messages
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -41,7 +49,6 @@ const Messages: React.FC = () => {
           };
           messages.push(NewMessage);
         });
-        console.log("hi");
         setMessages(messages);
       } catch (error) {
         console.error(error);
@@ -49,8 +56,19 @@ const Messages: React.FC = () => {
       }
     };
     fetchMessages();
-  }, []);
+  }, [secondUserID, userID]);
 
+  //On Message Recieved via Websocket
+  useEffect(() => {
+    if (!incomingMessage) {
+      return;
+    }
+    if (incomingMessage?.convo_id === convoID) {
+      const newArray = messages;
+      newArray.push(incomingMessage);
+      setMessages(newArray);
+    }
+  }, [incomingMessage]);
 
   // saves message sent by current user in database
   const postMessage = async () => {
@@ -76,10 +94,10 @@ const Messages: React.FC = () => {
     }
   };
 
+  //Full Lifecycle of sending message to both websocket and server + updating the front end on message sent
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      //Sending the message to both websocket and server
       const recentMessage = {
         convo_id: secondUser[2],
         content: message,

@@ -12,7 +12,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <CreateAccount />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Welcome to Clipr")).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <CreateAccount />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Submit")).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <CreateAccount />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Log in")).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <CreateAccount />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Log in");

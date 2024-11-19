@@ -6,7 +6,7 @@ test("Message Box Exists", () => {
   render(
     <BrowserRouter>
       <MessageBox username="Skibidi" content="He Getting Rizzy!!!!!!" />;
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   expect(screen.getByText("He Getting Rizzy!!!!!!")).toBeInTheDocument();

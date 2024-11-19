@@ -20,17 +20,14 @@ const CreateAccount2: React.FC = () => {
       Pfp: pfp,
     };
     try {
-      const response = await fetch(
-        `${uri}user/`,
-        {
-          body: JSON.stringify(newUser),
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
+      const response = await fetch(`${uri}user/`, {
+        body: JSON.stringify(newUser),
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8",
         },
-      );
+      });
       console.log(response);
       if (response.status === 200) {
         alert("Success!");

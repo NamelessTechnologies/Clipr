@@ -9,12 +9,12 @@ const EditProfileForm: React.FC = () => {
   shouldBeLoggedIn(true);
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
-  const [username, setUsername] = useState(userInfo['username']);
-  const [email, setEmail] = useState(userInfo['email']);
-  const [password, setPassword] = useState(userInfo['password']);
-  const [biography, setBiography] = useState(userInfo['biography']);
-  const [nickname, setNickname] = useState(userInfo['nickname']);
-  const [pfp, setPfp] = useState(userInfo['pfp']);
+  const [username, setUsername] = useState(userInfo["username"]);
+  const [email, setEmail] = useState(userInfo["email"]);
+  const [password, setPassword] = useState(userInfo["password"]);
+  const [biography, setBiography] = useState(userInfo["biography"]);
+  const [nickname, setNickname] = useState(userInfo["nickname"]);
+  const [pfp, setPfp] = useState(userInfo["pfp"]);
 
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
@@ -74,7 +74,7 @@ const EditProfileForm: React.FC = () => {
     }
 
     const newUser = {
-      User_id: userInfo['user_id'],
+      User_id: userInfo["user_id"],
       Username: username,
       Email: email,
       Password: password,
@@ -83,26 +83,21 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp,
     };
     try {
-        console.log(JSON.stringify(newUser));
-      const response = await fetch(
-        uri+"user/",
-        {
-          body: JSON.stringify(newUser),
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
+      console.log(JSON.stringify(newUser));
+      const response = await fetch(uri + "user/", {
+        body: JSON.stringify(newUser),
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8",
         },
-      );
+      });
       console.log(response);
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
         try {
-          const queryString =
-            uri + "email/" +
-            email;
+          const queryString = uri + "email/" + email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;
           localStorage.setItem("user", JSON.stringify(json));
@@ -130,7 +125,7 @@ const EditProfileForm: React.FC = () => {
       >
         <img src={stelle} className="w-28 h-28 mx-auto"></img>
         <div className="w-full text-amber-500 text-center text-4xl mb-6">
-          Edit {userInfo['username']}'s Profile
+          Edit {userInfo["username"]}'s Profile
         </div>
 
         <div className="mb-4">

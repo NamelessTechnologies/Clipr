@@ -17,9 +17,9 @@ export default function ModalBox({ onClose }: ModalProps) {
             &#10005;
           </button>
         </nav>
-       
-       <EditProfileForm />
+
+        <EditProfileForm />
       </div>
     </div>
   );
-};
+}

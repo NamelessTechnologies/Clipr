@@ -6,23 +6,19 @@ import { socket } from "../socket";
 import { uri } from "../App";
 
 const LogIn: React.FC = () => {
-    shouldBeLoggedIn(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    // const[data, setData] = useState<User>(); // Fetched data will be an array of json
-    const [message, setMessage] = useState("");
+  shouldBeLoggedIn(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const[data, setData] = useState<User>(); // Fetched data will be an array of json
+  const [message, setMessage] = useState("");
 
-    const navigate = useNavigate();
-
-
+  const navigate = useNavigate();
 
   const attemptLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const queryString =
-        `${uri}email/` +
-        email;
+      const queryString = `${uri}email/` + email;
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;
 

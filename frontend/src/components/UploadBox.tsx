@@ -7,11 +7,11 @@ interface PostContent {
 }
 
 const CreatePost: React.FC = () => {
-    const [title, setTitle] = useState("");
-    const [post, setPost] = useState<PostContent>({ content: "" });
-    const [currentUser, setCurrentUser] = useState(
+  const [title, setTitle] = useState("");
+  const [post, setPost] = useState<PostContent>({ content: "" });
+  const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("user") || "",
-    );
+  );
   let userInfo = JSON.parse(currentUser);
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,17 +39,14 @@ const CreatePost: React.FC = () => {
     const newPost = { UserID: uid, Title: title, Content: post.content };
 
     try {
-      const response = await fetch(
-        uri + "post/",
-        {
-          body: JSON.stringify(newPost),
-          method: "POST",
-          headers: {
-            Accept: "application/json, text/plain",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
+      const response = await fetch(uri + "post/", {
+        body: JSON.stringify(newPost),
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8",
         },
-      );
+      });
       console.log(response);
       if (response.status === 200) {
         alert("Success!");

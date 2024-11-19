@@ -12,7 +12,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Log In To Account")).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Log In")).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Sign Up")).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const link = screen.getByText("Sign Up");
@@ -54,7 +54,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Email:")).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText("Password:")).toBeInTheDocument();
@@ -74,12 +74,10 @@ describe("Log In Page", () => {
     render(
       <BrowserRouter>
         <LogIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByPlaceholderText(/Email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Password/i)).toBeInTheDocument();
   });
-
-  
 });

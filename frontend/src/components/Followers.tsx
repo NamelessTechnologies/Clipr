@@ -2,18 +2,10 @@
 import shouldBeLoggedIn from "./Authenticate";
 
 function Followers() {
-    console.log("hey");
-    shouldBeLoggedIn(true);
+  console.log("hey");
+  shouldBeLoggedIn(true);
 
-    
-
-
-
-    return (
-        <div>
-
-        </div>
-    );
+  return <div></div>;
 }
 
 export default Followers;

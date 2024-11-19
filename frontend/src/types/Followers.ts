@@ -1,3 +1,1 @@
-export default interface FollowersModel {
-    
-}
+export default interface FollowersModel {}

@@ -5,12 +5,8 @@ const io = require("socket.io")(3000, {
 });
 
 io.on("connection", (socket) => {
-  const userId = socket.handshake.query.userId;
-  console.log(userId);
+  const userID = socket.handshake.query.userId;
   socket.on("send-message", (message) => {
-    if (message.user_id != userId) {
-      io.emit("recieve-message", message);
-    }
-    console.log(message);
+    socket.broadcast.emit("recieve-message", message);
   });
 });

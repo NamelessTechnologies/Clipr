@@ -7,9 +7,7 @@ const ConversationTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${uri}User/convo/all`,
-      );
+      const response = await fetch(`${uri}User/convo/all`);
       const json = (await response.json()) as ConversationModel[];
       setData(json);
     } catch (error) {
