@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 const URL =
   process.env.NODE_ENV === "production"
     ? undefined
-    : "https://clipr-kih8.vercel.app/";
+    : "https://clipr-kih8.vercel.app";
 
 const currentUser = localStorage.getItem("user");
 let userID;
