@@ -9,8 +9,8 @@ import { uri } from "../App";
 const Messages: React.FC = () => {
   shouldBeLoggedIn(true);
 
-  const [currentUser] = useState(localStorage.getItem("user") || "");
-  const userInfo = JSON.parse(currentUser);
+  const currentUser = localStorage.getItem("user");
+  const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const userID = userInfo["user_id"] as number;
 
   const [message, setMessage] = useState("");
@@ -19,68 +19,65 @@ const Messages: React.FC = () => {
   const location = useLocation();
   const secondUser = location.state;
   const secondUserID = location.state[1];
-
   const convoID = secondUser[2];
   const [incomingMessage, setIncomingMessage] = useState<MessageModel>();
 
   const scrollToBottom = useRef<HTMLDivElement | null>(null);
 
-  socket.on("recieve-message", (message: MessageModel) => {
-    setIncomingMessage(message);
-  });
+  useEffect(() => {
+    const handleMessage = (message: MessageModel) => {
+      setIncomingMessage(message);
+    };
 
-  //Querying All Messages
+    socket.on("recieve-message", handleMessage);
+
+    return () => {
+      socket.off("recieve-message", handleMessage);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          uri + `conversation?User_1=${userID}&User_2=${secondUserID}`
+          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
-        const messages: MessageModel[] = [];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        json.forEach((media: any) => {
-          const NewMessage: MessageModel = {
-            id: media.id,
-            convo_id: media.convo_id,
-            content: media.content,
-            datesent: media.datesent,
-            user_id: media.user_id,
-          };
-          messages.push(NewMessage);
-        });
+        const messages: MessageModel[] = json.map((media: MessageModel) => ({
+          id: media.id,
+          convo_id: media.convo_id,
+          content: media.content,
+          datesent: media.datesent,
+          user_id: media.user_id,
+        }));
         setMessages(messages);
       } catch (error) {
-        console.error(error);
-        throw new Error("Error getting messages for convo");
+        console.error("Error fetching messages:", error);
       }
     };
     fetchMessages();
   }, [secondUserID, userID]);
 
-  //On Message Recieved via Websocket
   useEffect(() => {
-    if (!incomingMessage) {
-      return;
+    if (incomingMessage && incomingMessage.convo_id === convoID) {
+      setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
-    if (incomingMessage?.convo_id === convoID) {
-      const newArray = messages;
-      newArray.push(incomingMessage);
-      setMessages(newArray);
-    }
-  }, [incomingMessage]);
+  }, [incomingMessage, convoID]);
 
-  // saves message sent by current user in database
+  useEffect(() => {
+    scrollToBottom.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const postMessage = async () => {
     const newMessage = {
-      Convo_id: secondUser[2],
+      Convo_id: convoID,
       Content: message,
       Datesent: new Date(),
       User_id: userID,
     };
 
     try {
-      await fetch(uri + "conversation/message", {
+      await fetch(`${uri}conversation/message`, {
         body: JSON.stringify(newMessage),
         method: "POST",
         headers: {
@@ -89,17 +86,15 @@ const Messages: React.FC = () => {
         },
       });
     } catch (error) {
-      alert(error);
-      console.error(error);
+      console.error("Error posting message:", error);
     }
   };
 
-  //Full Lifecycle of sending message to both websocket and server + updating the front end on message sent
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const recentMessage = {
-        convo_id: secondUser[2],
+        convo_id: convoID,
         content: message,
         datesent: new Date(),
         user_id: userID,
@@ -107,38 +102,32 @@ const Messages: React.FC = () => {
       socket.emit("send-message", recentMessage);
       await postMessage();
       setMessage("");
-
-      //Dynamically loading the new data
-      const newArray = messages;
-      newArray.push(recentMessage);
-      setMessages(newArray);
+      setMessages((prevMessages) => [...prevMessages, recentMessage]);
     } catch (error) {
-      console.error("Error in executing functions:", error);
+      console.error("Error sending message:", error);
     }
-  };
-
-  const goDown = () => {
-    scrollToBottom.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
       <button
         className="fixed bottom-5 right-5 rounded-xl bg-slate-400 p-5"
-        onClick={goDown}
+        onClick={() =>
+          scrollToBottom.current?.scrollIntoView({ behavior: "smooth" })
+        }
       >
         Jump To Recent
       </button>
       <div className="w-screen p-5 pl-20">
         <h1 className="text-white text-3xl">{secondUser[0]}</h1>
-        {/* <h1 className="text-white text-3xl">{"convoid " + second_user[2]}</h1>                 */}
       </div>
 
-      <div className=" text-white bg-navbar flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5">
+      <div className="text-white bg-navbar flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5">
         {messages.map((msg) => (
           <MessageBox
+            key={msg.id}
             username={
-              msg.user_id == userInfo["user_id"]
+              msg.user_id === userInfo["user_id"]
                 ? userInfo["username"]
                 : secondUser[0]
             }
@@ -156,15 +145,14 @@ const Messages: React.FC = () => {
             className="p-2 rounded-xl"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-          ></input>
+          />
         </div>
         <div className="bg-blue-100 rounded-md">
           <button
             className="p-2 bg-navbar text-white border-white border-2"
             type="submit"
           >
-            {" "}
-            Send Message{" "}
+            Send Message
           </button>
         </div>
       </form>
