@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import shouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { uri } from "../App";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
@@ -13,6 +14,7 @@ interface PartialUserModel {
 }
 function Search() {
   shouldBeLoggedIn(true);
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
@@ -42,7 +44,7 @@ function Search() {
   }, [query]);
 
   const goToTheProfile = (index: string) => {
-    window.location.href = `/Profile?profile_id=${index}`;
+    navigate(`/Profile?profile_id=${index}`);
   };
 
   return (
