@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ConversationModel from "../../types/Conversation";
+import { uri } from "../../App";
 
 const ConversationTable = () => {
   const [data, setData] = useState<ConversationModel[]>([]);
@@ -7,7 +8,7 @@ const ConversationTable = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/convo/all",
+        `${uri}User/convo/all`,
       );
       const json = (await response.json()) as ConversationModel[];
       setData(json);

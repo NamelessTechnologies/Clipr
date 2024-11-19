@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { uri } from "../App";
 // import User from '../types/User';
 
 interface PostContent {
@@ -6,8 +7,6 @@ interface PostContent {
 }
 
 const CreatePost: React.FC = () => {
-    //   const hosted_url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-    const local_url = "http://localhost:5001/"
     const [title, setTitle] = useState("");
     const [post, setPost] = useState<PostContent>({ content: "" });
     const [currentUser, setCurrentUser] = useState(
@@ -41,7 +40,7 @@ const CreatePost: React.FC = () => {
 
     try {
       const response = await fetch(
-        local_url + "post/",
+        uri + "post/",
         {
           body: JSON.stringify(newPost),
           method: "POST",

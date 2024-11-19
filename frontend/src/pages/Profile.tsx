@@ -4,19 +4,19 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
 import ProfilePost from "../components/profile/ProfilePost";
+import { uri } from "../App";
 
 function Profile() {
   shouldBeLoggedIn(true);
   const [searchParams] = useSearchParams();
   const profile_id = searchParams.get("profile_id") as string;
   const [userData, setUserData] = useState<UserModel>();
-  const local = "http://localhost:5001/";
 
   useEffect(() => {
     async function fetchData() {
       try {
         const queryString =
-          local + "User/" +
+          uri + "User/" +
           profile_id;
         const response = await fetch(queryString);
         const json = (await response.json()) as UserModel;

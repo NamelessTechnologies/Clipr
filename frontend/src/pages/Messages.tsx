@@ -3,10 +3,10 @@ import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
 import { MessageBox } from "../components/MessageBox";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { uri } from "../App";
 
 const Messages: React.FC = () => {
   shouldBeLoggedIn(true);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
@@ -28,7 +28,7 @@ const Messages: React.FC = () => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        url +
+        uri +
           `conversation?User_1=${userInfo["user_id"]}&User_2=${second_user[1]}`
       );
       const json = await response.json();
@@ -61,7 +61,7 @@ const Messages: React.FC = () => {
     };
 
     try {
-      const response = await fetch(url + "conversation/message", {
+      const response = await fetch(uri + "conversation/message", {
         body: JSON.stringify(newMessage),
         method: "POST",
         headers: {

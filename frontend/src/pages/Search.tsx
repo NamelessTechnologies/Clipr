@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import shouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
+import { uri } from "../App";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
 
@@ -12,19 +13,17 @@ interface PartialUserModel {
 }
 function Search() {
   shouldBeLoggedIn(true);
-  //   const hosted_url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-  const local_url = "http://localhost:5001/"
+
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
   const [searchResults, setSearchResults] = useState<PartialUserModel[]>([]);
   const [foundResults, setFoundResults] = useState<boolean>(false);
   // const [category, setCategory] = useState<Category>(); Later
-  const local = "http://localhost:5001/";
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const queryString = local_url + query;
+        const queryString = uri + 'searchname/' + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);

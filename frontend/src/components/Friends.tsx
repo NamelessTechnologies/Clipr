@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import shouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
+import { uri } from "../App";
 
 function Friends() {
   shouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const hosted = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-//   const local_url = "http://localhost:5001/"
 
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
@@ -32,7 +31,7 @@ function Friends() {
  
   const fetchUsers = async () => {
     try {
-      const url = hosted + "User/friendsof/";
+      const url = uri + "User/friendsof/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
 

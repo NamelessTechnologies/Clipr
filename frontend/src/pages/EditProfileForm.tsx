@@ -3,9 +3,7 @@ import stelle from "../assets/Profile.png";
 // import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import shouldBeLoggedIn from "../components/Authenticate";
-
-const hosted_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-const local_link = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+import { uri } from "../App";
 
 const EditProfileForm: React.FC = () => {
   shouldBeLoggedIn(true);
@@ -87,7 +85,7 @@ const EditProfileForm: React.FC = () => {
     try {
         console.log(JSON.stringify(newUser));
       const response = await fetch(
-        local_link+"user/",
+        uri+"user/",
         {
           body: JSON.stringify(newUser),
           method: "PUT",
@@ -103,7 +101,7 @@ const EditProfileForm: React.FC = () => {
         resetErrorMessages();
         try {
           const queryString =
-            hosted_link+ "email/" +
+            uri + "email/" +
             email;
           const response = await fetch(queryString);
           const json = (await response.json()) as UserModel;

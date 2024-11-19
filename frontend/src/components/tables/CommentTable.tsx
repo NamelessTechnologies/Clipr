@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import CommentModel from "../../types/Comment";
+import { uri } from "../../App";
 
 function CommentTable() {
   const [data, setData] = useState<CommentModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(url + "comment/");
+      const response = await fetch(uri + "comment/");
       const json = await response.json();
       const comments: CommentModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import LikeModel from "../../types/Like";
+import { uri } from "../../App";
 
 function LikeTable() {
   const [data, setData] = useState<LikeModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchLikes = async () => {
     try {
-      const response = await fetch(url + "likes/temp");
+      const response = await fetch(uri + "likes/temp");
       const json = await response.json();
       const likes: LikeModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

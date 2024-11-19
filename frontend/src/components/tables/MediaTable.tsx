@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import MediaModel from "../../types/Media";
+import { uri } from "../../App";
 
 function MediaTable() {
   const [data, setData] = useState<MediaModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   const fetchMedia = async () => {
     try {
-      const response = await fetch(url + "media/");
+      const response = await fetch(uri + "media/");
       const json = await response.json();
       const medias: MediaModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

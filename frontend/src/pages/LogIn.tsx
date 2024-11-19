@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import shouldBeLoggedIn from "../components/Authenticate";
+import { uri } from "../App";
 
 const LogIn: React.FC = () => {
     shouldBeLoggedIn(false);
@@ -11,8 +12,7 @@ const LogIn: React.FC = () => {
     const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
-//   const hosted_url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-    const local_url = "http://localhost:5001/"
+
 
 
   const attemptLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +20,7 @@ const LogIn: React.FC = () => {
 
     try {
       const queryString =
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/email/" +
+        `${uri}email/` +
         email;
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;

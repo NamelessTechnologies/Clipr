@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MessageModel from "../../types/Message";
+import { uri } from "../../App";
 
 const MessageTable = () => {
   const [data, setData] = useState<MessageModel[]>([]);
@@ -7,7 +8,7 @@ const MessageTable = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/msg/all",
+        `${uri}User/msg/all`,
       );
       const json = (await response.json()) as MessageModel[];
       setData(json);

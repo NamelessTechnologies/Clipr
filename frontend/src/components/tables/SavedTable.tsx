@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import SavedModel from "../../types/Saved";
+import { uri } from "../../App";
 
 function SavedTable() {
   const [data, setData] = useState<SavedModel[]>([]);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
-
   const fetchSaves = async () => {
     try {
-      const response = await fetch(url + "saved/temp");
+      const response = await fetch(uri + "saved/temp");
       const json = await response.json();
       const saves: SavedModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

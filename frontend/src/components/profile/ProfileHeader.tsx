@@ -5,6 +5,7 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
+import { uri } from "../../App";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -24,7 +25,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   // FOR NAVIGATING TO MESSAGES PAGE
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
-  const url = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 
   useEffect(() => {
     const getUser = localStorage.getItem("user");
@@ -44,7 +44,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
+        let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;;
         let response = await fetch(queryString);
         let json = await response.json();
         if (json.user_1 == -1) {
@@ -52,7 +52,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         } else {
           setUserFollwingProfile(true);
         }
-        queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+        queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
         response = await fetch(queryString);
         json = await response.json();
         if (json.user_1 == -1) {
@@ -94,7 +94,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     if (status === "Friends") {
       // unfollow profileID
       setStatus("Follow Back");
-      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",
@@ -115,7 +115,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
+      const queryString = `${uri}User/followuser`;
       console.log(queryString);
       try {
         const response = await fetch(queryString, {
@@ -138,7 +138,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_1: userID,
         User_2: profileID,
       };
-      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/User/followuser`;
+      const queryString = `${uri}User/followuser`;
       try {
         const response = await fetch(queryString, {
           body: JSON.stringify(followBody),
@@ -156,7 +156,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     } else if (status === "Following") {
       // unfollow profileID
       setStatus("Follow");
-      const queryString = `https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/user/following?User_1=${userID}&User_2=${profileID}`;
+      const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
         const response = await fetch(queryString, {
           method: "DELETE",
@@ -174,11 +174,11 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   };
 
   const NavigateToMessagePage = async () => {
-    const queryString = url + "username/" + props.userData.username;
+    const queryString = uri + "username/" + props.userData.username;
     const response = await fetch(queryString);
     const json = (await response.json()) as UserModel;
     const queryString2 =
-      url +
+      uri +
       "conversation/convoid?User_1=" +
       userInfo["user_id"] +
       "&User_2=" +
@@ -194,7 +194,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           user_id: userID,
           user_id_2: profileID,
         };
-        const response = await fetch(url + "conversation/", {
+        const response = await fetch(uri + "conversation/", {
           body: JSON.stringify(newConvo),
           method: "POST",
           headers: {
