@@ -21,22 +21,16 @@ app.UseCors(builder =>
     builder.WithOrigins("http://localhost:5173")   
            .AllowAnyHeader()
            .AllowAnyMethod();
-    builder.WithOrigins("http://localhost:5173/Clipr/")   
-           .AllowAnyHeader()
-           .AllowAnyMethod();
     builder.WithOrigins("http://127.0.0.1:5173")   
            .AllowAnyHeader()
            .AllowAnyMethod();
-    builder.WithOrigins("https://namelesstechnologies.github.io")    // for deployed site
+    builder.WithOrigins("https://clipr.vercel.app")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
-    builder.WithOrigins("https://clipr.vercel.app/")    // for deployed site
+    builder.WithOrigins("https://clipr-danielpasions-projects.vercel.app")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
-    builder.WithOrigins("https://clipr-danielpasions-projects.vercel.app/")    // for deployed site
-           .AllowAnyHeader()
-           .AllowAnyMethod();
-    builder.WithOrigins("hhttps://clipr-git-main-danielpasions-projects.vercel.app/")    // for deployed site
+    builder.WithOrigins("https://clipr-git-main-danielpasions-projects.vercel.app")    // for deployed site
            .AllowAnyHeader()
            .AllowAnyMethod();
 });
