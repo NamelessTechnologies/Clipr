@@ -13,7 +13,6 @@ import shouldBeLoggedIn from "../components/Authenticate";
 
 function Tables() {
   shouldBeLoggedIn(true);
-  console.log("hi");
   return (
     <div className="flex">
       <div className="flex-1 p-5">

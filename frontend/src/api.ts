@@ -16,7 +16,6 @@ export const fetchPosts = async (): Promise<Post[]> => {
         mediaType: post.mediaType,
       };
       posts.push(NewPost);
-      // console.log("title: " + post.title);
     });
     return posts;
   } catch (error) {

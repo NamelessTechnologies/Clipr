@@ -34,7 +34,7 @@ const CreateAccount: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -67,7 +67,6 @@ const CreateAccount: React.FC = () => {
     resetErrorMessages();
 
     if (!validate()) {
-      console.log("Error with user inputs for account creation");
       alert("Error with account details");
       return;
     }
@@ -89,7 +88,6 @@ const CreateAccount: React.FC = () => {
           "Content-Type": "application/json;charset=UTF-8",
         },
       });
-      console.log(response);
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
@@ -99,9 +97,8 @@ const CreateAccount: React.FC = () => {
           const json = (await response.json()) as UserModel;
           localStorage.setItem("user", JSON.stringify(json));
           window.dispatchEvent(new Event("storage"));
-          console.log("done.");
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
         socket.connect();
         navigate("../");
