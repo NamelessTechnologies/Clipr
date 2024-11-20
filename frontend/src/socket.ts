@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 // const URL = "http://localhost:3000";
 
-const URL = "https://clipr-kih8.vercel.app";
+const URL = "https://clipr-kih8.vercel.app:3000";
 
 const currentUser = localStorage.getItem("user");
 let userID;
