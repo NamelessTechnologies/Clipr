@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
@@ -6,25 +6,41 @@ import SearchBar from "./SearchBar";
 import { socket } from "../socket";
 
 function NavBar() {
-  const [foundUser, setFoundUser] = useState<string>();
+  const navigate = useNavigate();
+
+  const [foundUser, setFoundUser] = useState<string | undefined>();
   const [userProfileURL, setUserProfileURL] = useState<string>("/Profile/");
-  const logout = () => {
-    if (!foundUser) {
-      return;
-    }
-    localStorage.removeItem("user");
-    socket.disconnect();
-    window.location.reload();
-  };
 
   useEffect(() => {
     const localStorageUser = localStorage.getItem("user");
     if (localStorageUser) {
       setFoundUser(localStorageUser);
-      const parsed = JSON.parse(localStorageUser) as UserModel;
+    }
+
+    const handleStorageChange = () => {
+      const updatedUser = localStorage.getItem("user");
+      setFoundUser(updatedUser ?? undefined);
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (foundUser) {
+      const parsed = JSON.parse(foundUser) as UserModel;
       setUserProfileURL(`/Profile?profile_id=${parsed.user_id}`);
     }
   }, [foundUser]);
+
+  const logout = () => {
+    localStorage.removeItem("user"); // Remove user from localStorage
+    setFoundUser(undefined); // Clear the state to trigger re-render
+    socket.disconnect(); // Disconnect socket
+    navigate("/LogOut");
+  };
 
   return (
     <>
@@ -81,9 +97,7 @@ function NavBar() {
             </ul>
           </div>
         </nav>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </>
   );
 }
