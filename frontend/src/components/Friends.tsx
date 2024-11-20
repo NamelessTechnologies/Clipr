@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import shouldBeLoggedIn from "./Authenticate";
+import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
 import { uri } from "../App";
 
 function Friends() {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

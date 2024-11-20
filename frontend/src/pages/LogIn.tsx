@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
 import { uri } from "../App";
 
 const LogIn: React.FC = () => {
-  shouldBeLoggedIn(false);
+  ShouldBeLoggedIn(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const[data, setData] = useState<User>(); // Fetched data will be an array of json
@@ -32,7 +32,6 @@ const LogIn: React.FC = () => {
         }
         socket.connect();
         navigate("../");
-        window.location.reload();
       } else {
         setMessage("Incorrect Password");
       }

@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
@@ -7,7 +7,7 @@ import ProfilePost from "../components/profile/ProfilePost";
 import { uri } from "../App";
 
 function Profile() {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
   const [searchParams] = useSearchParams();
   const profile_id = searchParams.get("profile_id") as string;
   const [userData, setUserData] = useState<UserModel>();

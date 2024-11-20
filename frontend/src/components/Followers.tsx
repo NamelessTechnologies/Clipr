@@ -1,8 +1,8 @@
 // import React, { useEffect, useState } from "react";
-import shouldBeLoggedIn from "./Authenticate";
+import ShouldBeLoggedIn from "./Authenticate";
 
 function Followers() {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
   return <div></div>;
 }

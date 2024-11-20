@@ -1,4 +1,4 @@
-import shouldBeLoggedIn from "../Authenticate";
+import ShouldBeLoggedIn from "../Authenticate";
 // import "../../styles/ProfileHeader.css";
 import UserModel from "../../types/User";
 // import { FaCrown } from "react-icons/fa6";
@@ -9,7 +9,7 @@ import PostModel from "../../types/Post";
 import { uri } from "../../App";
 
 function ProfilePost(props: { userData: UserModel }) {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
   const [post, setPost] = useState<PostModel[]>();
 

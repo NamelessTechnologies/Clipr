@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
-// const URL = `http://localhost:1738`;
-const URL = `https://cliprwebsocket.onrender.com:1738`;
+// const URL = `http://localhost:3000`;
+const URL = `https://cliprwebsocket.onrender.com`;
 
 const currentUser = localStorage.getItem("user");
 let userID;

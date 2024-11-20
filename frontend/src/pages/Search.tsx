@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ interface PartialUserModel {
   nickname: string;
 }
 function Search() {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
