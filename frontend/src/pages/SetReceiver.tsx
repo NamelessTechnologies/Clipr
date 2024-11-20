@@ -31,7 +31,6 @@ const SetReceiver: React.FC = () => {
 
     if (convoid == -1) {
       // post new convo
-      console.log("Making new convo...");
       try {
         const newConvo = {
           user_id: userInfo["user_id"],
@@ -47,15 +46,10 @@ const SetReceiver: React.FC = () => {
         });
 
         if (response.ok) {
-          console.log("Success!");
           const json = await response.json();
-          console.log("obtained id: " + json.id);
           convoid = parseInt(json.id);
-        } else {
-          console.log(`${response.status}: ${response.statusText}`);
         }
       } catch (error) {
-        console.log(error);
         console.error(error);
       }
     } else {

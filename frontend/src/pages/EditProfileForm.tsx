@@ -68,7 +68,6 @@ const EditProfileForm: React.FC = () => {
     resetErrorMessages();
 
     if (!validate()) {
-      console.log("Error with user inputs for account creation");
       alert("Error with account details");
       return;
     }
@@ -83,7 +82,6 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp,
     };
     try {
-      console.log(JSON.stringify(newUser));
       const response = await fetch(uri + "user/", {
         body: JSON.stringify(newUser),
         method: "PUT",
@@ -92,7 +90,6 @@ const EditProfileForm: React.FC = () => {
           "Content-Type": "application/json;charset=UTF-8",
         },
       });
-      console.log(response);
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
@@ -102,9 +99,8 @@ const EditProfileForm: React.FC = () => {
           const json = (await response.json()) as UserModel;
           localStorage.setItem("user", JSON.stringify(json));
           window.dispatchEvent(new Event("storage"));
-          console.log("done.");
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
         // navigate("./Clipr/");
         window.location.reload();

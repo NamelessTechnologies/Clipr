@@ -31,7 +31,6 @@ function Search() {
         setSearchResults(json);
         if (json.length > 0) {
           setFoundResults(true);
-          console.log(json);
         }
       } catch (error) {
         console.error(error);

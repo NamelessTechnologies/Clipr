@@ -14,7 +14,6 @@ function ProfilePost(props: { userData: UserModel }) {
   const [post, setPost] = useState<PostModel[]>();
 
   useEffect(() => {
-    console.log("hi");
     const fetchPosts = async () => {
       try {
         const userID = props.userData.user_id;

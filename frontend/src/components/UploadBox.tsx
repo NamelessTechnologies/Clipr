@@ -35,7 +35,6 @@ const CreatePost: React.FC = () => {
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const uid = userInfo["user_id"];
-    console.log("Using id " + uid);
     const newPost = { UserID: uid, Title: title, Content: post.content };
 
     try {
@@ -47,7 +46,6 @@ const CreatePost: React.FC = () => {
           "Content-Type": "application/json;charset=UTF-8",
         },
       });
-      console.log(response);
       if (response.status === 200) {
         alert("Success!");
       } else {
@@ -58,7 +56,6 @@ const CreatePost: React.FC = () => {
       console.error(error);
     }
 
-    console.log("Post submitted: ", post);
     setTitle("");
     setPost({ content: "" });
   };

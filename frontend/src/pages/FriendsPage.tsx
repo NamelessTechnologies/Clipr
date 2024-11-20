@@ -10,9 +10,6 @@ function FriendsPage() {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
 
-  console.log(foundUser);
-  console.log(uid);
-
   // This effect loads the user from localStorage
   useEffect(() => {
     const localStorageUser = localStorage.getItem("user");

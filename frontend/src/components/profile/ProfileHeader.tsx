@@ -96,14 +96,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setStatus("Follow Back");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
-        const response = await fetch(queryString, {
+        await fetch(queryString, {
           method: "DELETE",
           headers: {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -116,9 +115,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
         User_2: profileID,
       };
       const queryString = `${uri}User/followuser`;
-      console.log(queryString);
       try {
-        const response = await fetch(queryString, {
+        await fetch(queryString, {
           body: JSON.stringify(followBody),
           method: "POST",
           headers: {
@@ -126,7 +124,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -140,7 +137,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       };
       const queryString = `${uri}User/followuser`;
       try {
-        const response = await fetch(queryString, {
+        await fetch(queryString, {
           body: JSON.stringify(followBody),
           method: "POST",
           headers: {
@@ -148,7 +145,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -158,14 +154,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setStatus("Follow");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
-        const response = await fetch(queryString, {
+        await fetch(queryString, {
           method: "DELETE",
           headers: {
             Accept: "application/json, text/plain",
             "Content-Type": "application/json;charset=UTF-8",
           },
         });
-        console.log(response);
       } catch (error) {
         alert(error);
         console.error(error);
@@ -208,7 +203,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           convoid = parseInt(json.id);
         }
       } catch (error) {
-        console.log(error);
         console.error(error);
       }
     } else {

@@ -27,9 +27,8 @@ const LogIn: React.FC = () => {
         try {
           localStorage.setItem("user", JSON.stringify(json));
           window.dispatchEvent(new Event("storage"));
-          console.log("done.");
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
         socket.connect();
         navigate("../");
@@ -38,7 +37,7 @@ const LogIn: React.FC = () => {
         setMessage("Incorrect Password");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setMessage("Invalid email, please make an account!");
     }
   };

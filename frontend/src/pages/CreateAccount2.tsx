@@ -28,7 +28,6 @@ const CreateAccount2: React.FC = () => {
           "Content-Type": "application/json;charset=UTF-8",
         },
       });
-      console.log(response);
       if (response.status === 200) {
         alert("Success!");
       } else {
