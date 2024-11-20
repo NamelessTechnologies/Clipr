@@ -1,8 +1,8 @@
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import UploadBox from "../components/UploadBox";
 
 function Upload() {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
   return (
     <div className="flex justify-center w-screen h-screen">
       <UploadBox />

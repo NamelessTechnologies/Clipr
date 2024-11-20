@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
 import { MessageBox } from "../components/MessageBox";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
 import { uri } from "../App";
 
 const Messages: React.FC = () => {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};

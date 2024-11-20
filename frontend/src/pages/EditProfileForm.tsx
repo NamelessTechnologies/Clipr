@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 // import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import { uri } from "../App";
 
 const EditProfileForm: React.FC = () => {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
   const [username, setUsername] = useState(userInfo["username"]);
@@ -35,7 +35,7 @@ const EditProfileForm: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -103,7 +103,6 @@ const EditProfileForm: React.FC = () => {
           console.error(error);
         }
         // navigate("./Clipr/");
-        window.location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }

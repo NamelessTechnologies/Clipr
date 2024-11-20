@@ -1,4 +1,4 @@
-import shouldBeLoggedIn from "../Authenticate";
+import ShouldBeLoggedIn from "../Authenticate";
 import "../../styles/ProfileHeader.css";
 import UserModel from "../../types/User";
 import { FaCrown } from "react-icons/fa6";
@@ -10,7 +10,7 @@ import { uri } from "../../App";
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
 function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
-  shouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
   const profileID = props.profile_id;
   const [userID, setUserID] = useState<string>();

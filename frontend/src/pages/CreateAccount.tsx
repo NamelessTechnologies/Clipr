@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
-import shouldBeLoggedIn from "../components/Authenticate";
+import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
 import { uri } from "../App";
 
 const CreateAccount: React.FC = () => {
-  shouldBeLoggedIn(false);
+  ShouldBeLoggedIn(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -102,7 +102,6 @@ const CreateAccount: React.FC = () => {
         }
         socket.connect();
         navigate("../");
-        window.location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
