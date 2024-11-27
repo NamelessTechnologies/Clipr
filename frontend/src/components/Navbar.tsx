@@ -43,7 +43,15 @@ function NavBar() {
                   >
                     TempVideoHome
                   </Link>
-                </li>
+              </li>
+              <li className="pt-3">
+                  <Link
+                    to="/TempVideoUpload"
+                    className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                  >
+                    TempVideoUpload
+                  </Link>
+              </li>
               <li>
                 <SearchBar></SearchBar>
               </li>

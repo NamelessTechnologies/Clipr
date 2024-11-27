@@ -8,11 +8,11 @@ namespace backend.Controllers;
 [ApiController]
 [Route("[controller]")]
 
-public class PostController : ControllerBase {
-
-
+public class PostController : ControllerBase
+{
     [HttpGet("{id}")]
-    public IActionResult getPost(int id) {
+    public IActionResult getPost(int id)
+    {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
 
         using var conn = DBConn.GetConn();
@@ -20,8 +20,10 @@ public class PostController : ControllerBase {
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var reader = cmd.ExecuteReader();
-        if (reader.Read()) {
-            return Ok(new Post {
+        if (reader.Read())
+        {
+            return Ok(new Post
+            {
                 PostID = reader.GetInt32(0),
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
@@ -29,13 +31,16 @@ public class PostController : ControllerBase {
                 DatePosted = reader.GetDateTime(4),
                 MediaType = reader.GetString(5)
             });
-        } else {
+        }
+        else
+        {
             return BadRequest("no data");
         }
     }
 
     [HttpGet]
-    public IActionResult getAllPosts() {
+    public IActionResult getAllPosts()
+    {
         var sql = "SELECT * FROM post";
 
         using var conn = DBConn.GetConn();
@@ -44,18 +49,21 @@ public class PostController : ControllerBase {
 
         var posts = new List<Post>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Post newPost = new Post {
+        while (reader.Read())
+        {
+            Post newPost = new Post
+            {
                 PostID = reader.GetInt32(0),
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
                 Description = reader.GetString(3),
                 DatePosted = reader.GetDateTime(4),
-                MediaType = reader.GetString(5)  
+                MediaType = reader.GetString(5)
             };
             posts.Add(newPost);
         }
@@ -64,14 +72,16 @@ public class PostController : ControllerBase {
 
 
     [HttpPost]
-    public async void postTEMPTextPost([FromBody] TEMP_Post post) {
+    public async void postTEMPTextPost([FromBody] TEMP_Post post)
+    {
 
         // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
 
         using var conn = DBConn.GetConn();
 
-        await using (var cmd = new NpgsqlCommand(sql, conn)) {
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
             cmd.Parameters.AddWithValue("user_id", post.UserID);
             cmd.Parameters.AddWithValue("title", post.Title);
             cmd.Parameters.AddWithValue("content", post.Content);
@@ -82,7 +92,8 @@ public class PostController : ControllerBase {
     }
 
     [HttpGet("/TEMP_post/{id}")]
-    public IActionResult getTEMPTextPost(int id) {
+    public IActionResult getTEMPTextPost(int id)
+    {
 
         var sql = "SELECT * FROM temp_post WHERE temp_post_id = " + id;
 
@@ -91,19 +102,24 @@ public class PostController : ControllerBase {
         using var cmd = new NpgsqlCommand(sql, conn);
 
         var reader = cmd.ExecuteReader();
-        if (reader.Read()) {
-            return Ok(new TEMP_Post {
+        if (reader.Read())
+        {
+            return Ok(new TEMP_Post
+            {
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
                 Content = reader.GetString(3)
             });
-        } else {
+        }
+        else
+        {
             return BadRequest("no data");
         }
     }
 
     [HttpGet("/TEMP_post/")]
-    public IActionResult getAllTEMP_Posts() {
+    public IActionResult getAllTEMP_Posts()
+    {
 
         // DatabaseConnection con1 = new DatabaseConnection();
         // string connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
@@ -115,15 +131,18 @@ public class PostController : ControllerBase {
 
         var posts = new List<TEMP_Post>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            TEMP_Post newPost = new TEMP_Post {
+        while (reader.Read())
+        {
+            TEMP_Post newPost = new TEMP_Post
+            {
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
-                Content = reader.GetString(3), 
+                Content = reader.GetString(3),
             };
             posts.Add(newPost);
         }
@@ -133,7 +152,8 @@ public class PostController : ControllerBase {
 
     // TEMPORARY
     [HttpGet("/tag/temp")]
-    public IActionResult getTagDataTEMP() {
+    public IActionResult getTagDataTEMP()
+    {
         var sql = "SELECT * FROM tag";
 
         using var conn = DBConn.GetConn();
@@ -142,12 +162,15 @@ public class PostController : ControllerBase {
 
         var tags = new List<Tag_Temp>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Tag_Temp newPost = new Tag_Temp {
+        while (reader.Read())
+        {
+            Tag_Temp newPost = new Tag_Temp
+            {
                 ID = reader.GetInt32(0),
                 Name = reader.GetString(1)
             };
@@ -158,7 +181,8 @@ public class PostController : ControllerBase {
 
     // TEMPORARY
     [HttpGet("/likes/temp")]
-    public IActionResult getLikeDataTEMP() {
+    public IActionResult getLikeDataTEMP()
+    {
         var sql = "SELECT * FROM likes";
 
         using var conn = DBConn.GetConn();
@@ -167,12 +191,15 @@ public class PostController : ControllerBase {
 
         var likes = new List<Like_Temp>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Like_Temp newPost = new Like_Temp {
+        while (reader.Read())
+        {
+            Like_Temp newPost = new Like_Temp
+            {
                 PostID = reader.GetInt32(0),
                 UserID = reader.GetInt32(1)
             };
@@ -183,7 +210,8 @@ public class PostController : ControllerBase {
 
     // TEMPORARY
     [HttpGet("/post_tag/temp")]
-    public IActionResult getPostTagsTEMP() {
+    public IActionResult getPostTagsTEMP()
+    {
         var sql = "SELECT * FROM post_tag";
 
         using var conn = DBConn.GetConn();
@@ -192,12 +220,15 @@ public class PostController : ControllerBase {
 
         var postTags = new List<Post_Tag_Temp>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Post_Tag_Temp newPost = new Post_Tag_Temp {
+        while (reader.Read())
+        {
+            Post_Tag_Temp newPost = new Post_Tag_Temp
+            {
                 PostID = reader.GetInt32(0),
                 TagID = reader.GetInt32(1)
             };
@@ -208,7 +239,8 @@ public class PostController : ControllerBase {
 
     // TEMPORARY
     [HttpGet("/media")]
-    public IActionResult getMedia() {
+    public IActionResult getMedia()
+    {
         var sql = "SELECT * FROM media";
 
         using var conn = DBConn.GetConn();
@@ -217,12 +249,15 @@ public class PostController : ControllerBase {
 
         var medias = new List<Media>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            Media newMedia = new Media {
+        while (reader.Read())
+        {
+            Media newMedia = new Media
+            {
                 MediaID = reader.GetInt32(0),
                 PostID = reader.GetInt32(1),
                 Url = reader.GetString(2)
@@ -233,27 +268,53 @@ public class PostController : ControllerBase {
     }
 
     [HttpGet("/TEMP_post/user_id/{id}")]
-    public IActionResult getPostByUserId(int id) {
+    public IActionResult getPostByUserId(int id)
+    {
         var sql = "SELECT * FROM temp_post WHERE user_id = " + id;
 
-       using var conn = DBConn.GetConn();
+        using var conn = DBConn.GetConn();
         using var cmd = new NpgsqlCommand(sql, conn);
         var reader = cmd.ExecuteReader();
 
         var posts = new List<TEMP_Post>();
 
-        if (!reader.HasRows) {
+        if (!reader.HasRows)
+        {
             return BadRequest("no data");
         }
 
-        while (reader.Read()) {
-            TEMP_Post newPost = new TEMP_Post {
+        while (reader.Read())
+        {
+            TEMP_Post newPost = new TEMP_Post
+            {
                 UserID = reader.GetInt32(1),
                 Title = reader.GetString(2),
-                Content = reader.GetString(3), 
+                Content = reader.GetString(3),
             };
             posts.Add(newPost);
         }
         return Ok(posts);
+    }
+
+
+
+    [HttpPost("tempVideo")]
+    public async void tempPostVideo([FromForm] TempVideoPost post)
+    {
+
+        // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
+        var sql = "INSERT INTO temp_photo_post (user_id, title, content, datePosted, photo_data) VALUES(@user_id, @title, @content, @datePosted, @photo_data);";
+
+        using var conn = DBConn.GetConn();
+
+        await using (var cmd = new NpgsqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("user_id", post.UserID);
+            cmd.Parameters.AddWithValue("title", post.Title);
+            cmd.Parameters.AddWithValue("content", post.Content);
+            cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
+            cmd.Parameters.AddWithValue("photo_data", post.PhotoData);
+            await cmd.ExecuteNonQueryAsync();
+        }
     }
 }

@@ -15,6 +15,7 @@ import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
 import FriendsPage from "./pages/FriendsPage.tsx";
 import TempVideoHome from "./pages/TempVideoHome.tsx";
+import TempVideoUpload from "./pages/TempVideoUpload.tsx";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/SetReceiver" element={<SetReceiver />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<FriendsPage />} />
+          <Route path="/TempVideoUpload" element={<TempVideoUpload />} />
           <Route path="/Search" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
