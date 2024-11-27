@@ -36,6 +36,14 @@ function NavBar() {
               Clipr
             </Link>
             <ul className="flex space-x-4">
+              <li className="pt-3">
+                  <Link
+                    to="/TempVideoHome"
+                    className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                  >
+                    TempVideoHome
+                  </Link>
+                </li>
               <li>
                 <SearchBar></SearchBar>
               </li>

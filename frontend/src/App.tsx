@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
 import FriendsPage from "./pages/FriendsPage.tsx";
+import TempVideoHome from "./pages/TempVideoHome.tsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/SignUp" element={<CreateAccount />} />
+          <Route path="/TempVideoHome" element={<TempVideoHome />} />
           <Route path="/Tables" element={<TablesTEMP />} />
           <Route path="/LogIn" element={<LogIn />} />
           <Route path="/Upload" element={<Upload />} />
