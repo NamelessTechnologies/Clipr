@@ -138,6 +138,86 @@ public class PostController : ControllerBase {
     }
 
 
+
+// --------------------------------------- TEMP PHOTO STUFF ------------------------------------------//
+    [HttpPost("skibidi")]
+    public async void CreatePostWithImage([FromForm] int userId, [FromForm] string title, [FromForm] string content, [FromForm] IFormFile file)
+    {
+        if (file == null)
+        {
+            Console.Write("image post file to be uploaded was null");
+        }
+
+        try
+        {
+            byte[] imageBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                imageBytes = memoryStream.ToArray();
+            }
+
+            using (var conn = DBConn.GetConn()) 
+            {
+                await conn.OpenAsync();
+
+                var sql = "INSERT INTO temp_photo_post (user_id, title, content, datePosted, photo_data) VALUES (@userId, @title, @content, @datePosted, @photoData);"; 
+
+                using (var cmd = new NpgsqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("userId", userId);
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("content", content);
+                    cmd.Parameters.AddWithValue("datePosted", DateTime.Now); 
+                    cmd.Parameters.AddWithValue("photoData", imageBytes);
+
+                    await cmd.ExecuteScalarAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Write("error uploading temp photo");
+            Console.Write(ex);
+        }
+    }
+
+    [HttpGet("skibidi/all")]
+    public IActionResult GetAllTEMP_PhotoPosts()
+    {
+        // fetches poster's username and pfp url along with all of post's info
+        var sql = "SELECT a.*, b.username, b.pfp FROM temp_photo_post a INNER JOIN users b on a.user_id = b.user_id;";
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        var photoPosts = new List<TEMP_Photo_Post>();
+
+        if (!reader.HasRows)
+        {
+            return BadRequest("no data");
+        }
+
+        while (reader.Read())
+        {
+            TEMP_Photo_Post newPhotoPost = new TEMP_Photo_Post
+            {
+                UserID = reader.GetInt32(1),
+                Title = reader.GetString(2),
+                Content = reader.GetString(3),
+                PhotoData = reader["photo_data"] is DBNull ? null : (byte[])reader["photo_data"], // 4 - date, 5 - photo data
+                Username = reader.GetString(6), 
+                Pfp_Url = reader.GetString(7)
+            };
+            photoPosts.Add(newPhotoPost);
+        }
+        return Ok(photoPosts);
+    }
+
+
     // TEMPORARY
     [HttpGet("/tag/temp")]
     public IActionResult getTagDataTEMP() {

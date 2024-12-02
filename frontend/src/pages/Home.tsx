@@ -30,17 +30,8 @@ function Home() {
   return (
     <>
       {foundUser ? (
-        <div className="flex">
-          {/* <div className="fixed top-0 left-0 h-screen z-10">
-            <Sidebar />
-          </div> */}
+        <div>
           <Post />
-          <div className="flex-1 p-5">
-            <h1 className="text-white">Clipr</h1>
-            <h1 className="text-white">
-              {uid ? "ID " + uid + " currently logged in!" : ""}
-            </h1>
-          </div>
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center">

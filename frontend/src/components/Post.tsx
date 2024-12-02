@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
-// import PostType from "../types/Post";
 import PostModel from "../types/Post";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
+import { PostBox } from "./PostBox";
 
 function Post() {
-  // const [post, setPost] = useState<PostType[]>([]);
   const [post, setPost] = useState<PostModel[]>([]);
-  // const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // const image = "https://admin.esports.gg/wp-content/uploads/2024/03/robin-honkai-star-rail.jpg-968x544.jpg";
+
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(uri + "TEMP_post/"); // must not be hard coded
+      // const response = await fetch(uri + "TEMP_post/"); // must not be hard coded
+      const response = await fetch(local_uri + "post/skibidi/all"); // test
+
       const json = await response.json();
 
       const posts: PostModel[] = [];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       json.forEach((post: any) => {
         const NewPost: PostModel = {
           user_id: post.userID,
           title: post.title,
           content: post.content,
+          photo_data: post.photoData,
+          username: post.username,
+          user_pfp: post.pfp_Url
         };
         posts.push(NewPost);
       });
@@ -43,18 +45,9 @@ function Post() {
     return <div>Loading...</div>;
   }
   return (
-    <div className="post-container">
-      {/* <div key={post ? post.post_id : "ERROR"} className=" p-4 text-white ">
-                        <div className="text-2xl font-bold">{post ? post.title : "ERROR"}</div>
-                        <div className="text-base">{post ? post.description : "ERROR"}</div>
-                        <div className="text-xs">{post ? (typeof post.datePosted === 'string' ? post.datePosted : post.datePosted.toLocaleString()) : "ERROR"}</div>
-                    </div> */}
+    <div className="flex-col justify-center">
       {post?.map((post) => (
-        <div className=" p-4 text-white " key={post.user_id}>
-          <div className="text-sm">User ID: {post.user_id}</div>
-          <div className="text-2xl font-bold">{post.title}</div>
-          <p className="text-base">{post.content}</p>
-        </div>
+        <PostBox postData={post}/>
       ))}
     </div>
   );
