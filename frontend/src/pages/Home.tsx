@@ -4,10 +4,15 @@ import logo from "../assets/hsr_logo.png";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
+import Switch from '@mui/material/Switch';
+import { IoMoonOutline } from "react-icons/io5";
+import { IoMoon } from "react-icons/io5";
+
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [uid, setUID] = useState<number>();
 
   // This effect loads the user from localStorage
@@ -27,11 +32,25 @@ function Home() {
     }
   }, [userInfo]);
 
+  const turnOnDarkMode = () => {
+    setDarkMode(!darkMode);
+  }
+
   return (
     <>
       {foundUser ? (
         <div>
+          {darkMode && (
+            <div className="fixed bg-black inset-0 z-10"></div>
+          )}
           <PostBox />
+
+          <div className="fixed bottom-5 right-5 z-20 flex items-center">
+            {darkMode ? (<IoMoon className="text-[#d78d35]"/>) : (<IoMoonOutline className="text-white"/>)}
+
+            <Switch checked={darkMode} onChange={turnOnDarkMode} color="warning"  sx={{'& .MuiSwitch-switchBase.Mui-checked': {color: '#d78d35'}}}/>
+          </div>
+            
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center">

@@ -6,14 +6,16 @@ import "../../styles/PostIcons.css"
 function CommentLikeIcon(props: { liked: boolean, num_likes: number }) {
 
     const [liked, setLiked] = useState(props.liked);
-    const num_likes = props.num_likes;
+    const [num_likes, setLikes] = useState(props.num_likes);
     const [animate, setAnimate] = useState(false);
 
     const updateLike = () => {
         if (liked) {
             setLiked(false);
+            setLikes(num_likes - 1);
         } else {
             setLiked(true);
+            setLikes(num_likes + 1);
         }
 
         setAnimate(true);

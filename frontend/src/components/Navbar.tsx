@@ -64,14 +64,6 @@ function NavBar() {
               </li>
               <li className="pt-3">
                 <Link
-                  to="/Tables"
-                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
-                >
-                  Tables
-                </Link>
-              </li>
-              <li className="pt-3">
-                <Link
                   to="/Friends"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >

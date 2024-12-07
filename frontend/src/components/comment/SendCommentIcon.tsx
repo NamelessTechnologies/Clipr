@@ -9,7 +9,7 @@ function SendIcon() {
 
     return (
         <div className="flex flex-col justify-center">
-            <CiLocationArrow1 className={`text-white w-6 h-6 text-3xlcursor-pointer ${animate ? "enlarge-shrink " : ""}`} />
+            <CiLocationArrow1 className={`text-white w-6 h-6 text-3xl cursor-pointer ${animate ? "enlarge-shrink " : ""}`} />
         </div>
     )
 }

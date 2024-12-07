@@ -6,7 +6,6 @@ import "../../styles/PostIcons.css"
 function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number }) {
 
     const [bookmarked, setBookmarked] = useState(props.bookmarked);
-    const num_bookmarks = props.num_bookmarks;
     const [animate, setAnimate] = useState(false);
 
     const updateBookmark = () => {
@@ -21,7 +20,7 @@ function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number }) {
 
     return (
         <div className="flex flex-col justify-center">
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-like_button_bg cursor-pointer" onClick={updateBookmark}>
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-neutral-900 cursor-pointer" onClick={updateBookmark}>
 
                 {bookmarked ? (
                     <FaBookmark className={`text-yellow-500 text-2xl ${animate ? "enlarge-shrink" : ""}`}/>

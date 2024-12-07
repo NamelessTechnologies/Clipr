@@ -3,6 +3,8 @@ import { LikeIcon } from "./post/LikeIcon";
 import { BookmarkIcon } from "./post/BookmarkIcon";
 import { ShareIcon } from "./post/ShareIcon";
 import lappland from "../assets/lappland.png";
+import feixiao from "../assets/feixiao_pull.png";
+import narrow_pic from "../assets/narrow_pic_test.png";
 
 function Post(props: { postData: PostModel }) {
 
@@ -18,12 +20,15 @@ function Post(props: { postData: PostModel }) {
     const num_bookmarks = props.postData.num_bookmarks ?? 0;
 
     return (
-        // <div className="flex-col w-1/2 h-3/5 mt-8 mx-auto bg-navbar p-4 border border-x-rose-600">
-        <div className="flex-col w-1/2 h-3/5 bg-navbar mr-7 pb-4 rounded-xl">
+        <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (
-                <img src={lappland}
-                    className="mb-4 h-auto mx-auto rounded-xl">
-                </img>
+                // <img src={lappland}
+                <div className="w-auto bg-neutral-900 rounded-xl">
+                    <img src={lappland}
+                        className="mb-4 h-auto mx-auto rounded-xl"
+                        style={{ maxHeight: '70vh'}}>
+                    </img>
+                </div>
                 // <img
                 //     src={`data:image/jpeg;base64,${photo_data}`} 
                 //     alt={ title }
@@ -44,21 +49,17 @@ function Post(props: { postData: PostModel }) {
                 </div>
 
                 {/* like, bookmark, share box */}
-                <div className="flex ml-auto space-x-5 mr-8">
+                <div className="flex ml-auto space-x-5 mr-2">
                     <LikeIcon liked={liked} num_likes={num_likes}/>
                     <BookmarkIcon bookmarked={bookmarked} num_bookmarks={num_bookmarks}/>
                     <ShareIcon/>
                 </div>
             </div>
 
-            
             <div className="text-amber-500">{ postUser }</div>
-
-            
             <div className="text-white text-center">{ description }</div>
         </div>
     )
-
 }
 
 export { Post };

@@ -64,8 +64,8 @@ function PostBox() {
   //   return <div>Loading...</div>;
   // }
   return (
-    // <div className="flex-col justify-center">
-    <div className="flex justify-center mt-8 mb-4">
+    <div className="flex justify-center mt-6 mb-4">
+    {/* <div className="flex justify-center h-full w-full border border-r-purple-500"> */}
       {/* {post?.map((post) => (
         <PostBox postData={post}/>
       ))} */}
