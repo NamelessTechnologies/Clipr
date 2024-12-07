@@ -1,55 +1,64 @@
-import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import { uri, local_uri } from "../App";
-import { PostBox } from "./PostBox";
+import { LikeIcon } from "./post/LikeIcon";
+import { BookmarkIcon } from "./post/BookmarkIcon";
+import { ShareIcon } from "./post/ShareIcon";
+import lappland from "../assets/lappland.png";
 
-function Post() {
-  const [post, setPost] = useState<PostModel[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+function Post(props: { postData: PostModel }) {
 
+    const postUser = props.postData.username;
+    const postUserPFP = props.postData.user_pfp;
+    const title = props.postData.title;
+    const description = props.postData.content;
+    const photo_data = props.postData.photo_data;
+    
+    const liked = props.postData.liked ?? false;
+    const num_likes = props.postData.num_likes ?? 0;
+    const bookmarked = props.postData.bookmarked ?? false;
+    const num_bookmarks = props.postData.num_bookmarks ?? 0;
 
+    return (
+        // <div className="flex-col w-1/2 h-3/5 mt-8 mx-auto bg-navbar p-4 border border-x-rose-600">
+        <div className="flex-col w-1/2 h-3/5 bg-navbar mr-7 pb-4 rounded-xl">
+            {photo_data && (
+                <img src={lappland}
+                    className="mb-4 h-auto mx-auto rounded-xl">
+                </img>
+                // <img
+                //     src={`data:image/jpeg;base64,${photo_data}`} 
+                //     alt={ title }
+                //     className="my-4 h-auto mx-auto"
+                // />
+            )} 
 
-  const fetchPosts = async () => {
-    try {
-      // const response = await fetch(uri + "TEMP_post/"); // must not be hard coded
-      const response = await fetch(local_uri + "post/skibidi/all"); // test
+            <div className="flex">
+                {/* pfp + title */}
+                <div className="flex">
+                    <img
+                        src={ postUserPFP }
+                        className="w-14 h-14 rounded-full mr-4">
+                    </img>
+                    <div className="w-full text-white text-2xl mt-3 ">
+                        { title }
+                    </div>
+                </div>
 
-      const json = await response.json();
+                {/* like, bookmark, share box */}
+                <div className="flex ml-auto space-x-5 mr-8">
+                    <LikeIcon liked={liked} num_likes={num_likes}/>
+                    <BookmarkIcon bookmarked={bookmarked} num_bookmarks={num_bookmarks}/>
+                    <ShareIcon/>
+                </div>
+            </div>
 
-      const posts: PostModel[] = [];
-      json.forEach((post: any) => {
-        const NewPost: PostModel = {
-          user_id: post.userID,
-          title: post.title,
-          content: post.content,
-          photo_data: post.photoData,
-          username: post.username,
-          user_pfp: post.pfp_Url
-        };
-        posts.push(NewPost);
-      });
+            
+            <div className="text-amber-500">{ postUser }</div>
 
-      setPost(posts);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error getting post data");
-    }
-  };
+            
+            <div className="text-white text-center">{ description }</div>
+        </div>
+    )
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  return (
-    <div className="flex-col justify-center">
-      {post?.map((post) => (
-        <PostBox postData={post}/>
-      ))}
-    </div>
-  );
 }
+
 export { Post };

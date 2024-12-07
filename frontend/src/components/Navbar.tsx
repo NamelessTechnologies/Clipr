@@ -45,7 +45,7 @@ function NavBar() {
   return (
     <>
       {foundUser ? (
-        <nav className="bg-navbar text-white py-6 px-6 border-b border-white">
+        <nav className="bg-navbar text-white py-4 px-6 border-b border-white">
           <div className="flex justify-between items-center">
             <Link
               to="/"

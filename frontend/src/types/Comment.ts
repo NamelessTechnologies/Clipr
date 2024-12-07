@@ -1,7 +1,9 @@
 export default interface CommentModel {
-  id: number;
-  parent_id: number;
-  post_id: number;
-  user_id: number;
-  content: string;
-}
+    user_id: number;
+    username: string;
+    pfp_url: string;
+    liked: boolean;
+    num_likes: number;
+    content: string;
+  }
+  

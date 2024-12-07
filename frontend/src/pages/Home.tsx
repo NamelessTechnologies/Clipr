@@ -1,5 +1,5 @@
 // import { Sidebar } from "../components/Sidebar";
-import { Post } from "../components/Post";
+import { PostBox } from "../components/PostBox";
 import logo from "../assets/hsr_logo.png";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -31,7 +31,7 @@ function Home() {
     <>
       {foundUser ? (
         <div>
-          <Post />
+          <PostBox />
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center">

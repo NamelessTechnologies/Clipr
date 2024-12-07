@@ -12,6 +12,7 @@ export default {
         cloudy_white_normal: "#aeacaa",
         brownish_normal: "#dbc291",
         goldish_bold: "#d78d35",
+        like_button_bg: '#4D4D4D'
       },
     },
   },

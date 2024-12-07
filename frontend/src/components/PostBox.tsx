@@ -1,37 +1,77 @@
+import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
+import { uri, local_uri } from "../App";
+import { Post } from "./Post";
+import { CommentBox } from "./CommentBox";
 
-function PostBox(props: { postData: PostModel }) {
+function PostBox() {
+  const [post, setPost] = useState<PostModel[]>([]);
+  // const [loading, setLoading] = useState<boolean>(true);
 
-    const postUser = props.postData.username;
-    const postUserPFP = props.postData.user_pfp;
-    const title = props.postData.title;
-    const description = props.postData.content;
-    const photo_data = props.postData.photo_data;
 
-    return (
-        <div className="flex-col w-1/3 h-3/5 mt-14 mx-auto bg-navbar border border-x-gray-300 p-4">
-            {photo_data && (
-                <img
-                    src={`data:image/jpeg;base64,${photo_data}`} 
-                    alt={ title }
-                    className="my-4 h-auto mx-auto"
-                />
-            )} 
+  const fetchPosts = async () => {
+    try {
+      // const response = await fetch(uri + "TEMP_post/"); // must not be hard coded
+      const response = await fetch(local_uri + "post/skibidi/all"); // test
 
-            <div className="flex">
-                <img
-                    src={ postUserPFP }
-                    className="w-14 h-14 rounded-full mr-4">
-                </img>
-                <div className="w-full text-white text-2xl mt-3 mb-6">
-                    { title }
-                </div>
-            </div>
-            <div className="text-amber-500">{ postUser }</div>
-            <div className="text-white text-center">{ description }</div>
-        </div>
-    )
+      const json = await response.json();
 
+      const posts: PostModel[] = [];
+      json.forEach((post: any) => {
+        const NewPost: PostModel = {
+          user_id: post.userID,
+          title: post.title,
+          content: post.content,
+          photo_data: post.photoData,
+          username: post.username,
+          user_pfp: post.pfp_Url,
+
+          liked: false,
+          num_likes: 23,
+          bookmarked: false,
+          num_bookmarks: 69
+        };
+        posts.push(NewPost);
+      });
+
+      setPost(posts);
+      // setLoading(false);
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error getting post data");
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, []);
+
+  const TempPost: PostModel = {
+    user_id: 1,
+    title: "LAPPLAND IS SO CUTEEEEEEEEEE",
+    content: "thank you arknights for bringing light into my life again with this lappalter event",
+    photo_data: "skibidi",
+    username: "chillwafflez",
+    user_pfp: "https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg",
+
+    liked: false,
+    num_likes: 23,
+    bookmarked: false,
+    num_bookmarks: 69
+  }
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+  return (
+    // <div className="flex-col justify-center">
+    <div className="flex justify-center mt-8 mb-4">
+      {/* {post?.map((post) => (
+        <PostBox postData={post}/>
+      ))} */}
+      <Post postData={TempPost}/>
+      <CommentBox />
+    </div>
+  );
 }
-
 export { PostBox };
