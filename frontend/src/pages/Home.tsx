@@ -13,7 +13,8 @@ function Home() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [uid, setUID] = useState<number>();
+  // const [uid, setUID] = useState<number>();
+  const [, setUID] = useState<number>();
 
   // This effect loads the user from localStorage
   useEffect(() => {

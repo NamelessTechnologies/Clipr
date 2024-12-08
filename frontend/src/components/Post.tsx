@@ -3,8 +3,8 @@ import { LikeIcon } from "./post/LikeIcon";
 import { BookmarkIcon } from "./post/BookmarkIcon";
 import { ShareIcon } from "./post/ShareIcon";
 import lappland from "../assets/lappland.png";
-import feixiao from "../assets/feixiao_pull.png";
-import narrow_pic from "../assets/narrow_pic_test.png";
+// import feixiao from "../assets/feixiao_pull.png";
+// import narrow_pic from "../assets/narrow_pic_test.png";
 
 function Post(props: { postData: PostModel }) {
 

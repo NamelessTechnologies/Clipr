@@ -15,9 +15,9 @@ function CommentWrapper(props: { commentData: CommentModel }) {
     ]
 
     // TODO: add GET request to get current comment's replies and populate replies useState with it
-    const getReplies = () => {
+    // const getReplies = () => {
 
-    }
+    // }
 
     const [displayReplies, setDisplayReplies] = useState(false);
 
