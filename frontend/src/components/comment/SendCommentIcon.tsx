@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function SendIcon() {
 
-    const [animate, setAnimate] = useState(false);
+    const [animate,] = useState(false);
 
 
     return (

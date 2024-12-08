@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { uri, local_uri } from "../App";
+// import { uri, local_uri } from "../App";
+import { local_uri } from "../App";
+
 // import User from '../types/User';
 // import AWS from "aws-sdk";
 // import AWS from 'aws-sdk/global';
