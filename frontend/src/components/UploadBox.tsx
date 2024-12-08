@@ -13,6 +13,7 @@ interface PostContent {
 const CreatePost: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
+  const [media_type, setMediaType] = useState("text");
   const [post, setPost] = useState<PostContent>({ content: "" });
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("user") || "",
@@ -34,12 +35,19 @@ const CreatePost: React.FC = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log("This runs");
     setPost({ ...post, content: e.target.value });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("This runs");
     const file = e.target.files ? e.target.files[0] : null;
-    setImage(file);
+    if(file) {
+      const temp_type = file?.type;
+      const type = temp_type?.split('/')[0];
+      setMediaType(type);
+      setImage(file);
+    }
   };
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -47,21 +55,21 @@ const CreatePost: React.FC = () => {
     console.log("LETS DO THIS")
 
     // check if image provided
-    if (!image) {
-      alert("Please upload an image.");
-      return;
-    }
+    // if (!image) {
+    //   alert("Please upload an image.");
+    //   return;
+    // }
 
     const uid = userInfo["user_id"];
 
     const formData = new FormData();
-    formData.append("userID", uid);
+    formData.append("user_id", uid);
     formData.append("title", title);
-    formData.append("content", post.content);
-    formData.append("file", image);
+    formData.append("description", post.content);
+    formData.append("media_type", media_type);
 
     try {
-      const response = await fetch(local_uri + "post/skibidi", {
+      const response = await fetch(local_uri + "post/realpost", {
         body: formData,
         method: "POST"
       });
@@ -77,10 +85,12 @@ const CreatePost: React.FC = () => {
 
     setTitle("");
     setPost({ content: "" });
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    fileInput.value = '';
   };
 
   return (
-    <div className="flex-col w-1/3 h-3/5 mt-14 px-10 bg-navbar border border-x-gray-300">
+    <div className="flex-col w-1/3 h-4/6 mt-14 px-10 bg-navbar border border-x-gray-300">
       <div className="w-full text-white text-center text-3xl mt-6 mb-6">
         Create New Post
       </div>
@@ -90,9 +100,9 @@ const CreatePost: React.FC = () => {
             Upload Photo
           </label>
           <input
+            id='fileInput'
             type="file"
-            accept="image/"
-            required
+            accept="image/*, video/*"
             onChange={handleFileChange}
             className="text-white"></input>
 
@@ -102,8 +112,8 @@ const CreatePost: React.FC = () => {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
             required
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
           />
@@ -118,6 +128,7 @@ const CreatePost: React.FC = () => {
             id="content"
             value={post.content}
             onChange={handleInputChange}
+            required
             rows={6}
             className="w-full h-2/3 py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
             placeholder="Share your thoughts!"
@@ -133,7 +144,7 @@ const CreatePost: React.FC = () => {
           Post
         </button>
       </form>
-      <h1 className="text-white">UID: {userInfo["user_id"]}</h1>
+      {/* <h1 className="text-white">UID: {userInfo["user_id"]}</h1> */}
     </div>
   );
 };
