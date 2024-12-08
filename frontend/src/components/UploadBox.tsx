@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { uri } from "../App";
+import UploadForm from "./UploadForm";
+import ReactS3Client from 'react-aws-s3-typescript';
+import { s3Config } from './s3Config.ts';
 // import User from '../types/User';
 
 interface PostContent {
@@ -61,51 +64,56 @@ const CreatePost: React.FC = () => {
   };
 
   return (
-    <div className="flex-col w-1/3 h-3/5 mt-14 px-10 bg-navbar border border-x-gray-300">
-      <div className="w-full text-white text-center text-3xl mt-6 mb-6">
-        Create New Post
-      </div>
-      <form onSubmit={createPost} className=" rounded items-center">
-        <div>
-          <label className="block text-white text-lg font-semibold mb-2">
-            Title
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            placeholder="Title"
-            className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
-          />
-          <span className="text-white text-sm float-right">
-            {title.length} / 100
-          </span>
-
-          <label className="block text-white text-lg font-semibold mt-6 mb-2">
-            Content:
-          </label>
-          <textarea
-            id="content"
-            value={post.content}
-            onChange={handleInputChange}
-            rows={6}
-            className="w-full h-2/3 py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
-            placeholder="Share your thoughts!"
-          />
-          <span className="text-white text-sm float-right">
-            {post.content.length} / 500
-          </span>
+    <>
+        <div className="flex-col w-1/3 h-3/5 mt-14 px-10 bg-navbar border border-x-gray-300">
+        <div className="w-full text-white text-center text-3xl mt-6 mb-6">
+            Create New Post
         </div>
-        <button
-          type="submit"
-          className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded"
-        >
-          Post
-        </button>
-      </form>
-      <h1 className="text-white">UID: {userInfo["user_id"]}</h1>
-    </div>
+        <form onSubmit={createPost} className=" rounded items-center">
+            <div>
+            <label className="block text-white text-lg font-semibold mb-2">
+                Title
+            </label>
+            <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                placeholder="Title"
+                className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
+            />
+            <span className="text-white text-sm float-right">
+                {title.length} / 100
+            </span>
+
+            <label className="block text-white text-lg font-semibold mt-6 mb-2">
+                Content:
+            </label>
+            <textarea
+                id="content"
+                value={post.content}
+                onChange={handleInputChange}
+                rows={6}
+                className="w-full h-2/3 py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
+                placeholder="Share your thoughts!"
+            />
+            <span className="text-white text-sm float-right">
+                {post.content.length} / 500
+            </span>
+            </div>
+            <button
+            type="submit"
+            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded"
+            >
+            Post
+            </button>
+        </form>
+        <h1 className="text-white">UID: {userInfo["user_id"]}</h1>
+        <UploadForm onFileUpload={function (file: File): void {console.log("Last uploaded: " + file.name)}} />
+        </div>
+
+        
+    </>
   );
 };
 
