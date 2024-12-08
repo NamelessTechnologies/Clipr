@@ -22,7 +22,7 @@ function Comment(props: { commentData: CommentModel, isReply: boolean }) {
                 <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 cursor-pointer w-fit`}>{ username }</span>
                 <span className={`${props.isReply ? 'text-replySize mt-1' : 'text-sm mt-2'} text-white`}>{ content }</span>
                 <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 mt-1 cursor-pointer w-fit`}>Reply</span>
-                {/* <span className="text-sm text-gray-200 mt-1.5 cursor-pointer w-fit">View Replies</span> */}
+                
             </div>
 
             <CommentLikeIcon liked={liked} num_likes={num_likes}/>

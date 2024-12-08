@@ -7,7 +7,7 @@ function CommentWrapper(props: { commentData: CommentModel }) {
 
     // testing
     const mockReply1: CommentModel = {user_id: 2, username: "trailblazer", pfp_url: "https://i.pinimg.com/736x/f5/cb/d8/f5cbd8921d9b3b704e209c5807f17fdb.jpg", liked: false, num_likes: 3, content: "wuttt"}
-    const mockReply2: CommentModel = {user_id: 2, username: "LilGui", pfp_url: "https://i.pinimg.com/originals/12/1f/2d/121f2d78f062c71a22781f2b756723a8.jpg", liked: false, num_likes: 2, content: "wuttt"}
+    const mockReply2: CommentModel = {user_id: 2, username: "LilGui", pfp_url: "https://i.pinimg.com/originals/12/1f/2d/121f2d78f062c71a22781f2b756723a8.jpg", liked: false, num_likes: 2, content: "I LOVE YOU ROBIN"}
     const replies: CommentModel[] = [
         mockReply1,
         mockReply2
