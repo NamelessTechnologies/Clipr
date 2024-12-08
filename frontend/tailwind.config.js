@@ -18,6 +18,9 @@ export default {
       },
       height: {
         '90%': '95%'
+      },
+      fontSize: {
+        'replySize': '0.80rem'
       }
     },
   },

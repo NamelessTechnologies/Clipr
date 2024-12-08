@@ -22,7 +22,6 @@ function Post(props: { postData: PostModel }) {
     return (
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (
-                // <img src={lappland}
                 <div className="w-auto bg-neutral-900 rounded-xl">
                     <img src={lappland}
                         className="mb-4 h-auto mx-auto rounded-xl"

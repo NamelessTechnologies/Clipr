@@ -1,7 +1,7 @@
 import { CommentLikeIcon } from "./CommentLikeIcon";
 import CommentModel from "../../types/Comment";
 
-function Comment(props: { commentData: CommentModel }) {
+function Comment(props: { commentData: CommentModel, isReply: boolean }) {
 
     const username = props.commentData.username;
     const user_pfp = props.commentData.pfp_url;
@@ -11,18 +11,18 @@ function Comment(props: { commentData: CommentModel }) {
 
 
     return (
-        <div className="flex w-full text-sm pt-3 pb-2 px-3">
+        <div className={`flex w-full text-sm px-3 ${props.isReply ? 'pt-2 pb-1' : 'pt-3 pb-2'}`}>
             <img
                 src={ user_pfp }
-                className="w-12 h-12 rounded-full mr-3">
+                className={`${props.isReply ? 'w-10 h-10' : 'w-12 h-12'} rounded-full mr-3`}>
             </img>
 
             <div className="flex flex-col w-9/12 mr-2">
 
-                <span className="text-sm text-gray-300 cursor-pointer w-fit">{ username }</span>
-                <span className="text-m text-white mt-2">{ content }</span>
-                <span className="text-sm text-gray-300 mt-1 cursor-pointer w-fit">Reply</span>
-                <span className="text-sm text-gray-200 mt-1.5 cursor-pointer w-fit">View Replies</span>
+                <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 cursor-pointer w-fit`}>{ username }</span>
+                <span className={`${props.isReply ? 'text-replySize mt-1' : 'text-sm mt-2'} text-white`}>{ content }</span>
+                <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 mt-1 cursor-pointer w-fit`}>Reply</span>
+                {/* <span className="text-sm text-gray-200 mt-1.5 cursor-pointer w-fit">View Replies</span> */}
             </div>
 
             <CommentLikeIcon liked={liked} num_likes={num_likes}/>

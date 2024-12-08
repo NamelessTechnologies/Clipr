@@ -1,7 +1,7 @@
-import { Comment } from "../components/comment/Comment";
 import CommentModel from "../types/Comment";
 import { SendIcon } from "./comment/SendCommentIcon";
 import "../styles/Scrollbar.css";
+import { CommentWrapper } from "./comment/CommentWrapper";
 
 function CommentBox() {
 
@@ -13,10 +13,10 @@ function CommentBox() {
         mockComment1,
         mockComment2,
         mockComment3,
-        mockComment1,
-        mockComment2,
-        mockComment1,
-        mockComment2,
+        // mockComment1,
+        // mockComment2,
+        // mockComment1,
+        // mockComment2,
     ]
 
 
@@ -26,10 +26,9 @@ function CommentBox() {
                 <span className="text-xl text-white">69 Comments</span>
             </div>
 
-            {/* <div className="flex flex-col items-center w-full h-full"> */}
             <div className="flex flex-col items-center w-full overflow-auto" style={{ height: '70vh', maxHeight: '70vh' }}>
                 {mock_comments.map((comment, index) => (
-                    <Comment key={index} commentData={comment} />
+                    <CommentWrapper key={index} commentData={comment} />
                 ))}
             </div>
 
