@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { uri } from "../App";
+// import { uri, local_uri } from "../App";
+import { local_uri } from "../App";
+
 // import User from '../types/User';
+// import AWS from "aws-sdk";
+// import AWS from 'aws-sdk/global';
 
 interface PostContent {
   content: string;
 }
 
 const CreatePost: React.FC = () => {
+  const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [post, setPost] = useState<PostContent>({ content: "" });
   const [currentUser, setCurrentUser] = useState(
@@ -32,19 +37,33 @@ const CreatePost: React.FC = () => {
     setPost({ ...post, content: e.target.value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    setImage(file);
+  };
+
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("LETS DO THIS")
+
+    // check if image provided
+    if (!image) {
+      alert("Please upload an image.");
+      return;
+    }
+
     const uid = userInfo["user_id"];
-    const newPost = { UserID: uid, Title: title, Content: post.content };
+
+    const formData = new FormData();
+    formData.append("userID", uid);
+    formData.append("title", title);
+    formData.append("content", post.content);
+    formData.append("file", image);
 
     try {
-      const response = await fetch(uri + "post/", {
-        body: JSON.stringify(newPost),
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
+      const response = await fetch(local_uri + "post/skibidi", {
+        body: formData,
+        method: "POST"
       });
       if (response.status === 200) {
         alert("Success!");
@@ -67,6 +86,16 @@ const CreatePost: React.FC = () => {
       </div>
       <form onSubmit={createPost} className=" rounded items-center">
         <div>
+        <label className="block text-white text-lg font-semibold mb-2">
+            Upload Photo
+          </label>
+          <input
+            type="file"
+            accept="image/"
+            required
+            onChange={handleFileChange}
+            className="text-white"></input>
+
           <label className="block text-white text-lg font-semibold mb-2">
             Title
           </label>

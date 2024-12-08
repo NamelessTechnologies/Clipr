@@ -1,0 +1,15 @@
+@keyframes enlarge-shrink {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.enlarge-shrink {
+    animation: enlarge-shrink 0.3s ease-in-out;
+}
