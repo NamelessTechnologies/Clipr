@@ -1,11 +1,17 @@
+import { useState } from "react";
 import "../../styles/QuerriedProfile.css";
 
 function QuerriedProfile(props: {
   user_id: string;
   username: string;
   nickname: string;
+  pfp: string;
   onClick?: () => void;
 }) {
+  const [PFP, setPFP] = useState<string>(props.pfp);
+  const failedPFP = () => {
+    setPFP("https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg");
+  };
   return (
     <div
       onClick={props.onClick}
@@ -15,9 +21,11 @@ function QuerriedProfile(props: {
         <div className="pt-3">
           <div className="circle-small">
             <img
-              src="https://ih1.redbubble.net/image.5503365970.2431/flat,750x,075,f-pad,750x1000,f8f8f8.u1.jpg"
-              alt="you are my sunshine"
-            ></img>
+              onError={failedPFP}
+              src={
+                PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
+              }
+            />
           </div>
         </div>
         <div className="flex flex-col pl-5 pt-5">
