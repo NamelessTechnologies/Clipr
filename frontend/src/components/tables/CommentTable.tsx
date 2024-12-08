@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CommentModel from "../../types/Comment";
+import CommentModel from "../../types/CommentOLD";
 import { uri } from "../../App";
 
 function CommentTable() {
