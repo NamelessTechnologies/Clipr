@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import {  local_uri } from "../App";
+import {  uri } from "../App";
 import { Post } from "./Post";
 import { CommentBox } from "./CommentBox";
 
@@ -13,7 +13,7 @@ function PostBox(props: { postID: number }) {
   console.log(props.postID + "postbox.tsx");
   const fetchPosts = async () => {
     try {
-      const response = await fetch(local_uri + "post/real/getPostInfo/" + props.postID); // test
+      const response = await fetch(uri + "post/real/getPostInfo/" + props.postID); // test
       
       const json = await response.json();
 

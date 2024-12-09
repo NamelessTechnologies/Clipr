@@ -7,7 +7,9 @@ import UserModel from "../types/User";
 import Switch from '@mui/material/Switch';
 import { IoMoonOutline } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
-import { local_uri } from "../App";
+import { uri } from "../App";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { FaArrowAltCircleUp } from "react-icons/fa";
 
 
 function Home() {
@@ -31,7 +33,7 @@ function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const url = local_uri + "post/real/getPostArray";
+      const url = uri + "post/real/getPostArray";
       const response = await fetch(url); 
       const json = await response.json();
       console.log(json['postArray'][0]);
@@ -58,6 +60,10 @@ function Home() {
     setCurrentPost(currentPost! - 1);
   }
 
+  const handleUp = () => {
+    setCurrentPost(currentPost! + 1);
+  }
+
   return (
     <>
       {foundUser ? (
@@ -65,7 +71,8 @@ function Home() {
           {darkMode && (
             <div className="fixed bg-black inset-0 z-10"></div>
           )}
-          <button onClick={handleDown} className='text-blue-100'> click to go down </button>
+          <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
           <PostBox postID={currentPost!} />
 
 

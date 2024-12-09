@@ -3,7 +3,7 @@ import { SendIcon } from "./comment/SendCommentIcon";
 import "../styles/Scrollbar.css";
 import { CommentWrapper } from "./comment/CommentWrapper";
 import { useEffect, useState } from "react";
-import { uri, local_uri } from "../App";
+import { uri } from "../App";
 
 function CommentBox(props: { post_id: number, user_id: number, username: string, user_pfp: string }) {
 
@@ -22,12 +22,13 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
     // const pfp_url = "https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg"
 
     useEffect(() => {
+        setComments([]);
         fetchComments();
-      }, []);
+      }, [props]);
 
     const fetchComments = async() => {
-        console.log("fetching posts : " + local_uri + "comment/post/" + props.post_id);
-        const response = await fetch(local_uri + "comment/post/" + props.post_id);
+        console.log("fetching posts : " + uri + "comment/post/" + props.post_id);
+        const response = await fetch(uri + "comment/post/" + props.post_id);
         const json = await response.json();
 
         const comments: CommentModel[] = [];
@@ -65,13 +66,9 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
             newComment.append("user_id", props.user_id.toString());
             newComment.append("content", userComment);
 
-            const response = await fetch(local_uri + "comment/", {
+            const response = await fetch(uri + "comment/", {
                 body: newComment,
-                method: "POST",
-                // headers: {
-                //   Accept: "application/json, text/plain",
-                //   "Content-Type": "application/json;charset=UTF-8",
-                // },
+                method: "POST"
             });
 
             if (response.status == 200) {
@@ -119,6 +116,7 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
                 <SendIcon/> */}
                 <form onSubmit={postComment} className="flex w-full">
                     <input type="text" className="text-white w-full mr-2 bg-transparent outline-none border-b py-1" placeholder="Leave a comment"
+                        value = {userComment}
                         onChange={(e) => setUserComment(e.target.value)}></input>
                     
                     <button type="submit" className="">
