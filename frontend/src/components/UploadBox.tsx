@@ -54,45 +54,9 @@ const CreatePost: React.FC = () => {
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("LETS DO THIS")
-    var fileLocation = "";
-
-    // check if image provided
-    if (image) {
-        alert(`File "${image.name}" is ready for upload!`);
-        // Upload logic
-        const s3 = new ReactS3Client(s3Config);
-
-        try {
-            console.log("Attempting to upload " + image.name + " of type " + image.type);
-            var fileName = image.name;
-            fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
-            const res = await s3.uploadFile(image, fileName);
-            /*
-            * {
-            *   Response: {
-            *     bucket: "bucket-name",
-            *     key: "directory-name/filename-to-be-uploaded",
-            *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
-            *   }
-            * }
-            */
-            console.log(res);
-            var res_json = JSON.stringify(res);
-            var parsed = JSON.parse(res_json);
-            console.log("parsed.location: " + parsed.location);
-            fileLocation = parsed.location;
-            console.log("fileLocation: " + fileLocation);
-            
-        } catch (exception) {
-            console.log(exception);
-            /* handle the exception */
-        }
-    } else {
-        alert("Please select a file first.");
-        return;
-    }
 
     const uid = userInfo["user_id"];
+    let postID = 0;
 
     const formData = new FormData();
     formData.append("user_id", uid);
@@ -105,18 +69,72 @@ const CreatePost: React.FC = () => {
         body: formData,
         method: "POST"
       });
-      if (response.status === 200) {
-        alert("Success!");
-      } else {
-        alert(`${response.status}: ${response.statusText}`);
-      }
+      const data = await response.json();
+      postID = data['post_id'];
+      // if (response.status === 200) {
+      //   alert("Success!");
+      // } else {
+      //   alert(`${response.status}: ${response.statusText}`);
+      // }
     } catch (error) {
       alert(error);
       console.error(error);
     }
 
+    if(media_type != 'text') {
+      var fileLocation = "";
+
+      // check if image provided
+      if (image) {
+          // alert(`File "${image.name}" is ready for upload!`);
+          // Upload logic
+          const s3 = new ReactS3Client(s3Config);
+  
+          try {
+              console.log("Attempting to upload " + image.name + " of type " + image.type);
+              var fileName = image.name;
+              fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
+              const res = await s3.uploadFile(image, fileName);
+              /*
+              * {
+              *   Response: {
+              *     bucket: "bucket-name",
+              *     key: "directory-name/filename-to-be-uploaded",
+              *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
+              *   }
+              * }
+              */
+              console.log(res);
+              var res_json = JSON.stringify(res);
+              var parsed = JSON.parse(res_json);
+              console.log("parsed.location: " + parsed.location);
+              fileLocation = parsed.location;
+              console.log("fileLocation: " + fileLocation);
+              
+              const formData2 = new FormData();
+              formData2.append("post_id", postID.toString());
+              formData2.append("url", fileLocation);
+              const response2 = await fetch(local_uri + "media/postMedia", {
+                body: formData2,
+                method: "POST"
+              });
+              if (response2.status === 200) {
+                alert("Success!");
+              } else {
+                alert(`${response2.status}: ${response2.statusText}`);
+              }          } catch (exception) {
+              console.log(exception);
+              /* handle the exception */
+          }
+      } else {
+          alert("Please select a file first.");
+          return;
+      }
+    }
     setTitle("");
     setPost({ content: "" });
+    setImage(null);
+    setMediaType('text');
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
     fileInput.value = '';
   };
