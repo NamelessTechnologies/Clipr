@@ -19,7 +19,7 @@ function Comment(props: { commentData: CommentModel, isReply: boolean }) {
 
             <div className="flex flex-col w-9/12 mr-2">
 
-                <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-white cursor-pointer w-fit`}>{ username }</span>
+                <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 cursor-pointer w-fit`}>{ username }</span>
                 <span className={`${props.isReply ? 'text-replySize mt-1' : 'text-sm mt-2'} text-white`}>{ content }</span>
                 <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 mt-1 cursor-pointer w-fit`}>Reply</span>
                 
