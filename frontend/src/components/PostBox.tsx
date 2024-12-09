@@ -5,6 +5,9 @@ import { Post } from "./Post";
 import { CommentBox } from "./CommentBox";
 
 function PostBox() {
+  const currentUser = localStorage.getItem("user");
+  const userInfo = currentUser ? JSON.parse(currentUser) : {};
+
   // TEMPORARILY COMMENTING THE BELOW OUT
 
   // const [post, setPost] = useState<PostModel[]>([]);
@@ -48,6 +51,8 @@ function PostBox() {
   //   fetchPosts();
   // }, []);
 
+  const post_id = 63;
+
   const TempPost: PostModel = {
     user_id: 1,
     title: "LAPPLAND IS SO CUTEEEEEEEEEE",
@@ -68,12 +73,8 @@ function PostBox() {
   // }
   return (
     <div className="flex justify-center mt-6 mb-4">
-    {/* <div className="flex justify-center h-full w-full border border-r-purple-500"> */}
-      {/* {post?.map((post) => (
-        <PostBox postData={post}/>
-      ))} */}
       <Post postData={TempPost}/>
-      <CommentBox />
+      <CommentBox post_id={post_id} user_id={userInfo['user_id']} username={userInfo['username']} user_pfp={userInfo['pfp']}/>
     </div>
   );
 }
