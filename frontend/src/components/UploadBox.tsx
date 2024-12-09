@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 // import { uri, local_uri } from "../App";
 import { local_uri } from "../App";
-
+import ReactS3Client from "react-aws-s3-typescript";
+import { s3Config } from "./s3Config";
 // import User from '../types/User';
 // import AWS from "aws-sdk";
 // import AWS from 'aws-sdk/global';
@@ -53,12 +54,43 @@ const CreatePost: React.FC = () => {
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("LETS DO THIS")
+    var fileLocation = "";
 
     // check if image provided
-    // if (!image) {
-    //   alert("Please upload an image.");
-    //   return;
-    // }
+    if (image) {
+        alert(`File "${image.name}" is ready for upload!`);
+        // Upload logic
+        const s3 = new ReactS3Client(s3Config);
+
+        try {
+            console.log("Attempting to upload " + image.name + " of type " + image.type);
+            var fileName = image.name;
+            fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
+            const res = await s3.uploadFile(image, fileName);
+            /*
+            * {
+            *   Response: {
+            *     bucket: "bucket-name",
+            *     key: "directory-name/filename-to-be-uploaded",
+            *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
+            *   }
+            * }
+            */
+            console.log(res);
+            var res_json = JSON.stringify(res);
+            var parsed = JSON.parse(res_json);
+            console.log("parsed.location: " + parsed.location);
+            fileLocation = parsed.location;
+            console.log("fileLocation: " + fileLocation);
+            
+        } catch (exception) {
+            console.log(exception);
+            /* handle the exception */
+        }
+    } else {
+        alert("Please select a file first.");
+        return;
+    }
 
     const uid = userInfo["user_id"];
 
