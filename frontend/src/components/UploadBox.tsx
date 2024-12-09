@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { uri } from "../App";
 import UploadForm from "./UploadForm";
-import ReactS3Client from 'react-aws-s3-typescript';
-import { s3Config } from './s3Config.ts';
 // import User from '../types/User';
 
 interface PostContent {
