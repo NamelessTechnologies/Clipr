@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import { uri, local_uri } from "../App";
-import { local_uri } from "../App";
+import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "./s3Config";
 // import User from '../types/User';
@@ -67,7 +67,7 @@ const CreatePost: React.FC = () => {
     formData.append("media_type", media_type);
 
     try {
-      const response = await fetch(local_uri + "post/realpost", {
+      const response = await fetch(uri + "post/realpost", {
         body: formData,
         method: "POST"
       });
@@ -116,7 +116,7 @@ const CreatePost: React.FC = () => {
               const formData2 = new FormData();
               formData2.append("post_id", postID.toString());
               formData2.append("url", fileLocation);
-              const response2 = await fetch(local_uri + "media/postMedia", {
+              const response2 = await fetch(uri + "media/postMedia", {
                 body: formData2,
                 method: "POST"
               });

@@ -4,7 +4,7 @@ import MessageModel from "../types/Message";
 import { MessageBox } from "../components/MessageBox";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
-import { uri, local_uri } from "../App";
+import { uri } from "../App";
 import default_pfp from "../assets/Profile.png";
 
 const Messages: React.FC = () => {
@@ -59,7 +59,7 @@ const Messages: React.FC = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `${local_uri}conversation?User_1=${userID}&User_2=${secondUserID}`
+          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
         const messages: MessageModel[] = json.map((media: MessageModel) => ({
@@ -99,7 +99,7 @@ const Messages: React.FC = () => {
     };
 
     try {
-      await fetch(`${local_uri}conversation/message`, {
+      await fetch(`${uri}conversation/message`, {
         body: JSON.stringify(newMessage),
         method: "POST",
         headers: {
