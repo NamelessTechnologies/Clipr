@@ -34,7 +34,8 @@ public class ConversationController : ControllerBase
 
     [HttpGet]
     public IActionResult GetAllConversationMessages([FromQuery]ConversationMessagesQuery conversation) {
-        var sql = "SELECT * FROM Message WHERE convo_id = (select id FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or"+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + "));";
+        // var sql = "SELECT * FROM Message WHERE convo_id = (select id FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or"+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + "));";
+        var sql = "SELECT Message.*, users.pfp FROM Message INNER JOIN users ON message.user_id = users.user_id WHERE convo_id = (select id FROM Conversation WHERE (user_id= " + conversation.User_1 + " and user_id_2= " + conversation.User_2 + ") or"+"(user_id= " + conversation.User_2 + " and user_id_2= " + conversation.User_1 + "));";
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -53,7 +54,8 @@ public class ConversationController : ControllerBase
                 Convo_id = reader.GetInt32(1),
                 Content = reader.GetString(2),
                 Datesent = reader.GetDateTime(3),
-                User_id = reader.GetInt32(4)
+                User_id = reader.GetInt32(4),
+                User_pfp = reader.GetString(5)
             };
             messages.Add(message);
         }
