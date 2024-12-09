@@ -30,8 +30,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
                 var fileName = selectedFile.name;
                 fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
                 const res = await s3.uploadFile(selectedFile, fileName);
-    
-                console.log(res);
                 /*
                 * {
                 *   Response: {
@@ -41,6 +39,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
                 *   }
                 * }
                 */
+                console.log(res);
+                var res_json = JSON.stringify(res);
+                var parsed = JSON.parse(res_json);
+                console.log(parsed.location);
+                
             } catch (exception) {
                 console.log(exception);
                 /* handle the exception */
