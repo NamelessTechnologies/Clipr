@@ -29,7 +29,7 @@ function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number }) {
                 )}
                 
             </div>
-            <span className="text-white text-center">13.3k</span>
+            <span className="text-white text-center">{props.num_bookmarks}</span>
         </div>
 
     )

@@ -7,12 +7,17 @@ import UserModel from "../types/User";
 import Switch from '@mui/material/Switch';
 import { IoMoonOutline } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
+import { uri } from "../App";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { FaArrowAltCircleUp } from "react-icons/fa";
 
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [currentPost, setCurrentPost] = useState<number>();
+
   // const [uid, setUID] = useState<number>();
   const [, setUID] = useState<number>();
 
@@ -26,6 +31,20 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const url = uri + "post/real/getPostArray";
+      const response = await fetch(url); 
+      const json = await response.json();
+      console.log(json['postArray'][0]);
+      setCurrentPost(json['postArray'][0]);
+    }
+
+    fetchPosts();
+    console.log("Current Post:");
+    console.log(currentPost);
+  }, []);
+
   // This effect updates the UID once `userInfo` is set
   useEffect(() => {
     if (userInfo && userInfo.user_id) {
@@ -37,6 +56,14 @@ function Home() {
     setDarkMode(!darkMode);
   }
 
+  const handleDown = () => {
+    setCurrentPost(currentPost! - 1);
+  }
+
+  const handleUp = () => {
+    setCurrentPost(currentPost! + 1);
+  }
+
   return (
     <>
       {foundUser ? (
@@ -44,7 +71,10 @@ function Home() {
           {darkMode && (
             <div className="fixed bg-black inset-0 z-10"></div>
           )}
-          <PostBox />
+          <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
+          <PostBox postID={currentPost!} />
+
 
           <div className="fixed bottom-5 right-5 z-20 flex items-center">
             {darkMode ? (<IoMoon className="text-[#d78d35]"/>) : (<IoMoonOutline className="text-white"/>)}
