@@ -88,8 +88,9 @@ public class PostController : ControllerBase {
     }
 
     [HttpPost("realpost")]
-    public async void postRealPost([FromForm] int user_id, [FromForm] string title, [FromForm] string description, [FromForm] string media_type) {
-        var sql = "INSERT INTO post (user_id, title, description, datePosted, media_type) VALUES(@user_id, @title, @description, @datePosted, @media_type);";
+    public async Task<IActionResult> postRealPost([FromForm] int user_id, [FromForm] string title, [FromForm] string description, [FromForm] string media_type) {
+        try {
+        var sql = "INSERT INTO post (user_id, title, description, datePosted, media_type) VALUES(@user_id, @title, @description, @datePosted, @media_type) RETURNING post_id;";
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -101,7 +102,10 @@ public class PostController : ControllerBase {
             cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
             cmd.Parameters.AddWithValue("media_type", media_type);
 
-            await cmd.ExecuteNonQueryAsync();
+            var insertedId = (int) await cmd.ExecuteScalarAsync();
+            return Ok(new {post_id = insertedId});        }
+        } catch (Exception e) {
+            return (OkObjectResult)StatusCode(500, new { error = e.Message });
         }
     }
 

@@ -52,15 +52,9 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("LETS DO THIS")
-
-    // check if image provided
-    // if (!image) {
-    //   alert("Please upload an image.");
-    //   return;
-    // }
 
     const uid = userInfo["user_id"];
+    let postID = 0;
 
     const formData = new FormData();
     formData.append("user_id", uid);
@@ -73,11 +67,29 @@ const CreatePost: React.FC = () => {
         body: formData,
         method: "POST"
       });
+      const data = await response.json();
+      postID = data['post_id'];
+
       if (response.status === 200) {
         alert("Success!");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
+    } catch (error) {
+      alert(error);
+      console.error(error);
+    }
+
+    const formData2 = new FormData();
+    formData2.append("post_id", postID.toString());
+    formData2.append("url", "working.png");
+
+    try {
+      const response2 = await fetch(local_uri + "media/postMedia", {
+        body: formData2,
+        method: "POST"
+      });
+      console.log(response2);
     } catch (error) {
       alert(error);
       console.error(error);
