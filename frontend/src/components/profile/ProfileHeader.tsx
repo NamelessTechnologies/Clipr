@@ -13,6 +13,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   ShouldBeLoggedIn(true);
 
   const profileID = props.profile_id;
+  const [PFP, setPFP] = useState<string>(props.userData.pfp);
   const [userID, setUserID] = useState<string>();
   const [lookingAtOwnProfile, setLookingAtOwnProfile] =
     useState<boolean>(false);
@@ -77,19 +78,20 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
 
-  // const TripleFs = () => {
-  //   return (
-  //     <div className="flex flex-row">
-  //       <div className="text-yellow-100 italic text-1xl pr-2">
-  //         Followers: 69
-  //       </div>
-  //       <div className="text-yellow-100 italic text-1xl pr-2">
-  //         Following: 1738
-  //       </div>
-  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-  //     </div>
-  //   );
-  // };
+  const TripleFs = () => {
+    return (
+      <div className="flex flex-row">
+        <div className="text-yellow-100 italic text-1xl pr-2">
+          Followers: 69
+        </div>
+        <div className="text-yellow-100 italic text-1xl pr-2">
+          Following: 1738
+        </div>
+        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+      </div>
+    );
+  };
+
   const clickButton = async () => {
     if (status === "Friends") {
       // unfollow profileID
@@ -168,6 +170,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     }
   };
 
+  const failedPFP = () => {
+    setPFP("https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg");
+  };
+
   const NavigateToMessagePage = async () => {
     const queryString = uri + "username/" + props.userData.username;
     const response = await fetch(queryString);
@@ -221,9 +227,11 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           <div className="pt-3">
             <div className="circle-big">
               <img
-                src="https://ih1.redbubble.net/image.5503365970.2431/flat,750x,075,f-pad,750x1000,f8f8f8.u1.jpg"
-                alt="you are my sunshine"
-              ></img>
+                onError={failedPFP}
+                src={
+                  PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
+                }
+              />
             </div>
           </div>
           <div className="flex flex-col pl-5">
@@ -244,7 +252,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Settings
               </button>
             </div>
-            {/* <TripleFs></TripleFs> */}
+            <TripleFs></TripleFs>
           </div>
         </div>
       ) : (
@@ -252,9 +260,11 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           <div className="pt-3">
             <div className="circle-big">
               <img
-                src="https://ih1.redbubble.net/image.5503365970.2431/flat,750x,075,f-pad,750x1000,f8f8f8.u1.jpg"
-                alt="you are my sunshine"
-              ></img>
+                onError={failedPFP}
+                src={
+                  PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
+                }
+              />
             </div>
           </div>
           <div className="flex flex-col pl-5">
@@ -281,7 +291,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Message
               </button>
             </div>
-            {/* <TripleFs></TripleFs> */}
+            <TripleFs></TripleFs>
           </div>
         </div>
       )}

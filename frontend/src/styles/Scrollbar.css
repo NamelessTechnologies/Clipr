@@ -1,0 +1,30 @@
+/* go this from chatgpt not sure what its rly doing */
+
+:root {
+    --tw-scrollbar-track: #171717; 
+    --tw-scrollbar-thumb: #333333;
+  }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tw-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tw-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tw-scrollbar-thumb-hover, #888);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tw-scrollbar-thumb) var(--tw-scrollbar-track);
+} 

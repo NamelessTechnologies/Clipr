@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import SearchBar from "../src/components/SearchBar";
+import SearchBar from "../../src/components/SearchBar";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 describe("Search Bar Component", () => {
