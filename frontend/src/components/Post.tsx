@@ -26,15 +26,28 @@ function Post(props: { postData: PostModel }) {
     const num_likes = props.postData.num_likes ?? 0;
     const bookmarked = props.postData.bookmarked ?? false;
     const num_bookmarks = props.postData.num_bookmarks ?? 0;
-
+    const media_type = props.postData.mediaType ?? "";
+    console.log(props.postData.mediaType);
     return (
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (
                 <div className="w-auto bg-neutral-900 rounded-xl">
+
+                    {(media_type == 'image') && (
                     <img src={photo_data}
                         className="mb-4 h-auto mx-auto rounded-xl"
                         style={{minHeight: '60vh',  maxHeight: '60vh', }}>
                     </img>
+
+                    )}
+                    {(media_type == 'video') && (
+                    <video src={photo_data} controls autoPlay={true}
+                        className="mb-4 h-auto mx-auto rounded-xl"
+                        style={{minHeight: '60vh',  maxHeight: '60vh', }}>
+                    </video>
+                    )}
+
+                    
                 </div>
                 // <img
                 //     src={`data:image/jpeg;base64,${photo_data}`} 
