@@ -69,7 +69,7 @@ public class PostController : ControllerBase {
 
 
     [HttpPost]
-    public async void postTEMPTextPost([FromBody] TEMP_Post post) {
+    public async void postTEMPTextPost([FromForm] TEMP_Post post) {
 
         // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "INSERT INTO TEMP_post (user_id, title, content, datePosted) VALUES(@user_id, @title, @content, @datePosted);";
@@ -84,6 +84,28 @@ public class PostController : ControllerBase {
             cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
 
             await cmd.ExecuteNonQueryAsync();
+        }
+    }
+
+    [HttpPost("realpost")]
+    public async Task<IActionResult> postRealPost([FromForm] int user_id, [FromForm] string title, [FromForm] string description, [FromForm] string media_type) {
+        try {
+        var sql = "INSERT INTO post (user_id, title, description, datePosted, media_type) VALUES(@user_id, @title, @description, @datePosted, @media_type) RETURNING post_id;";
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        await using (var cmd = new NpgsqlCommand(sql, conn)) {
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("title", title);
+            cmd.Parameters.AddWithValue("description", description);
+            cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
+            cmd.Parameters.AddWithValue("media_type", media_type);
+
+            var insertedId = (int) await cmd.ExecuteScalarAsync();
+            return Ok(new {post_id = insertedId});        }
+        } catch (Exception e) {
+            return (OkObjectResult)StatusCode(500, new { error = e.Message });
         }
     }
 
