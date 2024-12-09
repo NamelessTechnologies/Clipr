@@ -45,7 +45,7 @@ function NavBar() {
   return (
     <>
       {foundUser ? (
-        <nav className="bg-navbar text-white py-6 px-6 border-b border-white">
+        <nav className="bg-navbar text-white py-4 px-6 border-b border-white">
           <div className="flex justify-between items-center">
             <Link
               to="/"
@@ -60,14 +60,6 @@ function NavBar() {
               <li className="pt-3">
                 <Link to="/Upload" data-testid="upload-link">
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
-                </Link>
-              </li>
-              <li className="pt-3">
-                <Link
-                  to="/Tables"
-                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
-                >
-                  Tables
                 </Link>
               </li>
               <li className="pt-3">

@@ -16,8 +16,7 @@ import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
 import FriendsPage from "./pages/FriendsPage.tsx";
 
-export const uri =
-  "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+export const uri = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 export const local_uri = "http://localhost:5001/";
 
 function App() {

@@ -6,6 +6,8 @@ import { s3Config } from "./s3Config";
 // import User from '../types/User';
 // import AWS from "aws-sdk";
 // import AWS from 'aws-sdk/global';
+// import AWS from "aws-sdk";
+// import AWS from 'aws-sdk/global';
 
 interface PostContent {
   content: string;

@@ -11,6 +11,7 @@ interface PartialUserModel {
   user_id: number;
   username: string;
   nickname: string;
+  pfp: string;
 }
 function Search() {
   ShouldBeLoggedIn(true);
@@ -60,6 +61,7 @@ function Search() {
               user_id={result.user_id as unknown as string}
               username={result.username}
               nickname={result.nickname}
+              pfp={result.pfp}
             ></QuerriedProfile>
           ))}
         </div>

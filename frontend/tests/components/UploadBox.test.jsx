@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { UploadBox } from "../src/components/UploadBox";
+import { UploadBox } from "../../src/components/UploadBox";
 import { MemoryRouter, BrowserRouter } from "react-router-dom";
 
 // Wrapper function to render NavBar with Router context
