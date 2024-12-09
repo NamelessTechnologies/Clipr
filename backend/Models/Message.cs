@@ -12,4 +12,6 @@ public class Message
 
     public int? User_id { get; set; }
 
+    public string? User_pfp { get; set; }
+
 }
