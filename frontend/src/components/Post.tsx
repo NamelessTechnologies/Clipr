@@ -6,9 +6,10 @@ import { ShareIcon } from "./post/ShareIcon";
 import { useState } from "react";
 // import feixiao from "../assets/feixiao_pull.png";
 // import narrow_pic from "../assets/narrow_pic_test.png";
-import father from "../assets/father.jpg"
+// import father from "../assets/father.jpg"
 
 function Post(props: { postData: PostModel }) {
+    console.log(props.postData.post_id + "post.tsx");
 
     const [showMore, setShowMore] = useState(false);
 
@@ -30,9 +31,9 @@ function Post(props: { postData: PostModel }) {
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (
                 <div className="w-auto bg-neutral-900 rounded-xl">
-                    <img src={father}
+                    <img src={photo_data}
                         className="mb-4 h-auto mx-auto rounded-xl"
-                        style={{ maxHeight: '70vh'}}>
+                        style={{minHeight: '60vh',  maxHeight: '60vh', }}>
                     </img>
                 </div>
                 // <img
