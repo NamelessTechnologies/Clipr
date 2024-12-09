@@ -28,7 +28,7 @@ function CommentWrapper(props: { commentData: CommentModel }) {
     return (
         <div className="flex flex-col w-full mt-1">
             <Comment commentData={ props.commentData } isReply={false}/>
-            <span onClick={showReplies} className=" text-sm text-gray-200 ml-[4.5rem] cursor-pointer w-fit">{displayReplies ? "Hide replies" : "View replies"}</span>
+            <span onClick={showReplies} className=" text-sm text-gray-300 ml-[4.5rem] cursor-pointer w-fit">{displayReplies ? "Hide replies" : "View replies"}</span>
 
 
             {displayReplies && (

@@ -51,10 +51,11 @@ function PostBox() {
   const TempPost: PostModel = {
     user_id: 1,
     title: "LAPPLAND IS SO CUTEEEEEEEEEE",
-    content: "thank you arknights for bringing light into my life again with this lappalter event",
+    content: "Thank you arknights for bringing light into my life again with this lappalter event. Lets bffr lappland is like the best character in fiction. shes so dope and the only one that comes close is my gloriest king gojo",
     photo_data: "skibidi",
     username: "chillwafflez",
     user_pfp: "https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg",
+    datePosted: new Date(2024, 11, 8), 
 
     liked: false,
     num_likes: 23,

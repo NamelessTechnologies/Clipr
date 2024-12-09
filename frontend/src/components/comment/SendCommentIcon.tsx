@@ -1,5 +1,5 @@
 import { CiLocationArrow1 } from "react-icons/ci";
-
+import "../../styles/PostIcons.css"
 import { useState } from "react";
 
 function SendIcon() {
@@ -9,7 +9,7 @@ function SendIcon() {
 
     return (
         <div className="flex flex-col justify-center">
-            <CiLocationArrow1 className={`text-white w-6 h-6 text-3xl cursor-pointer ${animate ? "enlarge-shrink " : ""}`} />
+            <CiLocationArrow1 className={`text-white w-7 h-7 text-3xl cursor-pointer ${animate ? "enlarge-shrink " : ""}`} />
         </div>
     )
 }
