@@ -7,12 +7,15 @@ import UserModel from "../types/User";
 import Switch from '@mui/material/Switch';
 import { IoMoonOutline } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
+import { local_uri } from "../App";
 
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [currentPost, setCurrentPost] = useState<number>();
+
   // const [uid, setUID] = useState<number>();
   const [, setUID] = useState<number>();
 
@@ -24,6 +27,18 @@ function Home() {
       const parsedUser = JSON.parse(localStorageUser);
       setUserInfo(parsedUser as UserModel);
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const url = local_uri + "post/real/getPostArray";
+      const response = await fetch(url); 
+      const json = await response.json();
+      setCurrentPost(json['postArray'][0]);
+    }
+
+    fetchPosts();
+    console.log(currentPost);
   }, []);
 
   // This effect updates the UID once `userInfo` is set

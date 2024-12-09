@@ -11,6 +11,57 @@ namespace backend.Controllers;
 public class PostController : ControllerBase {
 
 
+    [HttpGet("real/getPostInfo/{id}")]
+    public IActionResult getRealPostInfo(int id) {
+        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + id + "), (SELECT url AS media_link FROM media WHERE post_id = " + id + "), post.*, users.username, users.pfp FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + id;
+        Console.WriteLine(sql);
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        
+        // execute command
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        var reader = cmd.ExecuteReader();
+        if (reader.Read()) {
+            return Ok(new AllPostInfo {
+                Like_Count = reader.GetInt32(0),
+                Save_Count = reader.GetInt32(1),
+                Media_Link = reader.GetString(2),
+                Post_Id = reader.GetInt32(3),
+                User_Id = reader.GetInt32(4),
+                Title = reader.GetString(5),
+                Description = reader.GetString(6),
+                DatePosted = reader.GetDateTime(7),
+                Media_Type = reader.GetString(8),
+                Username = reader.GetString(9),
+                Pfp = reader.GetString(10)
+            });
+        } else {
+            return NotFound("User not found/No posts.");
+        }
+    }
+
+
+    [HttpGet("real/getPostArray")]
+    public IActionResult getRealPostInfo() {
+        var sql = "SELECT post_id FROM POST ORDER BY POST_ID DESC";
+        Console.WriteLine(sql);
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        
+        // execute command
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        var reader = cmd.ExecuteReader();
+        var postArray = new List<int>();
+        while (reader.Read()) {
+            postArray.Add(reader.GetInt32(0));
+        }
+        return Ok(new {postArray});
+    }
+
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
