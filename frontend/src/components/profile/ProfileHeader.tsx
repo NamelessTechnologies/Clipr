@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
 import { uri } from "../../App";
+import EditProfileModal from "./EditProfileModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -23,6 +24,17 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
 
+   // FOR SHOWING EDIT PROFILE MODAL
+   const [isModalVisible, setIsModalVisible] = useState(false);
+   const handleShowModal = () => {
+     setIsModalVisible(true);
+     console.log("After handleShowModal: "+isModalVisible);
+   };
+   const handleCloseModal = () => {
+     setIsModalVisible(false);
+     console.log("After handleCloseModal: "+isModalVisible);
+   };
+
   // FOR NAVIGATING TO MESSAGES PAGE
   const [currentUser] = useState(localStorage.getItem("user") || "");
   const userInfo = JSON.parse(currentUser);
@@ -36,6 +48,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setUserID(currentUserID);
       if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
+        // console.log("looking @ own prof after setting true: "+lookingAtOwnProfile);
       } else {
         setLookingAtOwnProfile(false);
       }
@@ -44,36 +57,42 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
-        let response = await fetch(queryString);
-        let json = await response.json();
-        if (json.user_1 == -1) {
-          setUserFollwingProfile(false);
-        } else {
-          setUserFollwingProfile(true);
-        }
-        queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
-        response = await fetch(queryString);
-        json = await response.json();
-        if (json.user_1 == -1) {
-          setProfileFollwingUser(false);
-        } else {
-          setProfileFollwingUser(true);
-        }
+        // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
+        if (!lookingAtOwnProfile) {
+            if (userID){
+                // console.log("looking at other person's profile!");
+            try {
+                let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
+                let response = await fetch(queryString);
+                let json = await response.json();
+                if (json.user_1 == -1) {
+                    setUserFollwingProfile(false);
+                } else {
+                    setUserFollwingProfile(true);
+                }
+                queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+                response = await fetch(queryString);
+                json = await response.json();
+                if (json.user_1 == -1) {
+                setProfileFollwingUser(false);
+                } else {
+                setProfileFollwingUser(true);
+                }
 
-        if (profileFollowingUser && userFollowingProfile) {
-          setStatus("Friends");
-        } else if (profileFollowingUser && !userFollowingProfile) {
-          setStatus("Follow Back");
-        } else if (!profileFollowingUser && userFollowingProfile) {
-          setStatus("Following");
-        } else if (!profileFollowingUser && !userFollowingProfile) {
-          setStatus("Follow");
+                if (profileFollowingUser && userFollowingProfile) {
+                    setStatus("Friends");
+                } else if (profileFollowingUser && !userFollowingProfile) {
+                    setStatus("Follow Back");
+                } else if (!profileFollowingUser && userFollowingProfile) {
+                    setStatus("Following");
+                } else if (!profileFollowingUser && !userFollowingProfile) {
+                    setStatus("Follow");
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-      } catch (error) {
-        console.error(error);
-      }
+        }
     }
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
@@ -245,7 +264,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               <FaCrown className="text-yellow-600" />
             </div>
             <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
+              <button onClick={handleShowModal} className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
                 Edit Profile
               </button>
               <button className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
@@ -253,6 +272,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
             <TripleFs></TripleFs>
+            {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
       ) : (
