@@ -4,7 +4,8 @@ import MessageModel from "../types/Message";
 import { MessageBox } from "../components/MessageBox";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
+import default_pfp from "../assets/Profile.png";
 
 const Messages: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -12,6 +13,7 @@ const Messages: React.FC = () => {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const userID = userInfo["user_id"] as number;
+  const userPFP = userInfo["pfp"] as string;
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageModel[]>([]);
@@ -19,6 +21,7 @@ const Messages: React.FC = () => {
   const location = useLocation();
   const secondUser = location.state;
   const secondUserID = location.state[1];
+  const [secondUserPFP, setSecondUserPFP] = useState("");
   const convoID = secondUser[2];
   const [incomingMessage, setIncomingMessage] = useState<MessageModel>();
 
@@ -36,11 +39,27 @@ const Messages: React.FC = () => {
     };
   }, []);
 
+  // this useEffect contains two functions which fetches the other user's pfp and all messages between the current and other user
   useEffect(() => {
+    console.log("FETCHING MESSAGES");
+
+    // get and set second user's PFP
+    const recipientPFP = async() => {
+      try {
+        const response = await fetch(`${uri}user/${secondUserID}`);
+        const json = await response.json();
+        setSecondUserPFP(json["pfp"])
+      } catch (error) {
+        console.error("Error second user's pfp:", error);
+      }
+    } 
+    recipientPFP();
+
+    // get and set all messages from convo
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
+          `${local_uri}conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
         const messages: MessageModel[] = json.map((media: MessageModel) => ({
@@ -49,6 +68,7 @@ const Messages: React.FC = () => {
           content: media.content,
           datesent: media.datesent,
           user_id: media.user_id,
+          user_pfp: media.user_pfp
         }));
         setMessages(messages);
       } catch (error) {
@@ -64,10 +84,12 @@ const Messages: React.FC = () => {
     }
   }, [incomingMessage, convoID]);
 
+  // automatically scrolls to bottom of message box to go to most recent message
   useEffect(() => {
     scrollToBottom.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // posts message to backend
   const postMessage = async () => {
     const newMessage = {
       Convo_id: convoID,
@@ -77,7 +99,7 @@ const Messages: React.FC = () => {
     };
 
     try {
-      await fetch(`${uri}conversation/message`, {
+      await fetch(`${local_uri}conversation/message`, {
         body: JSON.stringify(newMessage),
         method: "POST",
         headers: {
@@ -98,6 +120,7 @@ const Messages: React.FC = () => {
         content: message,
         datesent: new Date(),
         user_id: userID,
+        user_pfp: userPFP
       } as unknown as MessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();
@@ -111,52 +134,56 @@ const Messages: React.FC = () => {
   return (
     <div className="flex flex-col justify-center items-center">
       <button
-        className="fixed bottom-5 right-5 rounded-xl bg-slate-400 p-5"
+        className="fixed bottom-5 right-5 text-white text-sm rounded-xl bg-navbar p-2"
         onClick={() =>
           scrollToBottom.current?.scrollIntoView({ behavior: "smooth" })
-        }
-      >
+          }>
         Jump To Recent
       </button>
-      <div className="w-screen p-5 pl-20">
-        <h1 className="text-white text-3xl">{secondUser[0]}</h1>
-      </div>
 
-      <div className="text-white bg-navbar flex flex-col justify-center w-3/5 h-4/5 px-10 pb-5">
-        {messages.map((msg) => (
-          <MessageBox
-            key={msg.id}
-            username={
-              msg.user_id === userInfo["user_id"]
-                ? userInfo["username"]
-                : secondUser[0]
-            }
-            content={msg.content}
-          />
-        ))}
-      </div>
-
-      <form
-        className="flex justify-center w-screen pb-10"
-        onSubmit={sendMessage}
-      >
-        <div className="flex flex-col justify-center w-1/3 pr-5">
-          <input
-            className="p-2 rounded-xl"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
+      {/* MESSAGE CONTAINER */}
+      <div className="flex flex-col w-1/2 mt-4 justify-center bg-navbar rounded-xl">
+        {/* recipients name on top */}
+        <div className="flex w-full p-4 border-b">
+          <img
+            src={secondUserPFP || default_pfp}
+            className="w-11 h-11 rounded-full mr-3">
+          </img>
+          <h1 className="text-white text-xl my-auto">{secondUser[0]}</h1>
         </div>
-        <div className="bg-blue-100 rounded-md">
-          <button
-            className="p-2 bg-navbar text-white border-white border-2"
-            type="submit"
-          >
-            Send Message
+
+        {/* messages */}
+        <div className="flex flex-col text-white w-full px-5 pb-5 overflow-auto" style={{ height: '72vh', maxHeight: '72vh' }}>
+          {messages.map((msg) => (
+            <MessageBox
+              key={msg.id}
+              username={
+                msg.user_id === userInfo["user_id"] ? userInfo["username"] : secondUser[0]
+              }
+              content={msg.content}
+              user_pfp={msg.user_pfp}
+              sender = {msg.user_id === userInfo["user_id"] ? true : false}
+            />
+          ))}
+          <div ref={scrollToBottom}></div>
+        </div>
+
+        {/* text box to send your message */}
+        <form className="flex justify-center p-4" onSubmit={sendMessage}>
+          <div className="flex flex-col justify-center w-full mr-3">
+            <input
+              className="p-2 rounded-xl bg-transparent border text-white"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Send Message..."
+            />
+          </div>
+
+          <button className="bg-navbar text-white text-base" type="submit">
+            Send
           </button>
-        </div>
-      </form>
-      <div ref={scrollToBottom}></div>
+        </form>
+      </div>
     </div>
   );
 };
