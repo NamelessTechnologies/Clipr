@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import stelle from "../assets/Profile.png";
-// import { useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { uri } from "../App";
@@ -91,7 +90,6 @@ const EditProfileForm: React.FC = () => {
         },
       });
       if (response.status === 200) {
-        alert("Success!");
         resetErrorMessages();
         try {
           const queryString = uri + "email/" + email;
@@ -102,7 +100,7 @@ const EditProfileForm: React.FC = () => {
         } catch (error) {
           console.error(error);
         }
-        // navigate("./Clipr/");
+        location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -113,10 +111,10 @@ const EditProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center pt-2">
+    <div className=" bg-navbar flex flex-row justify-center pt-2 ">
       <form
         onSubmit={createAccount}
-        className="bg-navbar rounded px-20 pt-5 pb-5 mt-10 mb-4 items-center border border-x-gray-300 max-w-md"
+        className="bg-navbar rounded px-20 pt-5 pb-5 items-center max-w-md max-h-[88vh] overflow-scroll"
       >
         <img src={stelle} className="w-28 h-28 mx-auto"></img>
         <div className="w-full text-amber-500 text-center text-4xl mb-6">
