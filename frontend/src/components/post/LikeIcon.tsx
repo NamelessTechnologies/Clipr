@@ -2,7 +2,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
 import "../../styles/PostIcons.css"
-// import { local_uri } from "../../App";
+import { local_uri } from "../../App";
 
 function LikeIcon(props: { liked: boolean, num_likes: number, post_id: number, user_id: number }) {
 
@@ -19,27 +19,27 @@ function LikeIcon(props: { liked: boolean, num_likes: number, post_id: number, u
     console.log(props.post_id);
     console.log(props.user_id);
 
-    // const formData = new FormData();
-    // formData.append("user_id", props.user_id.toString());
-    // formData.append("post_id", props.post_id.toString());
+    const formData = new FormData();
+    formData.append("user_id", props.user_id.toString());
+    formData.append("post_id", props.post_id.toString());
 
     const updateLike = async () => {
         if (liked) {
             setLiked(false);
             setLikes(num_likes - 1);
-            // const response = await fetch(local_uri + "post/unlikePost", {
-            //     body: formData,
-            //     method: "DELETE"
-            // });
-            // console.log(response);
+            const response = await fetch(local_uri + "post/unlikePost", {
+                body: formData,
+                method: "DELETE"
+            });
+            console.log(response);
         } else {
             setLiked(true);
             setLikes(num_likes + 1);
-            // const response2 = await fetch(local_uri + "post/likePost", {
-            //     body: formData,
-            //     method: "POST"
-            // });
-            // console.log(response2);
+            const response2 = await fetch(local_uri + "post/likePost", {
+                body: formData,
+                method: "POST"
+            });
+            console.log(response2);
         }
 
         setAnimate(true);
