@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/QuerriedProfile.css";
+import "../../styles/ProfilePreview.css";
 
 function ProfilePreview(props: {
   user_id: string;
