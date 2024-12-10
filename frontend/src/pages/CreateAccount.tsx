@@ -151,7 +151,6 @@ const CreateAccount: React.FC = () => {
             // console.log("parsed.location: " + parsed.location);
             fileLocation = parsed.location;
             pfp.current = fileLocation;
-            alert("Uploaded file to " + fileLocation);
             // console.log("fileLocation: " + fileLocation);
         } catch (exception) {
             console.log(exception);
