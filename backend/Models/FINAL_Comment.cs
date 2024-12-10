@@ -18,4 +18,6 @@ public class FINAL_Comment
 
     public int? LikeCount { get; set; }
 
+    public bool? Liked { get; set; }
+
 }
