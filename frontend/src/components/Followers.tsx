@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
-import { local_uri, uri } from "../App";
+import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
 // interface FriendsProps {

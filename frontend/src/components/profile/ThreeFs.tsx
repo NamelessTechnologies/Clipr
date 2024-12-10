@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { ThreeFsModal } from "./ThreeFsModal";
 import { Friends } from "../Friends";
 import { Followers } from "../Followers";
@@ -11,16 +11,16 @@ function ThreeFs() {
   const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
 
 
-  const [followerCount, setFollowerCount] = useState<number>(0);
-  const [followingCount, setFollowingCount] = useState<number>(0);
-  const [friendsCount, setFriendsCount] = useState<number>(0);
+  // const [followerCount, setFollowerCount] = useState<number>(0);
+  // const [followingCount, setFollowingCount] = useState<number>(0);
+  // const [friendsCount, setFriendsCount] = useState<number>(0);
 
   const tempFollowing = 234;
   const tempFollowers = 27;
 
-  const handleFriendsCount = useCallback((data: number) => {
-    setFriendsCount(data);
-  }, []);
+  // const handleFriendsCount = useCallback((data: number) => {
+  //   setFriendsCount(data);
+  // }, []);
   return (
 
       <div className="flex justify-center gap-5 mt-3">
@@ -48,7 +48,7 @@ function ThreeFs() {
             </div>
             <div className="Friends-box">
               <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
-                <span className="font-bold">{friendsCount + " "}</span>
+                <span className="font-bold">{0 + " "}</span>
                 Friends
                 <ThreeFsModal open={friendsOpen} onClose={() => setFriendsOpen(false)}>
                   <div>
