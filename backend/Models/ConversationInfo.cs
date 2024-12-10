@@ -10,6 +10,8 @@ public class ConversationInfo
 
     public string? Other_User_Nickname { get; set; }
 
+    public string? Other_User_Pfp  { get; set; }
+
     public string? Latest_Message { get; set; }
 
     public DateTime? Latest_Message_Date { get; set; }

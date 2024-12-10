@@ -6,14 +6,27 @@ function ProfilePreview(props: {
   nickname: string;
   pfp: string;
   lastMessage: string;
-  date?: Date;
+  date: Date;
   selected?: boolean;
   onClick?: () => void;
 }) {
   const [PFP, setPFP] = useState<string>(props.pfp);
+
   const failedPFP = () => {
     setPFP("https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg");
   };
+
+  // Calculate displayedDate without updating state
+  const propDate = new Date(props.date);
+  propDate.setHours(propDate.getHours() - 8);
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  const displayedDate =
+    propDate < currentDate
+      ? propDate.toDateString() // Older date, display full date
+      : propDate.toLocaleTimeString(); // Same day, display time
+
   return (
     <>
       {props.selected ? (
@@ -35,9 +48,12 @@ function ProfilePreview(props: {
               <div className="text-yellow-100 italic text-m pr-2">
                 {props.nickname}
               </div>
-              <div className="text-neutral-400  text-sm pr-2">
+              <div className="text-neutral-400 text-sm pr-2">
                 {props.lastMessage}
               </div>
+              <i className="text-gray-500 italic text-xs pr-2 mb-3">
+                {displayedDate}
+              </i>
             </div>
           </div>
         </div>
@@ -60,9 +76,12 @@ function ProfilePreview(props: {
               <div className="text-yellow-100 italic text-m pr-2">
                 {props.nickname}
               </div>
-              <div className="text-neutral-400  text-sm pr-2">
+              <div className="text-neutral-400 text-sm pr-2">
                 {props.lastMessage}
               </div>
+              <i className="text-gray-500 italic text-xs pr-2 mb-3">
+                {displayedDate}
+              </i>
             </div>
           </div>
         </div>

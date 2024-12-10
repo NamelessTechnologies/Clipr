@@ -3,6 +3,7 @@ import ProfilePreview from "../components/messages/ProfilePreview";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import IntegratedMessages from "../components/messages/IntegratedMessages";
 import { local_uri, uri } from "../App";
+import { socket } from "../socket";
 
 interface ProfilePreview {
   user_id: string;
@@ -10,7 +11,7 @@ interface ProfilePreview {
   pfp: string;
   lastMessage: string;
   convo_id: string;
-  latestDate?: Date;
+  latestDate: Date;
 }
 function Inbox() {
   ShouldBeLoggedIn(true);
@@ -32,19 +33,7 @@ function Inbox() {
     setSelected(user_id);
     setSelectedNickName(nickname);
     setSelectedConvoID(convo_id);
-    console.log(selected, selectedConvoID, selectedNickname);
   };
-
-  useEffect(() => {
-    console.log(
-      "Selected:",
-      selected,
-      "ConvoID:",
-      selectedConvoID,
-      "Nickname:",
-      selectedNickname
-    );
-  }, [selected, selectedConvoID, selectedNickname]);
 
   useEffect(() => {
     const fetchConvos = async () => {
@@ -53,14 +42,16 @@ function Inbox() {
           `${local_uri}conversation/getConvoPageInfo/${userID}`
         );
         const json = await response.json();
+
         const skibidi: ProfilePreview[] = json.map((convo: any) => ({
-          user_id: convo.current_User_Id,
+          user_id: convo.other_User_Id,
           nickname: convo.other_User_Nickname,
-          pfp: "https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png",
+          pfp: convo.other_User_Pfp,
           lastMessage: convo.latest_Message,
           latestDate: convo.latest_Message_Date,
           convo_id: convo.conversation_Id,
         }));
+
         setConversation(skibidi);
 
         // Safely set the selected values only if data exists
@@ -73,27 +64,26 @@ function Inbox() {
         console.error("Error fetching conversations:", error);
       }
     };
+
     fetchConvos();
-  }, [userID]);
 
-  console.log(conversation);
+    // Socket listener with cleanup
+    socket.on("recieve-message", fetchConvos);
+    return () => {
+      socket.off("recieve-message", fetchConvos);
+    };
+  }, [userID]); // Add userID as a dependency
 
-  // const preview: ProfilePreview[] = [
-  //   {
-  //     user_id: "1",
-  //     nickname: "LebronBon",
-  //     pfp: "https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png",
-  //     lastMessage: "LEBRON JAMES",
-  //     convo_id: "15",
-  //   },
-  //   {
-  //     user_id: "2",
-  //     nickname: "Hawk Tuah",
-  //     pfp: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_9Y6_Qo2SDisnzLkdm3YyVMuoCcwOoIc3VQ&s",
-  //     lastMessage: "Spit on That Thang!!",
-  //     convo_id: "21",
-  //   },
-  // ];
+  useEffect(() => {
+    console.log(
+      "Selected:",
+      selected,
+      "ConvoID:",
+      selectedConvoID,
+      "Nickname:",
+      selectedNickname
+    );
+  }, [selected, selectedConvoID, selectedNickname]);
 
   return (
     <>
@@ -122,12 +112,13 @@ function Inbox() {
                   nickname={preview.nickname}
                   pfp={preview.pfp}
                   lastMessage={preview.lastMessage}
+                  date={preview.latestDate}
                 ></ProfilePreview>
               </div>
             ))}
           </div>
           {/* TODO Integrate */}
-          <div>
+          <div className="ml-2">
             <IntegratedMessages
               user_id={selected}
               nickname={selectedNickname}
