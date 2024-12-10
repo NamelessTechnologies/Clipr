@@ -16,6 +16,7 @@ import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
 import FriendsPage from "./pages/FriendsPage.tsx";
 import Inbox from "./pages/Inbox.tsx";
+import IsolatedPost from "./pages/IsolatedPost.tsx";
 
 export const uri =
   "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
@@ -28,6 +29,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/IsolatedPost" element={<IsolatedPost />} />
           <Route path="/SignUp" element={<CreateAccount />} />
           <Route path="/Tables" element={<TablesTEMP />} />
           <Route path="/LogIn" element={<LogIn />} />

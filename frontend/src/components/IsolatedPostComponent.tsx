@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
 import { local_uri } from "../App";
-import { Post } from "./Post";
-import { CommentBox } from "./CommentBox";
+import { Post } from "../components/Post";
+import { CommentBox } from "../components/CommentBox";
+import { useSearchParams } from "react-router-dom";
 
-function PostBox(props: { postID: number }) {
+function IsolatedPostComponent(props: { postID: number }) {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
-  // console.log("CURRENT USER -=--------------------------------------");
-  // console.log(userInfo['user_id']);
   const [post, setPost] = useState<PostModel>({});
   const [loading, setLoading] = useState(true);
 
-  // const [loading, setLoading] = useState<boolean>(true);
-  console.log(props.postID + "postbox.tsx");
-  console.log(userInfo["user_id"]);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("id") as string;
   const fetchPosts = async () => {
     try {
       const response = await fetch(
@@ -81,4 +79,4 @@ function PostBox(props: { postID: number }) {
     </div>
   );
 }
-export { PostBox };
+export { IsolatedPostComponent };
