@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //   onSendFriendCount: (data: number) => void;
 // }
 
-function Followers () {
+function Following () {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -38,7 +38,7 @@ function Followers () {
 
   const fetchUsers = async () => {
     try {
-      const url = local_uri + "User/followersof/";
+      const url = local_uri + "User/followingsof/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
 
@@ -89,7 +89,7 @@ function Followers () {
   return (
     <div className="friends-container pt-3">
       <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
-        Followers
+        Following
       </div>
 
       {user?.map((user) => (
@@ -115,4 +115,4 @@ function Followers () {
     </div>
   );
 }
-export { Followers };
+export { Following };

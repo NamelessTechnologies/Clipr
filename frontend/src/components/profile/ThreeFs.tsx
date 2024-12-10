@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { ThreeFsModal } from "./ThreeFsModal";
 import { Friends } from "../Friends";
+import { Followers } from "../Followers";
+import { Following } from "../Following";
 
 function ThreeFs() {
 
@@ -8,9 +10,17 @@ function ThreeFs() {
   const [followingOpen, setFollowingOpen] = useState<boolean>(false);
   const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
 
+
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [friendsCount, setFriendsCount] = useState<number>(0);
+
   const tempFollowing = 234;
   const tempFollowers = 27;
-  const tempFriends = 420;
+
+  const handleFriendsCount = useCallback((data: number) => {
+    setFriendsCount(data);
+  }, []);
   return (
 
       <div className="flex justify-center gap-5 mt-3">
@@ -19,9 +29,8 @@ function ThreeFs() {
                 <span className="font-bold">{tempFollowers + " "}</span>
                 Followers
                 <ThreeFsModal open={followersOpen} onClose={() => setFollowersOpen(false)}>
-                  Followers SKIBIDI
                   <div>
-                    
+                    <Followers />
                   </div>
                 </ThreeFsModal>
               </div>
@@ -31,16 +40,15 @@ function ThreeFs() {
                 <span className="font-bold">{tempFollowing + " "}</span>
                 Following
                 <ThreeFsModal open={followingOpen} onClose={() => setFollowingOpen(false)}>
-                  Following SKIBIDI
                   <div>
-
+                    <Following />
                   </div>
                 </ThreeFsModal>
               </div>
             </div>
             <div className="Friends-box">
               <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
-                <span className="font-bold">{tempFriends + " "}</span>
+                <span className="font-bold">{friendsCount + " "}</span>
                 Friends
                 <ThreeFsModal open={friendsOpen} onClose={() => setFriendsOpen(false)}>
                   <div>
