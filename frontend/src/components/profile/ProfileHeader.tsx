@@ -220,39 +220,58 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
+
+  const tempFollowing = 234;
+  const tempFollowers = 27;
+  const tempFriends = 420;
+
   return (
-    <div className="flex justify-center w-screen h-screen">
+    <div className="flex justify-center w-full mt-4">
       {lookingAtOwnProfile ? (
         <div className="flex flex-row">
-          <div className="pt-3">
-            <div className="circle-big">
               <img
                 onError={failedPFP}
                 src={
                   PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
                 }
-              />
-            </div>
-          </div>
-          <div className="flex flex-col pl-5">
-            <div className="flex flex-row pt-20">
-              <div className="text-yellow-100 italic text-5xl pr-2">
-                <b>{props.userData.username}</b> -
-              </div>
-              <div className="text-yellow-100 italic text-3xl pr-2 pt-2">
-                <i>{props.userData.nickname}</i>
-              </div>
+                className="w-56 h-56 rounded-full mr-5"/>
+
+          {/* below div contains name, buttons, followers, following, etc. */}
+          <div className="flex flex-col">
+            {/* username + nickname + crown*/}
+            <div className="flex mt-10 p-2 ">
+              <span className="text-yellow-100 italic text-4xl pr-2">{props.userData.username} -</span>
+              <span className="text-white italic text-3xl pr-2 mt-auto">{props.userData.nickname}</span>
               <FaCrown className="text-yellow-600" />
             </div>
-            <div className="flex flex-row pt-2 pb-2">
-              <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
+
+            {/* buttons */}
+            <div className="flex pt-2 pb-2 justify-center gap-5">
+              <button className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2">
                 Edit Profile
               </button>
-              <button className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
+              <button className="text-white bg-yellow-600 hover:bg-amber-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
                 Settings
               </button>
             </div>
-            <TripleFs></TripleFs>
+
+            {/* following, followers, etc. */}
+            <div className="flex justify-center gap-5 mt-3">
+              <div className="text-white text-base"> 
+                <span className="font-bold">{tempFollowers + " "}</span>
+                Followers
+              </div>
+              <div className="text-white text-base">
+                <span className="font-bold">{tempFollowing + " "}</span>
+                Following
+              </div>
+              <div className="text-white text-base">
+                <span className="font-bold">{tempFriends + " "}</span>
+                Friends
+              </div>
+            </div>
+
+
           </div>
         </div>
       ) : (

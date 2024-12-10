@@ -32,12 +32,12 @@ function Profile() {
   return (
     <>
       {userData ? (
-        <div className="flex justify-center w-screen h-screen">
+        <div className="flex justify-center w-full h-full">
           <ProfileHeader
             profile_id={profile_id}
             userData={userData}
           ></ProfileHeader>
-          <ProfilePost userData={userData}></ProfilePost>
+          {/* <ProfilePost userData={userData}></ProfilePost> */}
         </div>
       ) : (
         <div>Error: Profile Not Found</div>
