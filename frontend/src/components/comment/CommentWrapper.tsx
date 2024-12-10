@@ -25,8 +25,9 @@ function CommentWrapper(props: { commentData: CommentModel, current_user_id: num
 
   // }
 
-  const [displayReplies, setDisplayReplies] = useState(false);
-
+    const [displayReplies, setDisplayReplies] = useState(false);
+    console.log(setDisplayReplies); // lol
+    // setDisplayReplies(true);
     // const showReplies = () => {
     //     setDisplayReplies(!displayReplies);
     // }
