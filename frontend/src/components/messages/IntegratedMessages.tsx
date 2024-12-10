@@ -3,6 +3,7 @@ import MessageModel from "../../types/Message";
 import { MessageBox } from "./MessageBox";
 import { socket } from "../../socket";
 import { uri } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 function IntegratedMessages(props: {
   convo_id: string;
@@ -24,6 +25,11 @@ function IntegratedMessages(props: {
   const [incomingMessage, setIncomingMessage] = useState<MessageModel>();
 
   const scrollToBottom = useRef<HTMLDivElement | null>(null);
+
+  const navigate = useNavigate();
+  const goToTheProfile = (index: string) => {
+    navigate(`/Profile?profile_id=${index}`);
+  };
 
   //Recieving Messages with Sockets
   useEffect(() => {
@@ -135,7 +141,12 @@ function IntegratedMessages(props: {
       {/* MESSAGE CONTAINER */}
       <div className="flex flex-col w-[60vw] h-[85vh] mt-4 justify-center bg-navbar rounded-xl">
         {/* recipients name on top */}
-        <div className="flex w-full p-4 border-b">
+        <div
+          className="flex w-full p-4 border-b"
+          onClick={() => {
+            goToTheProfile(props.user_id);
+          }}
+        >
           <img
             src={
               secondUserPFP ||
