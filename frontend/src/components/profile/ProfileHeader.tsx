@@ -239,7 +239,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           {/* below div contains name, buttons, followers, following, etc. */}
           <div className="flex flex-col">
             {/* username + nickname + crown*/}
-            <div className="flex mt-10 p-2 ">
+            <div className="flex mt-10 p-2 justify-center ">
               <span className="text-yellow-100 italic text-4xl pr-2">{props.userData.username} -</span>
               <span className="text-white italic text-3xl pr-2 mt-auto">{props.userData.nickname}</span>
               <FaCrown className="text-yellow-600" />
@@ -270,8 +270,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Friends
               </div>
             </div>
-
-
           </div>
         </div>
       ) : (

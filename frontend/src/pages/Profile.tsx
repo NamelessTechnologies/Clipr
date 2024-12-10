@@ -3,7 +3,8 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
-import ProfilePost from "../components/profile/ProfilePost";
+import ProfilePost from "../components/profile/stfu";
+import GridPosts from "../components/profile/GridPosts";
 import { uri } from "../App";
 
 function Profile() {
@@ -32,12 +33,12 @@ function Profile() {
   return (
     <>
       {userData ? (
-        <div className="flex justify-center w-full h-full">
+        <div className="flex flex-col justify-center">
           <ProfileHeader
             profile_id={profile_id}
             userData={userData}
           ></ProfileHeader>
-          {/* <ProfilePost userData={userData}></ProfilePost> */}
+          <GridPosts/>
         </div>
       ) : (
         <div>Error: Profile Not Found</div>
