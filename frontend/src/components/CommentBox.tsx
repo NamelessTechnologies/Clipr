@@ -3,7 +3,7 @@ import { SendIcon } from "./comment/SendCommentIcon";
 import "../styles/Scrollbar.css";
 import { CommentWrapper } from "./comment/CommentWrapper";
 import { useEffect, useState } from "react";
-import { uri } from "../App";
+import { local_uri, uri } from "../App";
 
 function CommentBox(props: { post_id: number, user_id: number, username: string, user_pfp: string }) {
 
@@ -27,14 +27,14 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
       }, [props]);
 
     const fetchComments = async() => {
-        console.log("fetching posts : " + uri + "comment/post/" + props.post_id);
-        const response = await fetch(uri + "comment/post/" + props.post_id);
+        // console.log("fetching posts : " + uri + "comment/post/" + props.post_id + '/' + props.user_id);
+        const response = await fetch(local_uri + "comment/post/" + props.post_id + '/' + props.user_id);
         const json = await response.json();
 
         const comments: CommentModel[] = [];
         json.forEach((comment: any) => {
             const PostComment: CommentModel = {
-                comment_id: comment.ID,
+                comment_id: comment.commentID,
                 parent_id: comment.parentID,
                 post_id: comment.postID,
                 user_id: comment.userID,
@@ -42,7 +42,7 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
                 content: comment.content,
                 pfp_url: comment.pfp,
                 num_likes: comment.likeCount,
-                liked: false,
+                liked: comment.liked
             };
             console.log(PostComment.username);
             comments.push(PostComment);
@@ -101,7 +101,7 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
             {/* all comments */}
             <div className="flex flex-col items-center w-full overflow-auto" style={{ height: '70vh', maxHeight: '70vh' }}>
                 {comments.map((comment, index) => (
-                    <CommentWrapper key={index} commentData={comment} />
+                    <CommentWrapper key={index} commentData={comment} current_user_id={props.user_id} />
                 ))}
             </div>
 

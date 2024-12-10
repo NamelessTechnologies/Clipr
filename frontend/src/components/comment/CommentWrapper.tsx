@@ -2,8 +2,12 @@ import CommentModel from "../../types/Comment";
 import { Comment } from "./Comment";
 import { useState } from "react";
 
-function CommentWrapper(props: { commentData: CommentModel }) {
-    console.log("from CommentWrapper: " + props.commentData.username);
+function CommentWrapper(props: { commentData: CommentModel, current_user_id: number}) {
+    // console.log("from CommentWrapper: " + props.commentData.username);
+
+    // console.log("CommentWrapper:");
+    // console.log(props.commentData.comment_id);
+    // console.log(props.current_user_id);
 
     // const [replies, setReplies] = useState<CommentModel[]>([]);
 
@@ -29,14 +33,14 @@ function CommentWrapper(props: { commentData: CommentModel }) {
 
     return (
         <div className="flex flex-col w-full mt-1">
-            <Comment commentData={ props.commentData } isReply={false}/>
+            <Comment commentData={ props.commentData } isReply={false} current_user_id={props.current_user_id}/>
             <span onClick={showReplies} className=" text-sm text-gray-300 ml-[4.5rem] cursor-pointer w-fit">{displayReplies ? "Hide replies" : "View replies"}</span>
 
 
             {displayReplies && (
                 <div className="ml-16 mt-2 mr-2">
                 {replies.map((reply, index) => (
-                    <Comment key={index} commentData={reply} isReply={true}/>
+                    <Comment key={index} commentData={reply} isReply={true}  current_user_id={props.current_user_id}/>
                 ))}
             </div>
             )}

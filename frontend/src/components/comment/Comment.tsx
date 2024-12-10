@@ -1,7 +1,11 @@
 import { CommentLikeIcon } from "./CommentLikeIcon";
 import CommentModel from "../../types/Comment";
 
-function Comment(props: { commentData: CommentModel, isReply: boolean }) {
+function Comment(props: { commentData: CommentModel, isReply: boolean, current_user_id: number }) {
+
+    // console.log("Comment:");
+    // console.log(props.commentData.comment_id);
+    // console.log(props.current_user_id);
 
     const username = props.commentData.username;
     const user_pfp = props.commentData.pfp_url;
@@ -25,7 +29,7 @@ function Comment(props: { commentData: CommentModel, isReply: boolean }) {
                 
             </div>
 
-            <CommentLikeIcon liked={liked} num_likes={num_likes}/>
+            <CommentLikeIcon liked={liked} num_likes={num_likes} current_user_id={props.current_user_id} comment_id={props.commentData.comment_id}/>
         </div>
       );
 }
