@@ -4,7 +4,7 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
-import { LuImagePlus } from "react-icons/lu";
+import { FaPencil } from "react-icons/fa6";
 
 
 const EditProfileForm: React.FC = () => {
@@ -14,7 +14,9 @@ const EditProfileForm: React.FC = () => {
   const [username, setUsername] = useState(userInfo["username"]);
   const [email, setEmail] = useState(userInfo["email"]);
   const [password, setPassword] = useState(userInfo["password"]);
+  const [password2, setPassword2] = useState(userInfo["password"])
   const [biography, setBiography] = useState(userInfo["biography"]);
+  const [biolength,setBioLength] = useState(0);
   const [nickname, setNickname] = useState(userInfo["nickname"]);
   var pfp = useRef(userInfo["pfp"]);
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
@@ -32,9 +34,15 @@ const EditProfileForm: React.FC = () => {
       const type = temp_type?.split('/')[0];
       setMediaType(type);
       setImage(file);
-      console.log("Last uploaded: " + file.name);
-      console.log("media type: " + media_type);
-      setUploadConfirmationMsg("Uploaded " + file.name + "!");
+      if (type == 'image') {
+          const previewURL = URL.createObjectURL(file);
+          const previewImgElement = document.getElementById("img-preview") as HTMLImageElement;
+          previewImgElement.src = previewURL;
+      } else {
+          alert("Please upload only image files!");
+          return;
+      }
+      
     }
   };
 
@@ -78,6 +86,11 @@ const EditProfileForm: React.FC = () => {
 
   const onPasswordChange = (passwordText: string) => {
     setPassword(passwordText);
+    setpasswordErrorMsg("");
+  };
+
+  const onPassword2Change = (passwordText: string) => {
+    setPassword2(passwordText);
     setpasswordErrorMsg("");
   };
 
@@ -186,37 +199,42 @@ const EditProfileForm: React.FC = () => {
         </div>
     );
 }
+
+useEffect (() => {
+    setBioLength(biography.length);
+  }, [biography]);
+  
   return (
-    <div className=" bg-navbar flex flex-row justify-center pt-2 ">
+    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 ">
       <form
         onSubmit={createAccount}
-        className="bg-navbar rounded px-20 pt-5 pb-5 items-center max-w-md max-h-[88vh]"
+        className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
       >
-        <span className={`block text-white text-xs font-semibold text-center mb-3`}>
-            {uploadConfirmationMsg}
-        </span>
+        <div className="w-full text-amber-500 text-center text-3xl mb-6">
+            Edit Profile
+        </div>
 
-        <div className = 'flex justify-center items-center'>
-            <div className='relative z-0'>
+        <div className = 'flex justify-center '>
+            <div className='relative z-0'
+                onClick={clickFileInputDIV}>
                 <img 
+                    id='img-preview'
                     src={pfp.current} 
-                    className="w-28 h-28 mx-auto rounded-full"></img>
+                    className="w-24 h-24 mx-auto rounded-full"></img>
                 <input
                     id='fileInput'
                     type='file'
                     accept="image/*"
                     onChange={handleFileChange}
                     className='hidden'></input>
-                <div className="absolute inset-0 flex justify-center items-center z-10"
-                    onClick={clickFileInputDIV}>
-                    <LuImagePlus className='w-14 h-14 opacity-75'></LuImagePlus>
+                <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10"
+                    >
+                    <FaPencil className='text-gray-600 w-10 h-10 opacity-90'></FaPencil>
                 </div>
             </div>
         </div>
 
-        <div className="w-full text-amber-500 text-center text-4xl mb-6">
-            Edit {userInfo["username"]}'s Profile
-        </div>
+        <div className='h-10'> </div>
 
         <div className="mb-4">
           <label className="block text-white text-sm font-semibold mb-2">
@@ -224,7 +242,7 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="text"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
             value={username}
             onChange={(e) => onUsernameChange(e.target.value)}
             required
@@ -245,7 +263,7 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="email"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
             required
@@ -266,14 +284,26 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="password"
-            className="border-2 w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+            className="mb-2 border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             required
             placeholder="Create a password"
           />
+
+          <label className="block text-white text-sm font-semibold mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
+            value={password2}
+            onChange={(e) => onPassword2Change(e.target.value)}
+            required
+            placeholder="Confirm your password"
+          />
           <span
-            className={`block text-red-600 text-xs font-semibold ml-auto  max-w-max break-words whitespace-normal ${
+            className={`block text-red-600 text-xs font-semibold ml-auto ${
               passwordErrorMsg ? "visible" : "invisible"
             }`}
           >
@@ -285,14 +315,17 @@ const EditProfileForm: React.FC = () => {
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
-          <input
-            type="text"
-            className="border w-full py-2 px-3 text-black  leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+          <textarea 
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
-            onChange={(e) => setBiography(e.target.value)}
+            onChange={(e) => {setBiography(e.target.value);
+                console.log(biography.length);
+            }}
+            maxLength={100}
             required
-            placeholder="Temp"
-          />
+            placeholder="Type your bio here!"
+          ></textarea>
+          <span className='block text-white text-xs text-right'>{biolength} / 100</span>
         </div>
         <div className="mb-4">
           <label className="block text-white text-sm font-semibold mb-2">
@@ -300,7 +333,7 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="text"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             required
@@ -309,10 +342,10 @@ const EditProfileForm: React.FC = () => {
         </div>
         
 
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded "
+            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded"
           >
             Submit
           </button>
