@@ -7,7 +7,7 @@ import UserModel from "../types/User";
 import Switch from "@mui/material/Switch";
 import { IoMoonOutline } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
-import { uri, local_uri } from "../App";
+import { uri } from "../App";
 import { FaArrowAltCircleDown } from "react-icons/fa";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
@@ -34,7 +34,7 @@ function Home() {
     }
 
     const fetchPosts = async () => {
-      const url = local_uri + "post/real/getPostArray";
+      const url = uri + "post/real/getPostArray";
       const response = await fetch(url);
       const json = await response.json();
       // console.log('this is the most recent post id from home.tsx')
