@@ -215,7 +215,7 @@ const EditProfileForm: React.FC = () => {
 
 useEffect (() => {
     setBioLength(biography.length);
-    toggleLoading();
+    // toggleLoading();
   }, [biography]);
   
   return (

@@ -8,7 +8,14 @@ function LoadingSpinner () {
         'https://clipr-bucket.s3.us-east-1.amazonaws.com/among-us.gif',
         'https://clipr-bucket.s3.us-east-1.amazonaws.com/texas-watching.gif',
         'https://clipr-bucket.s3.us-east-1.amazonaws.com/patting-chris.gif',
-        'https://clipr-bucket.s3.us-east-1.amazonaws.com/aris-dance.gif'
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/aris-dance.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/bocchi-chase.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/korone.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/pay-up.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/shiroko-dance.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/suisei-dance.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/w-dance.gif',
+        'https://clipr-bucket.s3.us-east-1.amazonaws.com/yui-roll.gif'
     ];
 
     function getRandomLoadingAnimation() {
