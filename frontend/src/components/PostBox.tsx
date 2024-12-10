@@ -14,6 +14,7 @@ function PostBox(props: { postID: number }) {
 
   // const [loading, setLoading] = useState<boolean>(true);
   console.log(props.postID + "postbox.tsx");
+  console.log(userInfo['user_id'])
   const fetchPosts = async () => {
     try {
       const response = await fetch(local_uri + "post/real/getPostInfo/" + props.postID + "/" + userInfo['user_id']); // test
@@ -65,7 +66,7 @@ function PostBox(props: { postID: number }) {
 
   return (
     <div className="flex justify-center mt-6 mb-4">
-      <Post postData={post}/>
+      <Post postData={post} currentUserID={userInfo['user_id']}/>
       <CommentBox post_id={props.postID} user_id={userInfo['user_id']} username={userInfo['username']} user_pfp={userInfo['pfp']}/>
     </div>
   );

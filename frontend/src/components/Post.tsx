@@ -9,7 +9,7 @@ import { useState } from "react";
 // import father from "../assets/father.jpg"
 // import { local_uri } from "../App";
 
-function Post(props: { postData: PostModel}) {
+function Post(props: { postData: PostModel, currentUserID: number}) {
     console.log(props.postData.post_id + "post.tsx");
 
     const [showMore, setShowMore] = useState(false);
@@ -28,9 +28,7 @@ function Post(props: { postData: PostModel}) {
     const bookmarked = props.postData.bookmarked ?? false;
     const num_bookmarks = props.postData.num_bookmarks ?? 0;
     const media_type = props.postData.mediaType ?? "";
-    console.log("HAMBURGER:");
-    console.log(props.postData.post_id);
-    console.log(props.postData.user_id);
+    // console.log(props.postData.user_id);
 
     // const formData = new FormData();
     // formData.append("user_id", props.postData.user_id!.toString());
@@ -51,6 +49,10 @@ function Post(props: { postData: PostModel}) {
       
     //       checkLiked();
     // }, []);
+
+    console.log("HAMBURGER:");
+    console.log(liked);
+    console.log(num_likes);
 
     return (
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
@@ -94,7 +96,7 @@ function Post(props: { postData: PostModel}) {
 
                 {/* like, bookmark, share box */}
                 <div className="flex ml-auto space-x-5 mr-2">
-                    <LikeIcon liked={liked} num_likes={num_likes} post_id={props.postData.post_id!} user_id={props.postData.user_id!}/>
+                    <LikeIcon liked={liked} num_likes={num_likes} post_id={props.postData.post_id!} user_id={props.currentUserID!}/>
                     <BookmarkIcon bookmarked={bookmarked} num_bookmarks={num_bookmarks} post_id={props.postData.post_id!} user_id={props.postData.user_id!}/>
                     <ShareIcon/>
                 </div>

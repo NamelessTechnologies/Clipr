@@ -125,7 +125,7 @@ public class PostController : ControllerBase {
 
     [HttpGet("real/getPostInfo/{post_id}/{user_id}")]
     public IActionResult getRealPostInfo(int post_id, int user_id) {
-        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + post_id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + post_id + "), (SELECT url AS media_link FROM media WHERE post_id = " + post_id + "), post.*, users.username, users.pfp, (SELECT COUNT(post_id) as postLiked FROM likes WHERE user_id = " + user_id + " AND post_id = " + post_id + ") FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + post_id;
+        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + post_id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + post_id + "), (SELECT url AS media_link FROM media WHERE post_id = " + post_id + "), post.*, users.username, users.pfp, (SELECT COUNT(post_id) as postLiked FROM likes WHERE user_id = " + user_id + " AND post_id = " + post_id + "), (SELECT COUNT(post_id) as saveLiked FROM save WHERE user_id = " + user_id + " AND post_id = " + post_id + ") FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + post_id;
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
@@ -148,7 +148,8 @@ public class PostController : ControllerBase {
                 Media_Type = reader.GetString(8),
                 Username = reader.GetString(9),
                 Pfp = reader.GetString(10),
-                Liked = reader.GetInt32(11)
+                Liked = reader.GetInt32(11),
+                Saved = reader.GetInt32(12)
             });
         } else {
             return NotFound("User not found/No posts.");

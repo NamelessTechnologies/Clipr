@@ -26,4 +26,6 @@ public class AllPostInfo
 
     public int? Liked { get; set; }
 
+    public int? Saved { get; set; }
+
 }

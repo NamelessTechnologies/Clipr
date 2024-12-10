@@ -1,6 +1,6 @@
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/PostIcons.css"
 import { local_uri } from "../../App";
 
@@ -10,13 +10,27 @@ function LikeIcon(props: { liked: boolean, num_likes: number, post_id: number, u
     const [num_likes, setLikes] = useState(props.num_likes);
     const [animate, setAnimate] = useState(false);
 
+    useEffect(() => {
+        if(props.liked == true) {
+            setLiked(true)
+        }
+        else {
+            setLiked(false)
+        }
+
+        if(props.num_likes > 0) {
+            setLikes(props.num_likes)
+        }
+        else {
+            setLikes(0)
+        }
+      }, [props]);
+
     // const [post_id, setPostID] = useState(props.post_id);
     // const [user_id, setUserIID] = useState(props.user_id);
 
     // const temp_user_id = props.user_id.toString();
     // const temp_post_id = props.post_id.toString();
-    // console.log(props.post_id);
-    // console.log(props.user_id);
 
     const formData = new FormData();
     formData.append("user_id", props.user_id.toString());
@@ -44,6 +58,9 @@ function LikeIcon(props: { liked: boolean, num_likes: number, post_id: number, u
         setAnimate(true);
         setTimeout(() => setAnimate(false), 300);
     }
+
+    console.log("FROM LIKEICON AGAIN");
+    console.log(liked);
 
     return (
         <div className="flex flex-col justify-center">
