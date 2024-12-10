@@ -14,6 +14,8 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
+  const [transparentUp, setTransparentUp] = useState<boolean>(true);
+  const [transparentDown, setTransparentDown] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [allPosts, setAllPosts] = useState<number[]>();
@@ -57,13 +59,28 @@ function Home() {
   }
 
   const handleDown = () => {
-    setCurrentPostIndex(currentPostIndex! + 1);
+    if(currentPostIndex == allPosts!.length - 1) {
+      setTransparentDown(true);
+    }
+    if(currentPostIndex! + 1 != allPosts!.length) {
+      setCurrentPostIndex(currentPostIndex! + 1);
+      setTransparentUp(false);
+    }
   }
 
   const handleUp = () => {
-    if(currentPostIndex != 0) {
+    if(currentPostIndex == allPosts!.length - 1) {
       setCurrentPostIndex(currentPostIndex! - 1);
+      setTransparentDown(false);
     }
+
+    if(currentPostIndex == 1) {
+      setCurrentPostIndex(currentPostIndex! - 1);
+      setTransparentUp(true);
+    }
+    else if(currentPostIndex != 0) {
+      setCurrentPostIndex(currentPostIndex! - 1);
+    } 
   }
 
   // console.log("Current Post: **********************************************************");
@@ -80,10 +97,20 @@ function Home() {
           {darkMode && (
             <div className="fixed bg-black inset-0 z-10"></div>
           )}
-          <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
-          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
-          <PostBox postID={allPosts![currentPostIndex!]!} />
 
+          {transparentUp ? (
+            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleUp>
+          ) :(
+            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
+          )}
+
+          {transparentDown ? (
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleDown>
+          ) :(
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
+          )}
+
+          <PostBox postID={allPosts![currentPostIndex!]!} />
 
           <div className="fixed bottom-5 right-5 z-20 flex items-center">
             {darkMode ? (<IoMoon className="text-[#d78d35]"/>) : (<IoMoonOutline className="text-white"/>)}
