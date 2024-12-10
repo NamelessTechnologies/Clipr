@@ -28,7 +28,7 @@ function Inbox() {
   const changeSelected = (
     user_id: string,
     nickname: string,
-    convo_id: string
+    convo_id: string,
   ) => {
     setSelected(user_id);
     setSelectedNickName(nickname);
@@ -39,7 +39,7 @@ function Inbox() {
     const fetchConvos = async () => {
       try {
         const response = await fetch(
-          `${uri}conversation/getConvoPageInfo/${userID}`
+          `${uri}conversation/getConvoPageInfo/${userID}`,
         );
         const json = await response.json();
 
@@ -82,7 +82,7 @@ function Inbox() {
       "ConvoID:",
       selectedConvoID,
       "Nickname:",
-      selectedNickname
+      selectedNickname,
     );
   }, [selected, selectedConvoID, selectedNickname]);
 
@@ -103,7 +103,7 @@ function Inbox() {
                   changeSelected(
                     preview.user_id,
                     preview.nickname,
-                    preview.convo_id
+                    preview.convo_id,
                   )
                 }
               >

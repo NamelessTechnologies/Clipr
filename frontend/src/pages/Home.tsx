@@ -4,13 +4,12 @@ import logo from "../assets/hsr_logo.png";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 import { IoMoonOutline } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
 import { FaArrowAltCircleDown } from "react-icons/fa";
 import { FaArrowAltCircleUp } from "react-icons/fa";
-
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
@@ -35,14 +34,14 @@ function Home() {
     }
 
     const fetchPosts = async () => {
-      const url = uri + "post/real/getPostArray";
-      const response = await fetch(url); 
+      const url = local_uri + "post/real/getPostArray";
+      const response = await fetch(url);
       const json = await response.json();
       // console.log('this is the most recent post id from home.tsx')
-      setAllPosts(json['postArray']);
+      setAllPosts(json["postArray"]);
       setCurrentPostIndex(0);
       setLoading(false);
-    }
+    };
 
     fetchPosts();
   }, []);
@@ -56,37 +55,36 @@ function Home() {
 
   const turnOnDarkMode = () => {
     setDarkMode(!darkMode);
-  }
+  };
 
   const handleDown = () => {
-    if(currentPostIndex == allPosts!.length - 1) {
+    if (currentPostIndex == allPosts!.length - 1) {
       setTransparentDown(true);
     }
-    if(currentPostIndex! + 1 != allPosts!.length) {
+    if (currentPostIndex! + 1 != allPosts!.length) {
       setCurrentPostIndex(currentPostIndex! + 1);
       setTransparentUp(false);
     }
-  }
+  };
 
   const handleUp = () => {
-    if(currentPostIndex == allPosts!.length - 1) {
+    if (currentPostIndex == allPosts!.length - 1) {
       setCurrentPostIndex(currentPostIndex! - 1);
       setTransparentDown(false);
     }
 
-    if(currentPostIndex == 1) {
+    if (currentPostIndex == 1) {
       setCurrentPostIndex(currentPostIndex! - 1);
       setTransparentUp(true);
-    }
-    else if(currentPostIndex != 0) {
+    } else if (currentPostIndex != 0) {
       setCurrentPostIndex(currentPostIndex! - 1);
-    } 
-  }
+    }
+  };
 
   // console.log("Current Post: **********************************************************");
   // console.log(currentPost);
 
-  if(loading) {
+  if (loading) {
     return <div> Loading... </div>;
   }
 
@@ -94,30 +92,62 @@ function Home() {
     <>
       {foundUser ? (
         <div>
-          {darkMode && (
-            <div className="fixed bg-black inset-0 z-10"></div>
-          )}
+          {darkMode && <div className="fixed bg-black inset-0 z-10"></div>}
 
           {transparentUp ? (
-            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleUp>
-          ) :(
-            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
+            <FaArrowAltCircleUp
+              onClick={handleUp}
+              className="fixed left-48 top-1/3 text-white w-12 h-12 hidden"
+            >
+              {" "}
+              click to go down{" "}
+            </FaArrowAltCircleUp>
+          ) : (
+            <FaArrowAltCircleUp
+              onClick={handleUp}
+              className="fixed left-48 top-1/3 text-white w-12 h-12"
+            >
+              {" "}
+              click to go down{" "}
+            </FaArrowAltCircleUp>
           )}
 
           {transparentDown ? (
-          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleDown>
-          ) :(
-          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
+            <FaArrowAltCircleDown
+              onClick={handleDown}
+              className="fixed left-48 top-2/4 text-white w-12 h-12 hidden"
+            >
+              {" "}
+              click to go down{" "}
+            </FaArrowAltCircleDown>
+          ) : (
+            <FaArrowAltCircleDown
+              onClick={handleDown}
+              className="fixed left-48 top-2/4 text-white w-12 h-12"
+            >
+              {" "}
+              click to go down{" "}
+            </FaArrowAltCircleDown>
           )}
 
           <PostBox postID={allPosts![currentPostIndex!]!} />
 
           <div className="fixed bottom-5 right-5 z-20 flex items-center">
-            {darkMode ? (<IoMoon className="text-[#d78d35]"/>) : (<IoMoonOutline className="text-white"/>)}
+            {darkMode ? (
+              <IoMoon className="text-[#d78d35]" />
+            ) : (
+              <IoMoonOutline className="text-white" />
+            )}
 
-            <Switch checked={darkMode} onChange={turnOnDarkMode} color="warning"  sx={{'& .MuiSwitch-switchBase.Mui-checked': {color: '#d78d35'}}}/>
+            <Switch
+              checked={darkMode}
+              onChange={turnOnDarkMode}
+              color="warning"
+              sx={{
+                "& .MuiSwitch-switchBase.Mui-checked": { color: "#d78d35" },
+              }}
+            />
           </div>
-            
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center">
