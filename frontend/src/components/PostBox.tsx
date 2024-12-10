@@ -9,6 +9,8 @@ function PostBox(props: { postID: number }) {
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
 
   const [post, setPost] = useState<PostModel>({});
+  const [loading, setLoading] = useState(true);
+
   // const [loading, setLoading] = useState<boolean>(true);
   console.log(props.postID + "postbox.tsx");
   const fetchPosts = async () => {
@@ -33,10 +35,9 @@ function PostBox(props: { postID: number }) {
         num_bookmarks: json.save_Count
       };
       setPost(posts);
-      console.log("Nice:");
-      console.log(posts.post_id);
       // setPost(posts);
       // setLoading(false);
+      setLoading(false);
     } catch (error) {
       console.error(error);
       throw new Error("Error getting post data");
@@ -55,6 +56,12 @@ function PostBox(props: { postID: number }) {
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
+
+
+  if(loading) {
+    return <div> Loading... </div>;
+  }
+
   return (
     <div className="flex justify-center mt-6 mb-4">
       <Post postData={post}/>
