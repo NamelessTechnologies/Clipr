@@ -20,8 +20,8 @@ function Post(props: { postData: PostModel, currentUserID: number}) {
     const description = props.postData.content ?? "";
     const photo_data = props.postData.photo_data;
 
-    const publish_date = props.postData.datePosted?.toLocaleDateString("en-us", { year: 'numeric',month: 'long', day: 'numeric' })
-
+    const publish_date_str = props.postData.datePosted ?? "";   // datePosted returned from endpoint is a string, not date. so have to convert it to date obj again
+    const publish_date = new Date(publish_date_str).toLocaleDateString("en-us", { year: 'numeric',month: 'long', day: 'numeric' })
     
     const liked = props.postData.liked ?? false;
     const num_likes = props.postData.num_likes ?? 0;

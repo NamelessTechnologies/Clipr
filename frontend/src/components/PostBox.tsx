@@ -30,7 +30,8 @@ function PostBox(props: { postID: number }) {
         username: json.username,
         user_pfp: json.pfp,
         mediaType: json.media_Type,
-      
+        datePosted: json.datePosted,
+        
         liked: json.liked === 1 ? true : false,
         num_likes: json.like_Count,
         bookmarked: json.saved === 1 ? true : false,

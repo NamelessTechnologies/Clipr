@@ -1,55 +1,78 @@
-import ShouldBeLoggedIn from "../Authenticate";
-// import "../../styles/ProfileHeader.css";
-import UserModel from "../../types/User";
-// import { FaCrown } from "react-icons/fa6";
-import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import ConversationModel from "../../types/Conversation";
-import PostModel from "../../types/Post";
-import { uri } from "../../App";
+import { useEffect, useRef, useState } from "react";
+import { MdPhoto } from "react-icons/md";
+import { FaPlay } from "react-icons/fa";
+import placeholder from "../../assets/placeholder.png";
 
-function ProfilePost(props: { userData: UserModel }) {
-  ShouldBeLoggedIn(true);
+function ProfilePost(props: {post_url: string, media_type: string}) {
 
-  const [post, setPost] = useState<PostModel[]>();
+    const [valid, setValid] = useState<boolean>(true);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const userID = props.userData.user_id;
-        const response = await fetch(uri + `TEMP_post/user_id/${userID}`);
-        const json = await response.json();
+    const mouseHovering = () => {
+        videoRef.current?.play();
+    }
 
-        const posts: PostModel[] = [];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        json.forEach((post: any) => {
-          const NewPost: PostModel = {
-            user_id: post.userID,
-            title: post.title,
-            content: post.content,
-          };
-          posts.push(NewPost);
+    const mouseLeaving = () => {
+        if (videoRef.current != null) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+    }
+
+  // this validates the URL for either the image or video
+    const validateURL = (url: string, type: string) => {
+        return new Promise<boolean>((resolve) => {
+            if (type == "image") {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            } else if (type == "video") {
+                const video = document.createElement("video");
+                video.onload = () => resolve(true);
+                video.onerror = () => resolve(false);
+                video.src = url;
+            } else {
+                resolve(false);
+            }
         });
-
-        setPost(posts);
-      } catch (error) {
-        console.error(error);
-        throw new Error("Error getting post data");
-      }
     };
-    fetchPosts();
-  }, []);
 
-  return (
-    <div className="post-container">
-      {post?.map((post) => (
-        <div className=" p-4 text-white " key={post.user_id}>
-          <div className="text-2xl font-bold">{post.title}</div>
-          <p className="text-base">{post.content}</p>
-        </div>
-      ))}
-    </div>
-  );
+    useEffect(() => {
+        validateURL(props.post_url, props.media_type).then((result) => {
+            setValid(result);
+        })
+    }, [props])
+
+
+    return (
+        <>
+            {props.media_type == "image" ? (
+                <div className="relative">  
+                    {valid ? (<>
+                                <MdPhoto className="absolute z-10 w-6 h-6 right-2 top-2 text-gray-100 drop-shadow-xl shadow-black opacity-90"/>
+                                <img src={props.post_url} className="w-60 h-72 rounded-lg object-cover"></img>
+                            </>
+                    ) : (
+                        <img src={placeholder} className="w-60 h-72 rounded-lg object-cover"></img>
+                    )}
+                </div>
+            ) : (
+                <div className="relative">
+                    { valid ? (
+                        <>
+                            <FaPlay className="absolute z-10 w-4 h-4 right-3 top-3 text-gray-100 drop-shadow-xl shadow-black opacity-90"/>
+                            <video src={props.post_url} id="video-tag" className="w-60 h-72 rounded-lg object-cover" 
+                                    ref={videoRef} muted={true} onMouseEnter={mouseHovering} onMouseLeave={mouseLeaving} loop disablePictureInPicture></video>
+                        </>
+                    ) : (
+                        <img src={placeholder} className="w-60 h-72 rounded-lg object-cover"></img>
+                    )}
+                </div>
+            )}
+        </>
+      );
 }
+
 
 export default ProfilePost;
