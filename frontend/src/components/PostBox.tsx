@@ -18,7 +18,7 @@ function PostBox(props: { postID: number }) {
       const json = await response.json();
 
       const posts: PostModel = {
-        post_id: json.post_id,
+        post_id: json.post_Id,
         user_id: json.user_Id,
         title: json.title,
         content: json.description,
@@ -32,8 +32,9 @@ function PostBox(props: { postID: number }) {
         bookmarked: false, // need to fix
         num_bookmarks: json.save_Count
       };
-
       setPost(posts);
+      console.log("Nice:");
+      console.log(posts.post_id);
       // setPost(posts);
       // setLoading(false);
     } catch (error) {

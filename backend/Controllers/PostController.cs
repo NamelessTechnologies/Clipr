@@ -10,6 +10,50 @@ namespace backend.Controllers;
 
 public class PostController : ControllerBase {
 
+    [HttpPost("likePost")]
+    public async Task<IActionResult> likePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "INSERT INTO likes (user_id, post_id) VALUES(@user_id, @post_id);";
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            await using (var cmd = new NpgsqlCommand(sql, conn)) {
+                cmd.Parameters.AddWithValue("user_id", user_id);
+                cmd.Parameters.AddWithValue("post_id", post_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            return Ok(new { success = "Post liked duccessfully"});
+        }
+        catch (Exception ex) {
+            return StatusCode(500, new {error = ex.Message});
+        }
+    }
+
+    [HttpDelete("unlikePost")]
+    public async Task<IActionResult> unlikePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "DELETE FROM likes WHERE user_id = @user_id AND post_id = @post_id";
+
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("post_id", post_id);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + user_id + " is not liking post id " +  post_id);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to unlike post");
+        }
+    }
 
     [HttpGet("real/getPostInfo/{id}")]
     public IActionResult getRealPostInfo(int id) {

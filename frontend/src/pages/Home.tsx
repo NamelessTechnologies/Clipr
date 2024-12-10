@@ -36,12 +36,13 @@ function Home() {
       const url = uri + "post/real/getPostArray";
       const response = await fetch(url); 
       const json = await response.json();
+      console.log('this is the most recent post id from home.tsx')
       console.log(json['postArray'][0]);
       setCurrentPost(json['postArray'][0]);
     }
 
     fetchPosts();
-    console.log("Current Post:");
+    console.log("Current Post: **********************************************************");
     console.log(currentPost);
   }, []);
 
