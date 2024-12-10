@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import MessageModel from "../types/Message";
-import { MessageBox } from "../components/MessageBox";
+import { MessageBox } from "../components/messages/MessageBox";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
 import { uri } from "../App";
@@ -44,15 +44,15 @@ const Messages: React.FC = () => {
     console.log("FETCHING MESSAGES");
 
     // get and set second user's PFP
-    const recipientPFP = async() => {
+    const recipientPFP = async () => {
       try {
         const response = await fetch(`${uri}user/${secondUserID}`);
         const json = await response.json();
-        setSecondUserPFP(json["pfp"])
+        setSecondUserPFP(json["pfp"]);
       } catch (error) {
         console.error("Error second user's pfp:", error);
       }
-    } 
+    };
     recipientPFP();
 
     // get and set all messages from convo
@@ -68,7 +68,7 @@ const Messages: React.FC = () => {
           content: media.content,
           datesent: media.datesent,
           user_id: media.user_id,
-          user_pfp: media.user_pfp
+          user_pfp: media.user_pfp,
         }));
         setMessages(messages);
       } catch (error) {
@@ -120,7 +120,7 @@ const Messages: React.FC = () => {
         content: message,
         datesent: new Date(),
         user_id: userID,
-        user_pfp: userPFP
+        user_pfp: userPFP,
       } as unknown as MessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();
@@ -137,7 +137,8 @@ const Messages: React.FC = () => {
         className="fixed bottom-5 right-5 text-white text-sm rounded-xl bg-navbar p-2"
         onClick={() =>
           scrollToBottom.current?.scrollIntoView({ behavior: "smooth" })
-          }>
+        }
+      >
         Jump To Recent
       </button>
 
@@ -147,22 +148,27 @@ const Messages: React.FC = () => {
         <div className="flex w-full p-4 border-b">
           <img
             src={secondUserPFP || default_pfp}
-            className="w-11 h-11 rounded-full mr-3">
-          </img>
+            className="w-11 h-11 rounded-full mr-3"
+          ></img>
           <h1 className="text-white text-xl my-auto">{secondUser[0]}</h1>
         </div>
 
         {/* messages */}
-        <div className="flex flex-col text-white w-full px-5 pb-5 overflow-auto" style={{ height: '72vh', maxHeight: '72vh' }}>
+        <div
+          className="flex flex-col text-white w-full px-5 pb-5 overflow-auto"
+          style={{ height: "72vh", maxHeight: "72vh" }}
+        >
           {messages.map((msg) => (
             <MessageBox
               key={msg.id}
               username={
-                msg.user_id === userInfo["user_id"] ? userInfo["username"] : secondUser[0]
+                msg.user_id === userInfo["user_id"]
+                  ? userInfo["username"]
+                  : secondUser[0]
               }
               content={msg.content}
               user_pfp={msg.user_pfp}
-              sender = {msg.user_id === userInfo["user_id"] ? true : false}
+              sender={msg.user_id === userInfo["user_id"] ? true : false}
             />
           ))}
           <div ref={scrollToBottom}></div>
