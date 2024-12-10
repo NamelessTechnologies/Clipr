@@ -5,6 +5,7 @@ using Npgsql;
 using System.Threading.Tasks.Dataflow;
 using System.Data.SqlClient;
 using Azure.Core.Serialization;
+using backend.Utils;
 
 namespace backend.Controllers;
 
@@ -13,6 +14,30 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
+
+    [HttpPost("passwordtest/")]
+    public void passwordTest([FromBody] PasswordTEST password) {
+
+        Console.WriteLine("Hashing password: " + password.password);
+
+        if (password.password != null) {
+            var hashedPassword = PasswordHash.HashPassword(password.password);
+            Console.WriteLine(hashedPassword);
+        }
+    }
+
+    [HttpPost("passwordtest/verify")]
+    public void verifyPassword([FromForm] string hashedPassword, [FromForm] string passwordInput) {
+
+        bool verified = PasswordHash.Verify(hashedPassword, passwordInput);
+
+        if (verified) {
+            Console.WriteLine("PASSWORD IS EQUAL");
+        } else {
+            Console.WriteLine("PASSWORD IS NOT EQUAL");
+        }
+    }
+
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
