@@ -24,16 +24,16 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
 
-   // FOR SHOWING EDIT PROFILE MODAL
-   const [isModalVisible, setIsModalVisible] = useState(false);
-   const handleShowModal = () => {
-     setIsModalVisible(true);
-     console.log("After handleShowModal: "+isModalVisible);
-   };
-   const handleCloseModal = () => {
-     setIsModalVisible(false);
-     console.log("After handleCloseModal: "+isModalVisible);
-   };
+  // FOR SHOWING EDIT PROFILE MODAL
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+    console.log("After handleShowModal: " + isModalVisible);
+  };
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    console.log("After handleCloseModal: " + isModalVisible);
+  };
 
   // FOR NAVIGATING TO MESSAGES PAGE
   const [currentUser] = useState(localStorage.getItem("user") || "");
@@ -57,42 +57,42 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   useEffect(() => {
     async function fetchData() {
-        // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
-        if (!lookingAtOwnProfile) {
-            if (userID){
-                // console.log("looking at other person's profile!");
-            try {
-                let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
-                let response = await fetch(queryString);
-                let json = await response.json();
-                if (json.user_1 == -1) {
-                    setUserFollwingProfile(false);
-                } else {
-                    setUserFollwingProfile(true);
-                }
-                queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
-                response = await fetch(queryString);
-                json = await response.json();
-                if (json.user_1 == -1) {
-                setProfileFollwingUser(false);
-                } else {
-                setProfileFollwingUser(true);
-                }
-
-                if (profileFollowingUser && userFollowingProfile) {
-                    setStatus("Friends");
-                } else if (profileFollowingUser && !userFollowingProfile) {
-                    setStatus("Follow Back");
-                } else if (!profileFollowingUser && userFollowingProfile) {
-                    setStatus("Following");
-                } else if (!profileFollowingUser && !userFollowingProfile) {
-                    setStatus("Follow");
-                }
-            } catch (error) {
-                console.error(error);
+      // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
+      if (!lookingAtOwnProfile) {
+        if (userID) {
+          // console.log("looking at other person's profile!");
+          try {
+            let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
+            let response = await fetch(queryString);
+            let json = await response.json();
+            if (json.user_1 == -1) {
+              setUserFollwingProfile(false);
+            } else {
+              setUserFollwingProfile(true);
             }
+            queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+            response = await fetch(queryString);
+            json = await response.json();
+            if (json.user_1 == -1) {
+              setProfileFollwingUser(false);
+            } else {
+              setProfileFollwingUser(true);
+            }
+
+            if (profileFollowingUser && userFollowingProfile) {
+              setStatus("Friends");
+            } else if (profileFollowingUser && !userFollowingProfile) {
+              setStatus("Follow Back");
+            } else if (!profileFollowingUser && userFollowingProfile) {
+              setStatus("Following");
+            } else if (!profileFollowingUser && !userFollowingProfile) {
+              setStatus("Follow");
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
-        }
+      }
     }
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
@@ -239,7 +239,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
-
   const tempFollowing = 234;
   const tempFollowers = 27;
   const tempFriends = 420;
@@ -248,25 +247,31 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     <div className="flex justify-center w-full mt-4">
       {lookingAtOwnProfile ? (
         <div className="flex flex-row">
-              <img
-                onError={failedPFP}
-                src={
-                  PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
-                }
-                className="w-56 h-56 rounded-full mr-5"/>
+          <img
+            onError={failedPFP}
+            src={PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"}
+            className="w-56 h-56 rounded-full mr-5"
+          />
 
           {/* below div contains name, buttons, followers, following, etc. */}
           <div className="flex flex-col">
             {/* username + nickname + crown*/}
             <div className="flex mt-10 p-2 justify-center ">
-              <span className="text-yellow-100 italic text-4xl pr-2">{props.userData.username} -</span>
-              <span className="text-white italic text-3xl pr-2 mt-auto">{props.userData.nickname}</span>
+              <span className="text-yellow-100 italic text-4xl pr-2">
+                {props.userData.username} -
+              </span>
+              <span className="text-white italic text-3xl pr-2 mt-auto">
+                {props.userData.nickname}
+              </span>
               <FaCrown className="text-yellow-600" />
             </div>
 
             {/* buttons */}
             <div className="flex pt-2 pb-2 justify-center gap-5">
-              <button onClick={handleShowModal} className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2">
+              <button
+                onClick={handleShowModal}
+                className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2"
+              >
                 Edit Profile
               </button>
               <button className="text-white bg-yellow-600 hover:bg-amber-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
@@ -276,7 +281,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
             {/* following, followers, etc. */}
             <div className="flex justify-center gap-5 mt-3">
-              <div className="text-white text-base"> 
+              <div className="text-white text-base">
                 <span className="font-bold">{tempFollowers + " "}</span>
                 Followers
               </div>

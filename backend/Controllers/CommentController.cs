@@ -37,13 +37,25 @@ public class CommentController : ControllerBase {
 
     }
 
-    [HttpGet("post/{id}")]
-    public IActionResult getPostcomments(int id) {
-        var sql = "SELECT Comment.*, Users.username, Users.pfp, (SELECT COUNT(*) AS like_count FROM comment_like WHERE comment_like.comment_id = Comment.id) FROM Comment INNER JOIN Users on Comment.user_id = Users.user_id WHERE post_id = " + id;
-        
+    [HttpGet("post/{post_id}/{user_id}")]
+    public IActionResult getPostcomments(int post_id, int user_id) {
+        // var sql = "SELECT Comment.*, Users.username, Users.pfp, (SELECT COUNT(*) AS like_count FROM comment_like WHERE comment_like.comment_id = Comment.id) FROM Comment INNER JOIN Users on Comment.user_id = Users.user_id WHERE post_id = " + post_id + "/" + user_id;
+        var sql = @"
+        WITH comment_info AS (
+        SELECT Comment.*, Users.username, Users.pfp, 
+        (SELECT COUNT(*) AS like_count FROM comment_like WHERE comment_like.comment_id = Comment.id) 
+        FROM Comment INNER JOIN Users on Comment.user_id = Users.user_id WHERE post_id = @post_id
+        ), liked_info AS (
+        SELECT * FROM comment_like WHERE user_id = @user_id AND comment_id IN 
+        (SELECT id as comment_id FROM COMMENT WHERE post_id = @post_id AND parent_id IS NULL ORDER BY id DESC)
+        )
+        SELECT comment_info.*, CASE WHEN liked_info.user_id IS NULL THEN 0 ELSE 1 END AS liked_by_user FROM comment_info LEFT JOIN liked_info ON comment_info.id = liked_info.comment_id";
         using var conn = DBConn.GetConn();
         conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@user_id", user_id);
+        cmd.Parameters.AddWithValue("@post_id", post_id);
+
         var reader = cmd.ExecuteReader();
 
         if (!reader.HasRows) {
@@ -60,7 +72,8 @@ public class CommentController : ControllerBase {
                 Content = reader.GetString(4),
                 Username = reader.GetString(5),
                 PFP = reader.GetString(6),
-                LikeCount = reader.GetInt32(7)
+                LikeCount = reader.GetInt32(7),
+                Liked = reader.GetInt32(8) == 1
             };
             comments.Add(comment);
         }
