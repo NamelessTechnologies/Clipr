@@ -26,7 +26,6 @@ const EditProfileForm: React.FC = () => {
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
   const [media_type, setMediaType] = useState("");
-  const [uploadConfirmationMsg,setUploadConfirmationMsg] = useState("");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if(file) {
