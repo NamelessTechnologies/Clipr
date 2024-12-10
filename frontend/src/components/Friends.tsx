@@ -65,7 +65,7 @@ function Friends() {
   }, [uid]);
 
   if (loading) {
-    return <div className="text-yellow-100 italic text-m pr-2">Loading...</div>;
+    return <div className="text-yellow-100 italic text-m pr-2 text-5xl">Loading...</div>;
   }
 
   const goToTheProfile = (index: string) => {
