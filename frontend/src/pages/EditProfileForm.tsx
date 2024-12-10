@@ -45,7 +45,7 @@ const EditProfileForm: React.FC = () => {
     }
   };
 
-  const clickFileInputDIV = (e: React.MouseEvent<HTMLDivElement>) => {
+  const clickFileInputDIV = () => {
     const fileInput = document.getElementById('fileInput');
     if (fileInput) {
         fileInput.click();
