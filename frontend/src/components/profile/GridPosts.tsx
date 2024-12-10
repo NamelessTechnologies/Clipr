@@ -54,6 +54,7 @@ function GridPosts(props: {profile_id: string}) {
     setDisplayBookmarks(true);
   }
 
+  // to switch between user's posts and saved posts
   const switchTabs = () => {
     if (displayBookmarks) {
       setDisplayBookmarks(false);
