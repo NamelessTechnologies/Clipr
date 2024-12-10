@@ -7,6 +7,7 @@ import { useState } from "react";
 // import feixiao from "../assets/feixiao_pull.png";
 // import narrow_pic from "../assets/narrow_pic_test.png";
 // import father from "../assets/father.jpg"
+// import { local_uri } from "../App";
 
 function Post(props: { postData: PostModel}) {
     console.log(props.postData.post_id + "post.tsx");
@@ -30,6 +31,27 @@ function Post(props: { postData: PostModel}) {
     console.log("HAMBURGER:");
     console.log(props.postData.post_id);
     console.log(props.postData.user_id);
+
+    // const formData = new FormData();
+    // formData.append("user_id", props.postData.user_id!.toString());
+    // formData.append("post_id", props.postData.post_id.toString());
+
+    // useEffect(() => {
+    //     console.log("FROM POST");
+
+    //     const checkLiked = async () => {
+    //         const response2 = await fetch(local_uri + "post/didUserLike", {
+    //             body: formData,
+    //             method: "GET"
+    //         });
+    //         const json = await response2.json();
+    //         console.log(json.message);
+    //         setLiked(json.message);
+    //       }
+      
+    //       checkLiked();
+    // }, []);
+
     return (
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (

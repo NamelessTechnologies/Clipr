@@ -55,9 +55,32 @@ public class PostController : ControllerBase {
         }
     }
 
-    [HttpGet("real/getPostInfo/{id}")]
-    public IActionResult getRealPostInfo(int id) {
-        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + id + "), (SELECT url AS media_link FROM media WHERE post_id = " + id + "), post.*, users.username, users.pfp FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + id;
+    [HttpGet("didUserLike")]
+    public IActionResult checkUserLike([FromForm] int post_id, [FromForm] int user_id) {
+        var sql = "SELECT * FROM likes WHERE user_id = @user_id AND post_id = @post_id";
+        Console.WriteLine(sql);
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        
+        // execute command
+        using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("user_id", user_id);
+        cmd.Parameters.AddWithValue("post_id", post_id);
+        var reader = cmd.ExecuteReader();
+        
+        if(reader.HasRows) {
+            reader.Read();
+            return Ok(new {message = true});
+        }
+        else {
+            return Ok(new {message = false});
+        }
+    }
+
+    [HttpGet("real/getPostInfo/{post_id}/{user_id}")]
+    public IActionResult getRealPostInfo(int post_id, int user_id) {
+        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + post_id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + post_id + "), (SELECT url AS media_link FROM media WHERE post_id = " + post_id + "), post.*, users.username, users.pfp, (SELECT COUNT(post_id) as postLiked FROM likes WHERE user_id = " + user_id + " AND post_id = " + post_id + ") FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + post_id;
         Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
@@ -79,7 +102,8 @@ public class PostController : ControllerBase {
                 DatePosted = reader.GetDateTime(7),
                 Media_Type = reader.GetString(8),
                 Username = reader.GetString(9),
-                Pfp = reader.GetString(10)
+                Pfp = reader.GetString(10),
+                Liked = reader.GetInt32(11)
             });
         } else {
             return NotFound("User not found/No posts.");

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import {  uri } from "../App";
+import {  local_uri } from "../App";
 import { Post } from "./Post";
 import { CommentBox } from "./CommentBox";
 
 function PostBox(props: { postID: number }) {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
-
+  // console.log("CURRENT USER -=--------------------------------------");
+  // console.log(userInfo['user_id']);
   const [post, setPost] = useState<PostModel>({});
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +16,7 @@ function PostBox(props: { postID: number }) {
   console.log(props.postID + "postbox.tsx");
   const fetchPosts = async () => {
     try {
-      const response = await fetch(uri + "post/real/getPostInfo/" + props.postID); // test
+      const response = await fetch(local_uri + "post/real/getPostInfo/" + props.postID + "/" + userInfo['user_id']); // test
       
       const json = await response.json();
 
@@ -29,7 +30,7 @@ function PostBox(props: { postID: number }) {
         user_pfp: json.pfp,
         mediaType: json.media_Type,
       
-        liked: false, // need to fix
+        liked: json.liked === 1 ? true : false,
         num_likes: json.like_Count,
         bookmarked: false, // need to fix
         num_bookmarks: json.save_Count

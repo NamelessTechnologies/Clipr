@@ -13,11 +13,10 @@ function LikeIcon(props: { liked: boolean, num_likes: number, post_id: number, u
     // const [post_id, setPostID] = useState(props.post_id);
     // const [user_id, setUserIID] = useState(props.user_id);
 
-    console.log("FROM LIKEICON");
     // const temp_user_id = props.user_id.toString();
     // const temp_post_id = props.post_id.toString();
-    console.log(props.post_id);
-    console.log(props.user_id);
+    // console.log(props.post_id);
+    // console.log(props.user_id);
 
     const formData = new FormData();
     formData.append("user_id", props.user_id.toString());
