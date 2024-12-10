@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
 import { uri } from "../App";
-import { FriendsBox } from "./friends/FriendsBox";
 import { useNavigate } from "react-router-dom";
 
 function Friends() {
