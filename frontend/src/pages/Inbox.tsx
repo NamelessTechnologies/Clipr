@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ProfilePreview from "../components/messages/ProfilePreview";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import IntegratedMessages from "../components/messages/IntegratedMessages";
-import { local_uri, uri } from "../App";
+import { uri } from "../App";
 import { socket } from "../socket";
 
 interface ProfilePreview {
@@ -39,7 +39,7 @@ function Inbox() {
     const fetchConvos = async () => {
       try {
         const response = await fetch(
-          `${local_uri}conversation/getConvoPageInfo/${userID}`
+          `${uri}conversation/getConvoPageInfo/${userID}`
         );
         const json = await response.json();
 
