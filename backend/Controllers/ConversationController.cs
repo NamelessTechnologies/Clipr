@@ -13,6 +13,60 @@ namespace backend.Controllers;
 public class ConversationController : ControllerBase
 {
 
+    [HttpGet("getConvoPageInfo/{user_id}")]
+    public IActionResult getConvoPageInfo(int user_id) {
+        var sql = @"
+        WITH nickname_table AS (
+            SELECT user_id as other_user_id, nickname, pfp FROM users WHERE USER_ID IN 
+            (SELECT user_id_2 as other_user_id FROM conversation WHERE user_id = @user_id UNION 
+            SELECT user_id as other_user_id FROM conversation WHERE user_id_2 = @user_id)
+        ), convo_table AS (
+            SELECT id as conversation_id, user_id as current_user_id, user_id_2 as other_user_id FROM conversation WHERE user_id = @user_id
+            UNION
+            SELECT id as conversation_id, user_id_2 as current_user_id, user_id as other_user_id FROM conversation WHERE user_id_2 = @user_id
+        ), date_table AS  (
+            SELECT MAX(convo_id) as conversation_id, MAX(datesent) as latest_message_date FROM message 
+            WHERE convo_id IN (SELECT id as conversation_id FROM conversation WHERE user_id = @user_id UNION SELECT id as conversation_id FROM conversation WHERE user_id_2 = @user_id)
+            GROUP BY convo_id
+        ), message_table AS (
+            SELECT convo_id as conversation_id, content FROM message WHERE datesent IN (SELECT MAX(datesent) as latest_message_date FROM message 
+            WHERE convo_id IN (SELECT id as conversation_id FROM conversation WHERE user_id = @user_id UNION SELECT id as conversation_id FROM conversation WHERE user_id_2 = @user_id)
+            GROUP BY convo_id)
+        )
+        SELECT convo_table.*, nickname_table.nickname as other_user_nickname, nickname_table.pfp as other_user_pfp, message_table.content as latest_message, date_table.latest_message_date FROM nickname_table 
+        INNER JOIN convo_table ON nickname_table.other_user_id = convo_table.other_user_id
+        INNER JOIN date_table ON date_table.conversation_id = convo_table.conversation_id
+        INNER JOIN message_table ON message_table.conversation_id = convo_table.conversation_id
+        ORDER BY latest_message_date DESC";
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@user_id", user_id);
+
+        var reader = cmd.ExecuteReader();
+
+        var all_conversations = new List<ConversationInfo>();
+
+        if (!reader.HasRows) {
+            return BadRequest("No conversations found");
+        }
+
+        while (reader.Read()) {
+            var conversationInfo = new ConversationInfo {
+                Conversation_Id = reader.GetInt32(0),
+                Current_User_Id = reader.GetInt32(1),
+                Other_User_Id = reader.GetInt32(2),
+                Other_User_Nickname = reader.GetString(3),
+                Other_User_Pfp = reader.GetString(4),
+                Latest_Message = reader.GetString(5),
+                Latest_Message_Date = reader.GetDateTime(6)
+            };
+            all_conversations.Add(conversationInfo);
+        }
+        return Ok(all_conversations);
+    }
+
     [HttpPost]
     public async Task<IActionResult> PostConversation([FromBody] Conversation conversation) {
         try {
