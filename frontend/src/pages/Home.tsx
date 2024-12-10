@@ -14,9 +14,12 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 
 function Home() {
   const [foundUser, setFoundUser] = useState<string>();
+  const [transparentUp, setTransparentUp] = useState<boolean>(true);
+  const [transparentDown, setTransparentDown] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [currentPost, setCurrentPost] = useState<number>();
+  const [allPosts, setAllPosts] = useState<number[]>();
+  const [currentPostIndex, setCurrentPostIndex] = useState<number>();
   const [loading, setLoading] = useState(true);
 
   // const [uid, setUID] = useState<number>();
@@ -35,9 +38,9 @@ function Home() {
       const url = uri + "post/real/getPostArray";
       const response = await fetch(url); 
       const json = await response.json();
-      console.log('this is the most recent post id from home.tsx')
-      console.log(json['postArray'][0]);
-      setCurrentPost(json['postArray'][0]);
+      // console.log('this is the most recent post id from home.tsx')
+      setAllPosts(json['postArray']);
+      setCurrentPostIndex(0);
       setLoading(false);
     }
 
@@ -56,11 +59,28 @@ function Home() {
   }
 
   const handleDown = () => {
-    setCurrentPost(currentPost! - 1);
+    if(currentPostIndex == allPosts!.length - 1) {
+      setTransparentDown(true);
+    }
+    if(currentPostIndex! + 1 != allPosts!.length) {
+      setCurrentPostIndex(currentPostIndex! + 1);
+      setTransparentUp(false);
+    }
   }
 
   const handleUp = () => {
-    setCurrentPost(currentPost! + 1);
+    if(currentPostIndex == allPosts!.length - 1) {
+      setCurrentPostIndex(currentPostIndex! - 1);
+      setTransparentDown(false);
+    }
+
+    if(currentPostIndex == 1) {
+      setCurrentPostIndex(currentPostIndex! - 1);
+      setTransparentUp(true);
+    }
+    else if(currentPostIndex != 0) {
+      setCurrentPostIndex(currentPostIndex! - 1);
+    } 
   }
 
   // console.log("Current Post: **********************************************************");
@@ -77,10 +97,20 @@ function Home() {
           {darkMode && (
             <div className="fixed bg-black inset-0 z-10"></div>
           )}
-          <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
-          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
-          <PostBox postID={currentPost!} />
 
+          {transparentUp ? (
+            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleUp>
+          ) :(
+            <FaArrowAltCircleUp onClick={handleUp} className='fixed left-48 top-1/3 text-white w-12 h-12'> click to go down </FaArrowAltCircleUp>
+          )}
+
+          {transparentDown ? (
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12 hidden'> click to go down </FaArrowAltCircleDown>
+          ) :(
+          <FaArrowAltCircleDown onClick={handleDown} className='fixed left-48 top-2/4 text-white w-12 h-12'> click to go down </FaArrowAltCircleDown>
+          )}
+
+          <PostBox postID={allPosts![currentPostIndex!]!} />
 
           <div className="fixed bottom-5 right-5 z-20 flex items-center">
             {darkMode ? (<IoMoon className="text-[#d78d35]"/>) : (<IoMoonOutline className="text-white"/>)}

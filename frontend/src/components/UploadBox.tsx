@@ -153,11 +153,11 @@ const CreatePost: React.FC = () => {
           </label>
           <input
             id='fileInput'
+            required
             type="file"
             accept="image/*, video/*"
             onChange={handleFileChange}
             className="text-white"></input>
-
           <label className="block text-white text-lg font-semibold mb-2">
             Title
           </label>
