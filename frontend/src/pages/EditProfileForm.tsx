@@ -6,7 +6,6 @@ import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
 
-
 const EditProfileForm: React.FC = () => {
   ShouldBeLoggedIn(true);
   const [currentUser] = useState(localStorage.getItem("user") || "");
@@ -14,9 +13,9 @@ const EditProfileForm: React.FC = () => {
   const [username, setUsername] = useState(userInfo["username"]);
   const [email, setEmail] = useState(userInfo["email"]);
   const [password, setPassword] = useState(userInfo["password"]);
-  const [password2, setPassword2] = useState(userInfo["password"])
+  const [password2, setPassword2] = useState(userInfo["password"]);
   const [biography, setBiography] = useState(userInfo["biography"]);
-  const [biolength,setBioLength] = useState(0);
+  const [biolength, setBioLength] = useState(0);
   const [nickname, setNickname] = useState(userInfo["nickname"]);
   var pfp = useRef(userInfo["pfp"]);
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
@@ -28,27 +27,28 @@ const EditProfileForm: React.FC = () => {
   const [media_type, setMediaType] = useState("");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    if(file) {
+    if (file) {
       const temp_type = file?.type;
-      const type = temp_type?.split('/')[0];
+      const type = temp_type?.split("/")[0];
       setMediaType(type);
       setImage(file);
-      if (type == 'image') {
-          const previewURL = URL.createObjectURL(file);
-          const previewImgElement = document.getElementById("img-preview") as HTMLImageElement;
-          previewImgElement.src = previewURL;
+      if (type == "image") {
+        const previewURL = URL.createObjectURL(file);
+        const previewImgElement = document.getElementById(
+          "img-preview",
+        ) as HTMLImageElement;
+        previewImgElement.src = previewURL;
       } else {
-          alert("Please upload only image files!");
-          return;
+        alert("Please upload only image files!");
+        return;
       }
-      
     }
   };
 
   const clickFileInputDIV = () => {
-    const fileInput = document.getElementById('fileInput');
+    const fileInput = document.getElementById("fileInput");
     if (fileInput) {
-        fileInput.click();
+      fileInput.click();
     }
   };
 
@@ -66,7 +66,7 @@ const EditProfileForm: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
       );
       valid = false;
     }
@@ -112,39 +112,41 @@ const EditProfileForm: React.FC = () => {
 
     // ATTEMPT PHOTO UPLOAD
     if (image) {
-        // VALIDATE FILE
-        if (media_type != "image") {
-            alert("Please upload file of type image!");
-            return;
-        }
+      // VALIDATE FILE
+      if (media_type != "image") {
+        alert("Please upload file of type image!");
+        return;
+      }
 
-        // UPLOAD TO S3
-        const s3 = new ReactS3Client(s3Config);
-        try {
-            console.log("Attempting to upload " + image.name + " of type " + image.type);
-            var fileName = image.name;
-            fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
-            const res = await s3.uploadFile(image, fileName);
-            /*
-            * {
-            *   Response: {
-            *     bucket: "bucket-name",
-            *     key: "directory-name/filename-to-be-uploaded",
-            *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
-            *   }
-            * }
-            */
-            console.log(res);
-            var res_json = JSON.stringify(res);
-            var parsed = JSON.parse(res_json);
-            // console.log("parsed.location: " + parsed.location);
-            fileLocation = parsed.location;
-            pfp.current = fileLocation;
-            // console.log("fileLocation: " + fileLocation);
-        } catch (exception) {
-            console.log(exception);
-        }
-    } 
+      // UPLOAD TO S3
+      const s3 = new ReactS3Client(s3Config);
+      try {
+        console.log(
+          "Attempting to upload " + image.name + " of type " + image.type,
+        );
+        var fileName = image.name;
+        fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
+        const res = await s3.uploadFile(image, fileName);
+        /*
+         * {
+         *   Response: {
+         *     bucket: "bucket-name",
+         *     key: "directory-name/filename-to-be-uploaded",
+         *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
+         *   }
+         * }
+         */
+        console.log(res);
+        var res_json = JSON.stringify(res);
+        var parsed = JSON.parse(res_json);
+        // console.log("parsed.location: " + parsed.location);
+        fileLocation = parsed.location;
+        pfp.current = fileLocation;
+        // console.log("fileLocation: " + fileLocation);
+      } catch (exception) {
+        console.log(exception);
+      }
+    }
 
     console.log("PFP before posting: " + pfp);
 
@@ -189,19 +191,14 @@ const EditProfileForm: React.FC = () => {
     }
   };
 
-
   if (!userInfo) {
-    return (
-        <div className='text-white'>
-            Loading...
-        </div>
-    );
-}
+    return <div className="text-white">Loading...</div>;
+  }
 
-useEffect (() => {
+  useEffect(() => {
     setBioLength(biography.length);
   }, [biography]);
-  
+
   return (
     <div className=" bg-neutral-900 flex flex-row justify-center pt-2 ">
       <form
@@ -209,30 +206,30 @@ useEffect (() => {
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
       >
         <div className="w-full text-amber-500 text-center text-3xl mb-6">
-            Edit Profile
+          Edit Profile
         </div>
 
-        <div className = 'flex justify-center '>
-            <div className='relative z-0'
-                onClick={clickFileInputDIV}>
-                <img 
-                    id='img-preview'
-                    src={pfp.current} 
-                    className="w-24 h-24 mx-auto rounded-full"></img>
-                <input
-                    id='fileInput'
-                    type='file'
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className='hidden'></input>
-                <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10"
-                    >
-                    <FaPencil className='text-gray-600 w-10 h-10 opacity-90'></FaPencil>
-                </div>
+        <div className="flex justify-center ">
+          <div className="relative z-0" onClick={clickFileInputDIV}>
+            <img
+              id="img-preview"
+              src={pfp.current}
+              className="w-24 h-24 mx-auto rounded-full"
+            ></img>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            ></input>
+            <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10">
+              <FaPencil className="text-gray-600 w-10 h-10 opacity-90"></FaPencil>
             </div>
+          </div>
         </div>
 
-        <div className='h-10'> </div>
+        <div className="h-10"> </div>
 
         <div className="mb-4">
           <label className="block text-white text-sm font-semibold mb-2">
@@ -313,17 +310,20 @@ useEffect (() => {
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
-          <textarea 
+          <textarea
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
-            onChange={(e) => {setBiography(e.target.value);
-                console.log(biography.length);
+            onChange={(e) => {
+              setBiography(e.target.value);
+              console.log(biography.length);
             }}
             maxLength={100}
             required
             placeholder="Type your bio here!"
           ></textarea>
-          <span className='block text-white text-xs text-right'>{biolength} / 100</span>
+          <span className="block text-white text-xs text-right">
+            {biolength} / 100
+          </span>
         </div>
         <div className="mb-4">
           <label className="block text-white text-sm font-semibold mb-2">
@@ -338,7 +338,6 @@ useEffect (() => {
             placeholder="Nickname"
           />
         </div>
-        
 
         <div className="flex justify-center">
           <button

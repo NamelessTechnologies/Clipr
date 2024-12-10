@@ -64,7 +64,7 @@ function IntegratedMessages(props: {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
+          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`,
         );
         const json = await response.json();
         const messages: MessageModel[] = json.map((media: MessageModel) => ({
