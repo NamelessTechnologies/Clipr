@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UserModel from "../types/User";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
@@ -168,7 +168,7 @@ const CreateAccount: React.FC = () => {
       Pfp: pfp.current,
     };
     try {
-      const response = await fetch(`${uri}user/`, {
+      const response = await fetch(`${local_uri}user/`, {
         body: JSON.stringify(newUser),
         method: "POST",
         headers: {

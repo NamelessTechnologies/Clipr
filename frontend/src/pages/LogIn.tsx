@@ -3,7 +3,7 @@ import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
 
 const LogIn: React.FC = () => {
   ShouldBeLoggedIn(false);
@@ -22,7 +22,25 @@ const LogIn: React.FC = () => {
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;
 
-      if (json?.password == password) {
+      // verify password
+      let passwordVerified = false;
+      const hashedPassword = json?.password;
+      try {
+        const formData = new FormData();
+        formData.append("hashedPassword", hashedPassword);
+        formData.append("passwordInput", password);
+        
+        const response = await fetch(local_uri + "user/password/verify", {
+          body: formData,
+          method: "POST"
+        });
+        passwordVerified = await response.json();
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+
+      if (passwordVerified) {
         setMessage("Correct Password!");
         try {
           localStorage.setItem("user", JSON.stringify(json));

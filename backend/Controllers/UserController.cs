@@ -26,8 +26,8 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("passwordtest/verify")]
-    public void verifyPassword([FromForm] string hashedPassword, [FromForm] string passwordInput) {
+    [HttpPost("password/verify")]
+    public bool verifyPassword([FromForm] string hashedPassword, [FromForm] string passwordInput) {
 
         bool verified = PasswordHash.Verify(hashedPassword, passwordInput);
 
@@ -36,6 +36,7 @@ public class UserController : ControllerBase
         } else {
             Console.WriteLine("PASSWORD IS NOT EQUAL");
         }
+        return verified;
     }
 
     [HttpGet("{id}")]
@@ -83,19 +84,31 @@ public class UserController : ControllerBase
     public async void postUser([FromBody] User user) {
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
-        using var conn = DBConn.GetConn();
-        conn.Open();
+        try {
+            using var conn = DBConn.GetConn();
+            conn.Open();
 
-        await using (var cmd = new NpgsqlCommand(sql, conn))
-        {
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("email", user.Email);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("biography", user.Biography);
-            cmd.Parameters.AddWithValue("nickname", user.Nickname);
-            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+            await using (var cmd = new NpgsqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("username", user.Username);
+                cmd.Parameters.AddWithValue("email", user.Email);
 
-            await cmd.ExecuteNonQueryAsync();
+                if (user.Password != null) {
+                    var hashedPassword = PasswordHash.HashPassword(user.Password);
+                    if (hashedPassword == null) {
+                        throw new InvalidOperationException("Error hashing password");
+                    }
+                    cmd.Parameters.AddWithValue("password", hashedPassword);
+                }            
+                cmd.Parameters.AddWithValue("biography", user.Biography);
+                cmd.Parameters.AddWithValue("nickname", user.Nickname);
+                cmd.Parameters.AddWithValue("pfp", user.Pfp);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        } catch (Exception ex) {
+            Console.WriteLine("Error creating/posting new user");
+            Console.Write(ex);
         }
     }
 
