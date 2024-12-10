@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
 import { uri } from "../App";
+import { useNavigate } from "react-router-dom";
 
 function Friends() {
   ShouldBeLoggedIn(true);
@@ -11,6 +12,7 @@ function Friends() {
 
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
+  const navigate = useNavigate();
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -62,15 +64,39 @@ function Friends() {
   }, [uid]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-yellow-100 italic text-m pr-2 text-5xl">Loading...</div>;
   }
+
+  const goToTheProfile = (index: string) => {
+    navigate(`/Profile?profile_id=${index}`);
+  };
+
   return (
-    <div className="post-container">
+    <div className="friends-container pt-3">
+      <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
+        Friends!
+      </div>
+
+
       {user?.map((user) => (
-        <div className=" p-4 text-white " key={user.user_id}>
-          <div className="text-sm">User ID: {user.user_id}</div>
-          <div className="text-2  xl font-bold">{user.username}</div>
+        <div 
+        onClick={() => goToTheProfile(user.user_id.toString())} 
+        className="flex p-4 text-white hover:cursor-pointer space-x-6" 
+        key={user.user_id}>
+          <div className="circle-small border ">
+            <img src={user.pfp} alt="pfp" className="object-cover w-full h-full"/>
+          </div>
+          <div className="flex flex-col">
+            <div className="text-yellow-100 italic text-m pr-2">
+              {user.nickname}
+            </div>
+            <div className="text-yellow-100 italic text-xl pr-2">
+              {user.username}
+          </div>
+          </div>
         </div>
+
+        
       ))}
     </div>
   );
