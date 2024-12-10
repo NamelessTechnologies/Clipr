@@ -15,8 +15,10 @@ import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
 import Search from "./pages/Search.tsx";
 import FriendsPage from "./pages/FriendsPage.tsx";
+import Inbox from "./pages/Inbox.tsx";
 
-export const uri = "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
+export const uri =
+  "https://clipr-esa6hpg2cahzfud6.westus3-01.azurewebsites.net/";
 export const local_uri = "http://localhost:5001/";
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
           <Route path="/LogOut" element={<LoggingOutAnimation />} />
           <Route path="/Upload" element={<Upload />} />
           <Route path="/Messages" element={<Messages />} />
+          <Route path="/Inbox" element={<Inbox />} />
           <Route path="/SetReceiver" element={<SetReceiver />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<FriendsPage />} />

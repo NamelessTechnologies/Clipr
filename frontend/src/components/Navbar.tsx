@@ -72,6 +72,14 @@ function NavBar() {
               </li>
               <li className="pt-3">
                 <Link
+                  to="/Inbox"
+                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                >
+                  Messages
+                </Link>
+              </li>
+              <li className="pt-3">
+                <Link
                   to={userProfileURL}
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
