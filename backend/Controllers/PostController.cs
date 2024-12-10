@@ -62,6 +62,31 @@ public class PostController : ControllerBase {
         return Ok(new {postArray});
     }
 
+    [HttpGet("profile/{id}")]
+    public IActionResult getProfilePosts(int id) {
+        var sql = "SELECT Post.post_id, Post.media_type, Media.url FROM Post INNER JOIN Media ON Post.post_id = Media.post_id WHERE user_id = " + id;
+        
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        if (!reader.HasRows) {
+            return BadRequest("No Comments");
+        }
+
+        var profilePosts = new List<ProfilePost>();
+        while (reader.Read()) {
+            ProfilePost comment = new ProfilePost {
+                Post_Id = reader.GetInt32(0),
+                Media_Type = reader.GetString(1),
+                Media_Link = reader.GetString(2)
+            };
+            profilePosts.Add(comment);
+        }
+        return Ok(profilePosts);
+    }
+
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;

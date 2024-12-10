@@ -5,12 +5,10 @@ function ProfilePost(props: {post_url: string, media_type: string}) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const mouseHovering = () => {
-        console.log("MOUSE IS HOVERING OVER VIDEO");
         videoRef.current?.play();
     }
 
     const mouseLeaving = () => {
-        console.log("MOUSE LEFT VIDEO");
         videoRef.current?.pause();
     }
 
