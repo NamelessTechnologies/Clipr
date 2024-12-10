@@ -4,13 +4,17 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function ShareIcon(props: { post_id: number }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
+    if (isOpen) {
+      setCopied(false);
+    }
   };
 
   const copiedToClipboard = () => {
-    alert("Copied to clipboard");
+    setCopied(true);
   };
 
   const sharedURL = `http://localhost:5173/IsolatedPost/?id=${props.post_id}`;
@@ -68,17 +72,28 @@ function ShareIcon(props: { post_id: number }) {
               </div>
               {/* Modal body */}
               <div className="p-4 md:p-5 space-y-4">
+                <h2>Send to Friend</h2>
+                <div>------------OR-------------</div>
                 <h2>
                   Share by link:{" "}
-                  <span className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  <a
+                    target="_blank"
+                    href={sharedURL}
+                    className="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+                  >
                     {sharedURL}
-                  </span>
+                  </a>
                 </h2>
                 <CopyToClipboard text={sharedURL} onCopy={copiedToClipboard}>
                   <button className="text-white text-gray-200 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-blue-800">
                     Copy to Clipboard
                   </button>
                 </CopyToClipboard>
+                {copied ? (
+                  <span className="ml-3 text-red-600">Copied!</span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               {/* Modal footer */}
               <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"></div>
