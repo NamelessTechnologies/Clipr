@@ -3,7 +3,7 @@ import UserModel from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import ShouldBeLoggedIn from "../components/Authenticate";
 import { socket } from "../socket";
-import { uri, local_uri } from "../App";
+import { uri } from "../App";
 
 const LogIn: React.FC = () => {
   ShouldBeLoggedIn(false);
@@ -30,7 +30,7 @@ const LogIn: React.FC = () => {
         formData.append("hashedPassword", hashedPassword);
         formData.append("passwordInput", password);
         
-        const response = await fetch(local_uri + "user/password/verify", {
+        const response = await fetch(uri + "user/password/verify", {
           body: formData,
           method: "POST"
         });
