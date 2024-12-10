@@ -26,7 +26,8 @@ function PostBox(props: { postID: number }) {
         username: json.username,
         user_pfp: json.pfp,
         mediaType: json.media_Type,
-      
+        datePosted: json.datePosted,
+        
         liked: false, // need to fix
         num_likes: json.like_Count,
         bookmarked: false, // need to fix
