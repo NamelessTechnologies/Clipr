@@ -33,7 +33,7 @@ function PostBox(props: { postID: number }) {
       
         liked: json.liked === 1 ? true : false,
         num_likes: json.like_Count,
-        bookmarked: false, // need to fix
+        bookmarked: json.saved === 1 ? true : false,
         num_bookmarks: json.save_Count
       };
       setPost(posts);

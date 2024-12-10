@@ -1,6 +1,6 @@
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/PostIcons.css"
 import { local_uri } from "../../App";
 
@@ -9,6 +9,22 @@ function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number, post_
     const [bookmarked, setBookmarked] = useState(props.bookmarked);
     const [num_bookmarks, setBookmarks] = useState(props.num_bookmarks);
     const [animate, setAnimate] = useState(false);
+
+    useEffect(() => {
+        if(props.bookmarked == true) {
+            setBookmarked(true)
+        }
+        else {
+            setBookmarked(false)
+        }
+
+        if(props.num_bookmarks > 0) {
+            setBookmarks(props.num_bookmarks)
+        }
+        else {
+            setBookmarks(0)
+        }
+      }, [props]);
 
     const formData = new FormData();
     formData.append("user_id", props.user_id.toString());
