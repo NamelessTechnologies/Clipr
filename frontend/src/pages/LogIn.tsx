@@ -22,7 +22,25 @@ const LogIn: React.FC = () => {
       const response = await fetch(queryString);
       const json = (await response.json()) as UserModel;
 
-      if (json?.password == password) {
+      // verify password
+      let passwordVerified = false;
+      const hashedPassword = json?.password;
+      try {
+        const formData = new FormData();
+        formData.append("hashedPassword", hashedPassword);
+        formData.append("passwordInput", password);
+        
+        const response = await fetch(uri + "user/password/verify", {
+          body: formData,
+          method: "POST"
+        });
+        passwordVerified = await response.json();
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+
+      if (passwordVerified) {
         setMessage("Correct Password!");
         try {
           localStorage.setItem("user", JSON.stringify(json));
