@@ -5,6 +5,7 @@ import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 
 const EditProfileForm: React.FC = () => {
@@ -22,6 +23,16 @@ const EditProfileForm: React.FC = () => {
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // LOADING SPINNER LOGIC
+  const toggleLoading = () => {
+    if (isLoading) {
+        setIsLoading(false);
+    } else {
+        setIsLoading(true);
+    }
+  };
 
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
@@ -119,6 +130,8 @@ const EditProfileForm: React.FC = () => {
         }
 
         // UPLOAD TO S3
+        toggleLoading();
+        console.log("before uploading: "+isLoading);
         const s3 = new ReactS3Client(s3Config);
         try {
             console.log("Attempting to upload " + image.name + " of type " + image.type);
@@ -141,12 +154,14 @@ const EditProfileForm: React.FC = () => {
             fileLocation = parsed.location;
             pfp.current = fileLocation;
             // console.log("fileLocation: " + fileLocation);
+            toggleLoading();
         } catch (exception) {
             console.log(exception);
         }
     } 
 
     console.log("PFP before posting: " + pfp);
+    console.log("isLoading before posting: " + isLoading);
 
     // POST ACCT TO DB
     const newUser = {
@@ -200,10 +215,15 @@ const EditProfileForm: React.FC = () => {
 
 useEffect (() => {
     setBioLength(biography.length);
+    toggleLoading();
   }, [biography]);
   
   return (
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 ">
+    <>
+    <div>
+        {isLoading && <LoadingSpinner />}
+    </div>
+    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
@@ -213,7 +233,7 @@ useEffect (() => {
         </div>
 
         <div className = 'flex justify-center '>
-            <div className='relative z-0'
+            <div className='relative z-20'
                 onClick={clickFileInputDIV}>
                 <img 
                     id='img-preview'
@@ -225,7 +245,7 @@ useEffect (() => {
                     accept="image/*"
                     onChange={handleFileChange}
                     className='hidden'></input>
-                <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10"
+                <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-30"
                     >
                     <FaPencil className='text-gray-600 w-10 h-10 opacity-90'></FaPencil>
                 </div>
@@ -316,9 +336,7 @@ useEffect (() => {
           <textarea 
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
-            onChange={(e) => {setBiography(e.target.value);
-                console.log(biography.length);
-            }}
+            onChange={(e) => setBiography(e.target.value)}
             maxLength={100}
             required
             placeholder="Type your bio here!"
@@ -348,15 +366,9 @@ useEffect (() => {
             Submit
           </button>
         </div>
-
-        {/* <div className="flex justify-center mt-4">
-          <span className="text-white text-sm">Already a member?</span>
-          <Link to="/Clipr/LogIn" className="text-amber-500 text-sm ml-1">
-            Log in
-          </Link>
-        </div> */}
       </form>
     </div>
+    </>
   );
 };
 

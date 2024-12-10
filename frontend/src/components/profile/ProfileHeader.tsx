@@ -28,11 +28,11 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
    const [isModalVisible, setIsModalVisible] = useState(false);
    const handleShowModal = () => {
      setIsModalVisible(true);
-     console.log("After handleShowModal: "+isModalVisible);
+    //  console.log("After handleShowModal: "+isModalVisible);
    };
    const handleCloseModal = () => {
      setIsModalVisible(false);
-     console.log("After handleCloseModal: "+isModalVisible);
+    //  console.log("After handleCloseModal: "+isModalVisible);
    };
 
   // FOR NAVIGATING TO MESSAGES PAGE
