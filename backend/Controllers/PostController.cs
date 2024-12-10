@@ -10,6 +10,51 @@ namespace backend.Controllers;
 
 public class PostController : ControllerBase {
 
+    [HttpPost("likeComment")]
+    public async Task<IActionResult> likeComment([FromForm] int user_id, [FromForm] int comment_id) {
+        var sql = "INSERT INTO comment_like (user_id, comment_id) VALUES(@user_id, @comment_id);";
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            await using (var cmd = new NpgsqlCommand(sql, conn)) {
+                cmd.Parameters.AddWithValue("user_id", user_id);
+                cmd.Parameters.AddWithValue("comment_id", comment_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            return Ok(new { success = "Comment liked successfully"});
+        }
+        catch (Exception ex) {
+            return StatusCode(500, new {error = ex.Message});
+        }
+    }
+
+    [HttpDelete("unlikeComment")]
+    public async Task<IActionResult> unlikeComment([FromForm] int user_id, [FromForm] int comment_id) {
+        var sql = "DELETE FROM comment_like WHERE user_id = @user_id AND comment_id = @comment_id";
+
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("comment_id", comment_id);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + user_id + " is not liking comment id " +  comment_id);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to unlike comment");
+        }
+    }
+
     [HttpPost("likePost")]
     public async Task<IActionResult> likePost([FromForm] int user_id, [FromForm] int post_id) {
         var sql = "INSERT INTO likes (user_id, post_id) VALUES(@user_id, @post_id);";
