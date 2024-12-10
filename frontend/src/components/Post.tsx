@@ -7,7 +7,6 @@ import { useState } from "react";
 // import feixiao from "../assets/feixiao_pull.png";
 // import narrow_pic from "../assets/narrow_pic_test.png";
 // import father from "../assets/father.jpg"
-// import { local_uri } from "../App";
 
 function Post(props: { postData: PostModel; currentUserID: number }) {
   console.log(props.postData.post_id + "post.tsx");
@@ -42,7 +41,7 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
   //     console.log("FROM POST");
 
   //     const checkLiked = async () => {
-  //         const response2 = await fetch(local_uri + "post/didUserLike", {
+  //         const response2 = await fetch(uri + "post/didUserLike", {
   //             body: formData,
   //             method: "GET"
   //         });

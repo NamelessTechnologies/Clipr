@@ -1,12 +1,18 @@
 import { CommentLikeIcon } from "./CommentLikeIcon";
 import CommentModel from "../../types/Comment";
 
-function Comment(props: { commentData: CommentModel; isReply: boolean }) {
-  const username = props.commentData.username;
-  const user_pfp = props.commentData.pfp_url;
-  const content = props.commentData.content;
-  const liked = props.commentData.liked;
-  const num_likes = props.commentData.num_likes;
+function Comment(props: { commentData: CommentModel, isReply: boolean, current_user_id: number }) {
+
+    // console.log("Comment:");
+    // console.log(props.commentData.comment_id);
+    // console.log(props.current_user_id);
+
+    const username = props.commentData.username;
+    const user_pfp = props.commentData.pfp_url;
+    const content = props.commentData.content;
+    const liked = props.commentData.liked;
+    const num_likes = props.commentData.num_likes;
+
 
   return (
     <div
@@ -17,27 +23,17 @@ function Comment(props: { commentData: CommentModel; isReply: boolean }) {
         className={`${props.isReply ? "w-10 h-10" : "w-12 h-12"} rounded-full mr-3`}
       ></img>
 
-      <div className="flex flex-col w-9/12 mr-2">
-        <span
-          className={`${props.isReply ? "text-replySize" : "text-sm"} text-gray-300 cursor-pointer w-fit`}
-        >
-          {username}
-        </span>
-        <span
-          className={`${props.isReply ? "text-replySize mt-1" : "text-sm mt-2"} text-white`}
-        >
-          {content}
-        </span>
-        <span
-          className={`${props.isReply ? "text-replySize" : "text-sm"} text-gray-300 mt-1 cursor-pointer w-fit`}
-        >
-          Reply
-        </span>
-      </div>
+            <div className="flex flex-col w-9/12 mr-2">
 
-      <CommentLikeIcon liked={liked} num_likes={num_likes} />
-    </div>
-  );
+                <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 cursor-pointer w-fit`}>{ username }</span>
+                <span className={`${props.isReply ? 'text-replySize mt-1' : 'text-sm mt-2'} text-white`}>{ content }</span>
+                {/* <span className={`${props.isReply ? 'text-replySize' : 'text-sm'} text-gray-300 mt-1 cursor-pointer w-fit`}>Reply</span> */}
+                
+            </div>
+
+            <CommentLikeIcon liked={liked} num_likes={num_likes} current_user_id={props.current_user_id} comment_id={props.commentData.comment_id}/>
+        </div>
+      );
 }
 
 export { Comment };

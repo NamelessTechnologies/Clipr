@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { uri, local_uri } from "../App";
 import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "./s3Config";

@@ -1,5 +1,5 @@
 import ProfilePost from "./ProfilePost";
-import { local_uri } from "../../App";
+import { uri } from "../../App";
 import ProfilePostModel from "../../types/ProfilePost";
 import { useEffect, useState } from "react";
 import { IoBookmarkOutline } from "react-icons/io5";
@@ -18,7 +18,7 @@ function GridPosts(props: { profile_id: string }) {
 
   const fetchPosts = async () => {
     const response = await fetch(
-      local_uri + "post/profile/" + props.profile_id,
+      uri + "post/profile/" + props.profile_id,
     );
     const json = await response.json();
 
@@ -36,7 +36,7 @@ function GridPosts(props: { profile_id: string }) {
 
   const fetchBookmarks = async () => {
     const response = await fetch(
-      local_uri + "post/bookmark/" + props.profile_id,
+      uri + "post/bookmark/" + props.profile_id,
     );
     const json = await response.json();
 

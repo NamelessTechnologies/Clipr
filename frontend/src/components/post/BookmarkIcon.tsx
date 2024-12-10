@@ -2,7 +2,7 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import "../../styles/PostIcons.css";
-import { local_uri } from "../../App";
+import { uri } from "../../App";
 
 function BookmarkIcon(props: {
   bookmarked: boolean;
@@ -36,7 +36,7 @@ function BookmarkIcon(props: {
     if (bookmarked) {
       setBookmarked(false);
       setBookmarks(num_bookmarks - 1);
-      const response = await fetch(local_uri + "post/unsavePost", {
+      const response = await fetch(uri + "post/unsavePost", {
         body: formData,
         method: "DELETE",
       });
@@ -44,7 +44,7 @@ function BookmarkIcon(props: {
     } else {
       setBookmarked(true);
       setBookmarks(num_bookmarks + 1);
-      const response2 = await fetch(local_uri + "post/savePost", {
+      const response2 = await fetch(uri + "post/savePost", {
         body: formData,
         method: "POST",
       });

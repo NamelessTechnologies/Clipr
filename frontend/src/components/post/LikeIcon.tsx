@@ -2,7 +2,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import "../../styles/PostIcons.css";
-import { local_uri } from "../../App";
+import { uri } from "../../App";
 
 function LikeIcon(props: {
   liked: boolean;
@@ -42,7 +42,7 @@ function LikeIcon(props: {
     if (liked) {
       setLiked(false);
       setLikes(num_likes - 1);
-      const response = await fetch(local_uri + "post/unlikePost", {
+      const response = await fetch(uri + "post/unlikePost", {
         body: formData,
         method: "DELETE",
       });
@@ -50,7 +50,7 @@ function LikeIcon(props: {
     } else {
       setLiked(true);
       setLikes(num_likes + 1);
-      const response2 = await fetch(local_uri + "post/likePost", {
+      const response2 = await fetch(uri + "post/likePost", {
         body: formData,
         method: "POST",
       });
