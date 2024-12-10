@@ -2,18 +2,37 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
 import { useState } from "react";
 import "../../styles/PostIcons.css"
+import { local_uri } from "../../App";
 
-function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number }) {
+function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number, post_id: number, user_id: number  }) {
 
     const [bookmarked, setBookmarked] = useState(props.bookmarked);
+    const [num_bookmarks, setBookmarks] = useState(props.num_bookmarks);
     const [animate, setAnimate] = useState(false);
 
-    const updateBookmark = () => {
+    const formData = new FormData();
+    formData.append("user_id", props.user_id.toString());
+    formData.append("post_id", props.post_id.toString());
+
+    const updateBookmark = async () => {
         if (bookmarked) {
             setBookmarked(false);
+            setBookmarks(num_bookmarks - 1);
+            const response = await fetch(local_uri + "post/unsavePost", {
+                body: formData,
+                method: "DELETE"
+            });
+            console.log(response);
         } else {
             setBookmarked(true);
+            setBookmarks(num_bookmarks + 1);
+            const response2 = await fetch(local_uri + "post/savePost", {
+                body: formData,
+                method: "POST"
+            });
+            console.log(response2);
         }
+
         setAnimate(true);
         setTimeout(() => setAnimate(false), 300);
     }
@@ -29,7 +48,7 @@ function BookmarkIcon(props: { bookmarked: boolean, num_bookmarks: number }) {
                 )}
                 
             </div>
-            <span className="text-white text-center">{props.num_bookmarks}</span>
+            <span className="text-white text-center">{num_bookmarks}</span>
         </div>
 
     )

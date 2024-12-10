@@ -24,7 +24,7 @@ public class PostController : ControllerBase {
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            return Ok(new { success = "Post liked duccessfully"});
+            return Ok(new { success = "Post liked successfully"});
         }
         catch (Exception ex) {
             return StatusCode(500, new {error = ex.Message});
@@ -52,6 +52,51 @@ public class PostController : ControllerBase {
         } catch (Exception ex) {
             Console.Write(ex);
             return StatusCode(500, "Error making request to unlike post");
+        }
+    }
+
+    [HttpPost("savePost")]
+    public async Task<IActionResult> savePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "INSERT INTO save (user_id, post_id) VALUES(@user_id, @post_id);";
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            await using (var cmd = new NpgsqlCommand(sql, conn)) {
+                cmd.Parameters.AddWithValue("user_id", user_id);
+                cmd.Parameters.AddWithValue("post_id", post_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            return Ok(new { success = "Post saved successfully"});
+        }
+        catch (Exception ex) {
+            return StatusCode(500, new {error = ex.Message});
+        }
+    }
+
+    [HttpDelete("unsavePost")]
+    public async Task<IActionResult> unsavePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "DELETE FROM save WHERE user_id = @user_id AND post_id = @post_id";
+
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("post_id", post_id);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + user_id + " is not saving post id " +  post_id);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to save post");
         }
     }
 
