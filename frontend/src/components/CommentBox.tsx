@@ -95,7 +95,7 @@ function CommentBox(props: { post_id: number, user_id: number, username: string,
         <div className="flex flex-col w-96 h-5/6 bg-neutral-900 rounded-xl">
             {/* comment section header */}
             <div className="flex items-center pl-4 w-full h-16 bg-navbar rounded-t-xl border-b">
-                <span className="text-xl text-white">69 Comments</span>
+                <span className="text-xl text-white">{comments.length} Comments</span>
             </div>
 
             {/* all comments */}
