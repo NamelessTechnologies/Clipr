@@ -17,6 +17,7 @@ function Home() {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [currentPost, setCurrentPost] = useState<number>();
+  const [loading, setLoading] = useState(true);
 
   // const [uid, setUID] = useState<number>();
   const [, setUID] = useState<number>();
@@ -29,20 +30,18 @@ function Home() {
       const parsedUser = JSON.parse(localStorageUser);
       setUserInfo(parsedUser as UserModel);
     }
-  }, []);
 
-  useEffect(() => {
     const fetchPosts = async () => {
       const url = uri + "post/real/getPostArray";
       const response = await fetch(url); 
       const json = await response.json();
+      console.log('this is the most recent post id from home.tsx')
       console.log(json['postArray'][0]);
       setCurrentPost(json['postArray'][0]);
+      setLoading(false);
     }
 
     fetchPosts();
-    console.log("Current Post:");
-    console.log(currentPost);
   }, []);
 
   // This effect updates the UID once `userInfo` is set
@@ -62,6 +61,13 @@ function Home() {
 
   const handleUp = () => {
     setCurrentPost(currentPost! + 1);
+  }
+
+  // console.log("Current Post: **********************************************************");
+  // console.log(currentPost);
+
+  if(loading) {
+    return <div> Loading... </div>;
   }
 
   return (
