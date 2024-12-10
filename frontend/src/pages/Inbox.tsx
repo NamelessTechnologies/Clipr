@@ -43,6 +43,7 @@ function Inbox() {
         );
         const json = await response.json();
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const skibidi: ProfilePreview[] = json.map((convo: any) => ({
           user_id: convo.other_User_Id,
           nickname: convo.other_User_Nickname,
