@@ -110,7 +110,7 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
             post_id={props.postData.post_id!}
             user_id={props.currentUserID!}
           />
-          <ShareIcon />
+          <ShareIcon post_id={props.postData.post_id!} />
         </div>
       </div>
 
