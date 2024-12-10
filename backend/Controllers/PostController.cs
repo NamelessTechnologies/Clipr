@@ -10,11 +10,121 @@ namespace backend.Controllers;
 
 public class PostController : ControllerBase {
 
+    [HttpPost("likePost")]
+    public async Task<IActionResult> likePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "INSERT INTO likes (user_id, post_id) VALUES(@user_id, @post_id);";
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
 
-    [HttpGet("real/getPostInfo/{id}")]
-    public IActionResult getRealPostInfo(int id) {
-        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + id + "), (SELECT url AS media_link FROM media WHERE post_id = " + id + "), post.*, users.username, users.pfp FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + id;
-        Console.WriteLine(sql);
+            await using (var cmd = new NpgsqlCommand(sql, conn)) {
+                cmd.Parameters.AddWithValue("user_id", user_id);
+                cmd.Parameters.AddWithValue("post_id", post_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            return Ok(new { success = "Post liked successfully"});
+        }
+        catch (Exception ex) {
+            return StatusCode(500, new {error = ex.Message});
+        }
+    }
+
+    [HttpDelete("unlikePost")]
+    public async Task<IActionResult> unlikePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "DELETE FROM likes WHERE user_id = @user_id AND post_id = @post_id";
+
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("post_id", post_id);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + user_id + " is not liking post id " +  post_id);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to unlike post");
+        }
+    }
+
+    [HttpPost("savePost")]
+    public async Task<IActionResult> savePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "INSERT INTO save (user_id, post_id) VALUES(@user_id, @post_id);";
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            await using (var cmd = new NpgsqlCommand(sql, conn)) {
+                cmd.Parameters.AddWithValue("user_id", user_id);
+                cmd.Parameters.AddWithValue("post_id", post_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            return Ok(new { success = "Post saved successfully"});
+        }
+        catch (Exception ex) {
+            return StatusCode(500, new {error = ex.Message});
+        }
+    }
+
+    [HttpDelete("unsavePost")]
+    public async Task<IActionResult> unsavePost([FromForm] int user_id, [FromForm] int post_id) {
+        var sql = "DELETE FROM save WHERE user_id = @user_id AND post_id = @post_id";
+
+        try {
+            using var conn = DBConn.GetConn();
+            await conn.OpenAsync();
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("user_id", user_id);
+            cmd.Parameters.AddWithValue("post_id", post_id);
+            var result = await cmd.ExecuteNonQueryAsync();
+            if (result == 0)
+            {
+                return NotFound("ERROR: user id " + user_id + " is not saving post id " +  post_id);
+            }
+
+            return NoContent();
+        } catch (Exception ex) {
+            Console.Write(ex);
+            return StatusCode(500, "Error making request to save post");
+        }
+    }
+
+    [HttpGet("didUserLike")]
+    public IActionResult checkUserLike([FromForm] int post_id, [FromForm] int user_id) {
+        var sql = "SELECT * FROM likes WHERE user_id = @user_id AND post_id = @post_id";
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        
+        // execute command
+        using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("user_id", user_id);
+        cmd.Parameters.AddWithValue("post_id", post_id);
+        var reader = cmd.ExecuteReader();
+        
+        if(reader.HasRows) {
+            reader.Read();
+            return Ok(new {message = true});
+        }
+        else {
+            return Ok(new {message = false});
+        }
+    }
+
+    [HttpGet("real/getPostInfo/{post_id}/{user_id}")]
+    public IActionResult getRealPostInfo(int post_id, int user_id) {
+        var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + post_id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + post_id + "), (SELECT url AS media_link FROM media WHERE post_id = " + post_id + "), post.*, users.username, users.pfp, (SELECT COUNT(post_id) as postLiked FROM likes WHERE user_id = " + user_id + " AND post_id = " + post_id + "), (SELECT COUNT(post_id) as saveLiked FROM save WHERE user_id = " + user_id + " AND post_id = " + post_id + ") FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + post_id;
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -35,7 +145,9 @@ public class PostController : ControllerBase {
                 DatePosted = reader.GetDateTime(7),
                 Media_Type = reader.GetString(8),
                 Username = reader.GetString(9),
-                Pfp = reader.GetString(10)
+                Pfp = reader.GetString(10),
+                Liked = reader.GetInt32(11),
+                Saved = reader.GetInt32(12)
             });
         } else {
             return NotFound("User not found/No posts.");
@@ -46,7 +158,6 @@ public class PostController : ControllerBase {
     [HttpGet("real/getPostArray")]
     public IActionResult getRealPostInfo() {
         var sql = "SELECT post_id FROM POST ORDER BY POST_ID DESC";
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -64,7 +175,7 @@ public class PostController : ControllerBase {
 
     [HttpGet("profile/{id}")]
     public IActionResult getProfilePosts(int id) {
-        var sql = "SELECT Post.post_id, Post.media_type, Media.url FROM Post INNER JOIN Media ON Post.post_id = Media.post_id WHERE user_id = " + id;
+        var sql = "SELECT Post.post_id, Post.media_type, Media.url FROM Post INNER JOIN Media ON Post.post_id = Media.post_id WHERE user_id = " + id + " ORDER BY Post.post_id DESC;";
         
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -115,7 +226,6 @@ public class PostController : ControllerBase {
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -141,7 +251,6 @@ public class PostController : ControllerBase {
     [HttpGet]
     public IActionResult getAllPosts() {
         var sql = "SELECT * FROM post";
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();

@@ -23,4 +23,9 @@ public class AllPostInfo
     public string? Username { get; set; }
 
     public string? Pfp { get; set; }
+
+    public int? Liked { get; set; }
+
+    public int? Saved { get; set; }
+
 }

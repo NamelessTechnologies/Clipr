@@ -30,12 +30,13 @@ function FriendsPage() {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex justify-center mt-6 mb-4">
         {/* <div className="fixed top-0 left-0 h-screen z-10">
             <Sidebar />
           </div> */}
-        <h1 className="text-white">Your Friends:</h1>
+        
         <br></br>
+        
         <Friends />
       </div>
     </>

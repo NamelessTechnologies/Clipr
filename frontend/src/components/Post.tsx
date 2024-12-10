@@ -7,8 +7,9 @@ import { useState } from "react";
 // import feixiao from "../assets/feixiao_pull.png";
 // import narrow_pic from "../assets/narrow_pic_test.png";
 // import father from "../assets/father.jpg"
+// import { local_uri } from "../App";
 
-function Post(props: { postData: PostModel }) {
+function Post(props: { postData: PostModel, currentUserID: number}) {
     console.log(props.postData.post_id + "post.tsx");
 
     const [showMore, setShowMore] = useState(false);
@@ -27,7 +28,32 @@ function Post(props: { postData: PostModel }) {
     const bookmarked = props.postData.bookmarked ?? false;
     const num_bookmarks = props.postData.num_bookmarks ?? 0;
     const media_type = props.postData.mediaType ?? "";
-    console.log(props.postData.mediaType);
+    // console.log(props.postData.user_id);
+
+    // const formData = new FormData();
+    // formData.append("user_id", props.postData.user_id!.toString());
+    // formData.append("post_id", props.postData.post_id.toString());
+
+    // useEffect(() => {
+    //     console.log("FROM POST");
+
+    //     const checkLiked = async () => {
+    //         const response2 = await fetch(local_uri + "post/didUserLike", {
+    //             body: formData,
+    //             method: "GET"
+    //         });
+    //         const json = await response2.json();
+    //         console.log(json.message);
+    //         setLiked(json.message);
+    //       }
+      
+    //       checkLiked();
+    // }, []);
+
+    console.log("HAMBURGER:");
+    console.log(liked);
+    console.log(num_likes);
+
     return (
         <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
             {photo_data && (
@@ -70,8 +96,8 @@ function Post(props: { postData: PostModel }) {
 
                 {/* like, bookmark, share box */}
                 <div className="flex ml-auto space-x-5 mr-2">
-                    <LikeIcon liked={liked} num_likes={num_likes}/>
-                    <BookmarkIcon bookmarked={bookmarked} num_bookmarks={num_bookmarks}/>
+                    <LikeIcon liked={liked} num_likes={num_likes} post_id={props.postData.post_id!} user_id={props.currentUserID!}/>
+                    <BookmarkIcon bookmarked={bookmarked} num_bookmarks={num_bookmarks} post_id={props.postData.post_id!} user_id={props.currentUserID!}/>
                     <ShareIcon/>
                 </div>
             </div>
