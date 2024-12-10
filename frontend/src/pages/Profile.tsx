@@ -38,7 +38,9 @@ function Profile() {
             profile_id={profile_id}
             userData={userData}
           ></ProfileHeader>
-          <GridPosts/>
+          <GridPosts
+            profile_id={profile_id}
+            />
         </div>
       ) : (
         <div>Error: Profile Not Found</div>
