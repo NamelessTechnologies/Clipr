@@ -1,5 +1,5 @@
 import ProfilePost from "./ProfilePost";
-import { uri, local_uri } from "../../App";
+import { local_uri } from "../../App";
 import ProfilePostModel from "../../types/ProfilePost";
 import { useEffect, useState } from "react";
 import { IoBookmarkOutline } from "react-icons/io5";
