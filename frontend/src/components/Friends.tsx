@@ -64,7 +64,11 @@ function Friends() {
   }, [uid]);
 
   if (loading) {
-    return <div className="text-yellow-100 italic text-m pr-2 text-5xl">Loading...</div>;
+    return (
+      <div className="text-yellow-100 italic text-m pr-2 text-5xl">
+        Loading...
+      </div>
+    );
   }
 
   const goToTheProfile = (index: string) => {
@@ -77,14 +81,18 @@ function Friends() {
         Friends!
       </div>
 
-
       {user?.map((user) => (
-        <div 
-        onClick={() => goToTheProfile(user.user_id.toString())} 
-        className="flex p-4 text-white hover:cursor-pointer space-x-6" 
-        key={user.user_id}>
+        <div
+          onClick={() => goToTheProfile(user.user_id.toString())}
+          className="flex p-4 text-white hover:cursor-pointer space-x-6"
+          key={user.user_id}
+        >
           <div className="circle-small border ">
-            <img src={user.pfp} alt="pfp" className="object-cover w-full h-full"/>
+            <img
+              src={user.pfp}
+              alt="pfp"
+              className="object-cover w-full h-full"
+            />
           </div>
           <div className="flex flex-col">
             <div className="text-yellow-100 italic text-m pr-2">
@@ -92,11 +100,9 @@ function Friends() {
             </div>
             <div className="text-yellow-100 italic text-xl pr-2">
               {user.username}
-          </div>
+            </div>
           </div>
         </div>
-
-        
       ))}
     </div>
   );

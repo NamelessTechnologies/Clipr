@@ -148,7 +148,6 @@ public class PostController : ControllerBase {
     [HttpGet("didUserLike")]
     public IActionResult checkUserLike([FromForm] int post_id, [FromForm] int user_id) {
         var sql = "SELECT * FROM likes WHERE user_id = @user_id AND post_id = @post_id";
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -171,7 +170,6 @@ public class PostController : ControllerBase {
     [HttpGet("real/getPostInfo/{post_id}/{user_id}")]
     public IActionResult getRealPostInfo(int post_id, int user_id) {
         var sql = "SELECT (SELECT COUNT(user_id) as like_count FROM likes WHERE post_id = " + post_id + "), (SELECT COUNT(user_id) AS save_count FROM save WHERE post_id = " + post_id + "), (SELECT url AS media_link FROM media WHERE post_id = " + post_id + "), post.*, users.username, users.pfp, (SELECT COUNT(post_id) as postLiked FROM likes WHERE user_id = " + user_id + " AND post_id = " + post_id + "), (SELECT COUNT(post_id) as saveLiked FROM save WHERE user_id = " + user_id + " AND post_id = " + post_id + ") FROM post INNER JOIN users ON post.user_id = users.user_id WHERE post_id =  " + post_id;
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -205,7 +203,6 @@ public class PostController : ControllerBase {
     [HttpGet("real/getPostArray")]
     public IActionResult getRealPostInfo() {
         var sql = "SELECT post_id FROM POST ORDER BY POST_ID DESC";
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -221,10 +218,59 @@ public class PostController : ControllerBase {
         return Ok(new {postArray});
     }
 
+    [HttpGet("profile/{id}")]
+    public IActionResult getProfilePosts(int id) {
+        var sql = "SELECT Post.post_id, Post.media_type, Media.url FROM Post INNER JOIN Media ON Post.post_id = Media.post_id WHERE user_id = " + id + " ORDER BY Post.post_id DESC;";
+        
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        if (!reader.HasRows) {
+            return BadRequest("No Comments");
+        }
+
+        var profilePosts = new List<ProfilePost>();
+        while (reader.Read()) {
+            ProfilePost comment = new ProfilePost {
+                Post_Id = reader.GetInt32(0),
+                Media_Type = reader.GetString(1),
+                Media_Link = reader.GetString(2)
+            };
+            profilePosts.Add(comment);
+        }
+        return Ok(profilePosts);
+    }
+
+    [HttpGet("bookmark/{id}")]
+    public IActionResult getBookmaredPosts(int id) {
+        var sql = "SELECT Post.post_id, Post.media_type, (SELECT Media.url FROM Media WHERE Media.post_id = Post.post_id) FROM Post INNER JOIN Save ON Save.post_id = Post.post_id WHERE Save.user_id = " + id;
+        
+        using var conn = DBConn.GetConn();
+        conn.Open();
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var reader = cmd.ExecuteReader();
+
+        if (!reader.HasRows) {
+            return BadRequest("No Comments");
+        }
+
+        var profilePosts = new List<ProfilePost>();
+        while (reader.Read()) {
+            ProfilePost comment = new ProfilePost {
+                Post_Id = reader.GetInt32(0),
+                Media_Type = reader.GetString(1),
+                Media_Link = reader.GetString(2)
+            };
+            profilePosts.Add(comment);
+        }
+        return Ok(profilePosts);
+    }
+
     [HttpGet("{id}")]
     public IActionResult getPost(int id) {
         var sql = "SELECT * FROM post WHERE post_id = " + id;
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -250,7 +296,6 @@ public class PostController : ControllerBase {
     [HttpGet]
     public IActionResult getAllPosts() {
         var sql = "SELECT * FROM post";
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();

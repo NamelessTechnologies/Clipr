@@ -9,7 +9,7 @@ function CommentWrapper(props: { commentData: CommentModel, current_user_id: num
     // console.log(props.commentData.comment_id);
     // console.log(props.current_user_id);
 
-    // const [replies, setReplies] = useState<CommentModel[]>([]);
+  // const [replies, setReplies] = useState<CommentModel[]>([]);
 
     // testing
     // const mockReply1: CommentModel = {comment_id: 2, parent_id: 2, post_id: 2, user_id: 2, username: "trailblazer", pfp_url: "https://i.pinimg.com/736x/f5/cb/d8/f5cbd8921d9b3b704e209c5807f17fdb.jpg", liked: false, num_likes: 3, content: "wuttt"}
@@ -20,12 +20,12 @@ function CommentWrapper(props: { commentData: CommentModel, current_user_id: num
 
     ]
 
-    // TODO: add GET request to get current comment's replies and populate replies useState with it
-    // const getReplies = () => {
+  // TODO: add GET request to get current comment's replies and populate replies useState with it
+  // const getReplies = () => {
 
-    // }
+  // }
 
-    const [displayReplies, setDisplayReplies] = useState(false);
+  const [displayReplies, setDisplayReplies] = useState(false);
 
     // const showReplies = () => {
     //     setDisplayReplies(!displayReplies);
@@ -48,6 +48,5 @@ function CommentWrapper(props: { commentData: CommentModel, current_user_id: num
         </div>
       );
 }
-
 
 export { CommentWrapper };

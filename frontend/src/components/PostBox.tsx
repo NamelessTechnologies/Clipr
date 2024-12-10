@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import {  local_uri } from "../App";
+import { local_uri } from "../App";
 import { Post } from "./Post";
 import { CommentBox } from "./CommentBox";
 
@@ -14,11 +14,17 @@ function PostBox(props: { postID: number }) {
 
   // const [loading, setLoading] = useState<boolean>(true);
   console.log(props.postID + "postbox.tsx");
-  console.log(userInfo['user_id'])
+  console.log(userInfo["user_id"]);
   const fetchPosts = async () => {
     try {
-      const response = await fetch(local_uri + "post/real/getPostInfo/" + props.postID + "/" + userInfo['user_id']); // test
-      
+      const response = await fetch(
+        local_uri +
+          "post/real/getPostInfo/" +
+          props.postID +
+          "/" +
+          userInfo["user_id"],
+      ); // test
+
       const json = await response.json();
 
       const posts: PostModel = {
@@ -30,11 +36,12 @@ function PostBox(props: { postID: number }) {
         username: json.username,
         user_pfp: json.pfp,
         mediaType: json.media_Type,
-      
+        datePosted: json.datePosted,
+
         liked: json.liked === 1 ? true : false,
         num_likes: json.like_Count,
         bookmarked: json.saved === 1 ? true : false,
-        num_bookmarks: json.save_Count
+        num_bookmarks: json.save_Count,
       };
       setPost(posts);
       // setPost(posts);
@@ -52,22 +59,25 @@ function PostBox(props: { postID: number }) {
     console.log(post);
   }, [props.postID]);
 
-
   // const TempPost: PostModel = post;
 
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
 
-
-  if(loading) {
+  if (loading) {
     return <div> Loading... </div>;
   }
 
   return (
     <div className="flex justify-center mt-6 mb-4">
-      <Post postData={post} currentUserID={userInfo['user_id']}/>
-      <CommentBox post_id={props.postID} user_id={userInfo['user_id']} username={userInfo['username']} user_pfp={userInfo['pfp']}/>
+      <Post postData={post} currentUserID={userInfo["user_id"]} />
+      <CommentBox
+        post_id={props.postID}
+        user_id={userInfo["user_id"]}
+        username={userInfo["username"]}
+        user_pfp={userInfo["pfp"]}
+      />
     </div>
   );
 }

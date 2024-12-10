@@ -4,8 +4,10 @@ import { Friends } from "../components/Friends";
 // import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
+import ShouldBeLoggedIn from "../components/Authenticate";
 
 function FriendsPage() {
+  ShouldBeLoggedIn(true);
   const [foundUser, setFoundUser] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
@@ -34,9 +36,9 @@ function FriendsPage() {
         {/* <div className="fixed top-0 left-0 h-screen z-10">
             <Sidebar />
           </div> */}
-        
+
         <br></br>
-        
+
         <Friends />
       </div>
     </>

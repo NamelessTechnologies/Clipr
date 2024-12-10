@@ -14,12 +14,14 @@ function Comment(props: { commentData: CommentModel, isReply: boolean, current_u
     const num_likes = props.commentData.num_likes;
 
 
-    return (
-        <div className={`flex w-full text-sm px-3 ${props.isReply ? 'pt-2 pb-1' : 'pt-3 pb-2'}`}>
-            <img
-                src={ user_pfp }
-                className={`${props.isReply ? 'w-10 h-10' : 'w-12 h-12'} rounded-full mr-3`}>
-            </img>
+  return (
+    <div
+      className={`flex w-full text-sm px-3 ${props.isReply ? "pt-2 pb-1" : "pt-3 pb-2"}`}
+    >
+      <img
+        src={user_pfp}
+        className={`${props.isReply ? "w-10 h-10" : "w-12 h-12"} rounded-full mr-3`}
+      ></img>
 
             <div className="flex flex-col w-9/12 mr-2">
 
@@ -33,6 +35,5 @@ function Comment(props: { commentData: CommentModel, isReply: boolean, current_u
         </div>
       );
 }
-
 
 export { Comment };

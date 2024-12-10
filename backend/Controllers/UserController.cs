@@ -17,7 +17,6 @@ public class UserController : ControllerBase
     public IActionResult getOneUser(int id)
     {
         var sql = "SELECT * FROM users WHERE user_id = " + id;
-        Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -36,13 +35,6 @@ public class UserController : ControllerBase
                 var nickname = rdr.GetString(5);
                 var pfp = rdr.GetString(6);
 
-                Console.WriteLine(user_id);
-                Console.WriteLine(username);
-                Console.WriteLine(email);
-                Console.WriteLine(password);
-                Console.WriteLine(biography);
-                Console.WriteLine(nickname);
-                Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
@@ -491,13 +483,6 @@ public class UserController : ControllerBase
                 var nickname = rdr.GetString(5);
                 var pfp = rdr.GetString(6);
 
-                Console.WriteLine(user_id);
-                Console.WriteLine(username);
-                Console.WriteLine(email);
-                Console.WriteLine(password);
-                Console.WriteLine(biography);
-                Console.WriteLine(nickname);
-                Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
