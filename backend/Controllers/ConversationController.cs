@@ -36,7 +36,8 @@ public class ConversationController : ControllerBase
         SELECT convo_table.*, nickname_table.nickname as other_user_nickname, message_table.content as latest_message, date_table.latest_message_date FROM nickname_table 
         INNER JOIN convo_table ON nickname_table.other_user_id = convo_table.other_user_id
         INNER JOIN date_table ON date_table.conversation_id = convo_table.conversation_id
-        INNER JOIN message_table ON message_table.conversation_id = convo_table.conversation_id";
+        INNER JOIN message_table ON message_table.conversation_id = convo_table.conversation_id
+        ORDER BY latest_message_date DESC";
 
         using var conn = DBConn.GetConn();
         conn.Open();
