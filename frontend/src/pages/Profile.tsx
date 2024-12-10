@@ -3,7 +3,6 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { useEffect, useState } from "react";
 import UserModel from "../types/User";
-import ProfilePost from "../components/profile/stfu";
 import GridPosts from "../components/profile/GridPosts";
 import { uri } from "../App";
 
