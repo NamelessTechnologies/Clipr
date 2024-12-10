@@ -1,15 +1,11 @@
-import father from "../../assets/father.jpg";
-import lappland from "../../assets/lappland.png";
-import feixao from "../../assets/feixiao_pull.png";
-import narrow_pic from "../../assets/narrow_pic_test.png";
-import example_post from "../../assets/example_post.png";
-import example_post_3 from "../../assets/example_post_3.png";
 import ProfilePost from "./ProfilePost";
-import test_video from "../../assets/test_video.mp4";
 import { uri, local_uri } from "../../App";
 import ProfilePostModel from "../../types/ProfilePost";
 import { useEffect, useState } from "react";
-
+import { IoBookmarkOutline } from "react-icons/io5";
+import { IoBookmark } from "react-icons/io5";
+import { BsGrid } from "react-icons/bs";
+import { BsGridFill } from "react-icons/bs";
 
 function GridPosts(props: {profile_id: string}) {
 
@@ -67,16 +63,24 @@ function GridPosts(props: {profile_id: string}) {
   return (
       <div className="flex flex-col w-1/2 mt-10 mx-auto justify-center">
 
+        {/* posts and saves button */}
         <div className="flex justify-center gap-20">
-          <span className={`text-white text-xl cursor-pointer ${!displayBookmarks && 'border-b font-bold'}`} onClick={switchTabs}>Posts</span>
-          <span className={`text-white text-xl cursor-pointer ${displayBookmarks && 'border-b font-bold'}`} onClick={switchTabs}>Saved</span>
+          <div className="flex items-center">
+            {displayBookmarks ? (<BsGrid className="w-4 h-4 mr-1 text-white"/>) : (<BsGridFill className="w-4 h-4 mr-1 text-white"/>)}
+            <span className={`text-white text-xl cursor-pointer ${!displayBookmarks && 'border-b font-bold'}`} onClick={switchTabs}>Posts</span>
+          </div>
+
+          <div className="flex items-center">
+            {displayBookmarks ? (<IoBookmark className="w-4 h-4 mr-1 text-white"/>) : (<IoBookmarkOutline className="w-4 h-4 mr-1 text-white"/>)}
+            <span className={`text-white text-xl cursor-pointer ${displayBookmarks && 'border-b font-bold'}`} onClick={switchTabs}>Saved</span>
+          </div>
         </div>
 
         <hr className="h-px my-4 bg-gray-400 border-0"></hr>
 
+        {/* grid display to show user's posts or saves */}
         <div className="grid grid-cols-4 gap-2">
-
-        {displayBookmarks ? (
+          {displayBookmarks ? (
                 <>  
                   {bookmarks.map((post, index) => (
                       <ProfilePost key={index} post_url={post.mediaLink} media_type={post.mediaType} />
@@ -88,11 +92,7 @@ function GridPosts(props: {profile_id: string}) {
                       <ProfilePost key={index} post_url={post.mediaLink} media_type={post.mediaType} />
                     ))}
                 </>
-            )}
-
-          {/* {posts.map((post, index) => (
-              <ProfilePost key={index} post_url={post.mediaLink} media_type={post.mediaType} />
-            ))} */}
+          )}
         </div>
       </div>
     );
