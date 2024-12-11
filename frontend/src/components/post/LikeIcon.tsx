@@ -46,7 +46,6 @@ function LikeIcon(props: {
         body: formData,
         method: "DELETE",
       });
-      console.log(response);
     } else {
       setLiked(true);
       setLikes(num_likes + 1);
@@ -54,15 +53,11 @@ function LikeIcon(props: {
         body: formData,
         method: "POST",
       });
-      console.log(response2);
     }
 
     setAnimate(true);
     setTimeout(() => setAnimate(false), 300);
   };
-
-  console.log("FROM LIKEICON AGAIN");
-  console.log(liked);
 
   return (
     <div className="flex flex-col justify-center">
@@ -72,7 +67,9 @@ function LikeIcon(props: {
       >
         {liked ? (
           <FaHeart
-            className={`text-red-500 text-3xl mt-0.5 ${animate ? "enlarge-shrink" : ""}`}
+            className={`text-red-500 text-3xl mt-0.5 ${
+              animate ? "enlarge-shrink" : ""
+            }`}
           />
         ) : (
           <FaRegHeart className="text-red-500 text-3xl mt-0.5" />

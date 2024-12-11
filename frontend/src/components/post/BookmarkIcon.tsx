@@ -40,7 +40,6 @@ function BookmarkIcon(props: {
         body: formData,
         method: "DELETE",
       });
-      console.log(response);
     } else {
       setBookmarked(true);
       setBookmarks(num_bookmarks + 1);
@@ -48,7 +47,6 @@ function BookmarkIcon(props: {
         body: formData,
         method: "POST",
       });
-      console.log(response2);
     }
 
     setAnimate(true);
@@ -63,7 +61,9 @@ function BookmarkIcon(props: {
       >
         {bookmarked ? (
           <FaBookmark
-            className={`text-yellow-500 text-2xl ${animate ? "enlarge-shrink" : ""}`}
+            className={`text-yellow-500 text-2xl ${
+              animate ? "enlarge-shrink" : ""
+            }`}
           />
         ) : (
           <FaRegBookmark className={`text-white text-2xl`} />

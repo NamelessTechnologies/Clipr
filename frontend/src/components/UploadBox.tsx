@@ -18,7 +18,7 @@ const CreatePost: React.FC = () => {
   const [media_type, setMediaType] = useState("text");
   const [post, setPost] = useState<PostContent>({ content: "" });
   const [currentUser, setCurrentUser] = useState(
-    localStorage.getItem("user") || "",
+    localStorage.getItem("user") || ""
   );
   let userInfo = JSON.parse(currentUser);
   useEffect(() => {
@@ -37,12 +37,10 @@ const CreatePost: React.FC = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log("This runs");
     setPost({ ...post, content: e.target.value });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("This runs");
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const temp_type = file?.type;
@@ -54,7 +52,6 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("LETS DO THIS");
 
     const uid = userInfo["user_id"];
     let postID = 0;
@@ -92,9 +89,6 @@ const CreatePost: React.FC = () => {
         const s3 = new ReactS3Client(s3Config);
 
         try {
-          console.log(
-            "Attempting to upload " + image.name + " of type " + image.type,
-          );
           var fileName = image.name;
           fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
           const res = await s3.uploadFile(image, fileName);
@@ -107,12 +101,10 @@ const CreatePost: React.FC = () => {
            *   }
            * }
            */
-          console.log(res);
           var res_json = JSON.stringify(res);
           var parsed = JSON.parse(res_json);
-          console.log("parsed.location: " + parsed.location);
+
           fileLocation = parsed.location;
-          console.log("fileLocation: " + fileLocation);
 
           const formData2 = new FormData();
           formData2.append("post_id", postID.toString());

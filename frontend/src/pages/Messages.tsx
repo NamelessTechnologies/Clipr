@@ -41,8 +41,6 @@ const Messages: React.FC = () => {
 
   // this useEffect contains two functions which fetches the other user's pfp and all messages between the current and other user
   useEffect(() => {
-    console.log("FETCHING MESSAGES");
-
     // get and set second user's PFP
     const recipientPFP = async () => {
       try {
@@ -59,7 +57,7 @@ const Messages: React.FC = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`,
+          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
         const messages: MessageModel[] = json.map((media: MessageModel) => ({

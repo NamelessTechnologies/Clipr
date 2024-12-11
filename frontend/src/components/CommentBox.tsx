@@ -30,7 +30,6 @@ function CommentBox(props: {
   }, [props]);
 
     const fetchComments = async() => {
-        // console.log("fetching posts : " + uri + "comment/post/" + props.post_id + '/' + props.user_id);
         const response = await fetch(uri + "comment/post/" + props.post_id + '/' + props.user_id);
         const json = await response.json();
 
@@ -47,8 +46,7 @@ function CommentBox(props: {
                 num_likes: comment.likeCount,
                 liked: comment.liked
             };
-            console.log(PostComment.username);
-            comments.push(PostComment);
+=            comments.push(PostComment);
         });
         setComments(comments);
     }
@@ -97,7 +95,6 @@ function CommentBox(props: {
       setComments((prevComments) => [...prevComments, newlyPostedComment]);
       setUserComment("");
     } catch (exception) {
-      console.log("Error posting comment");
       console.log(exception);
     }
   };

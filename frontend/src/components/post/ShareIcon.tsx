@@ -1,10 +1,17 @@
 import { FaRegPaperPlane } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import UserModel from "../../types/User";
+import { uri } from "../../App";
+import { ShareFriendProfile } from "./ShareFriendProfile";
 
 function ShareIcon(props: { post_id: number }) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [users, setUsers] = useState<UserModel[]>();
+
+  const [userInfo, setUserInfo] = useState<UserModel>();
+  const [uid, setUID] = useState<number>();
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -16,6 +23,53 @@ function ShareIcon(props: { post_id: number }) {
   const copiedToClipboard = () => {
     setCopied(true);
   };
+
+  // This effect loads the user from localStorage
+  useEffect(() => {
+    const localStorageUser = localStorage.getItem("user");
+    if (localStorageUser) {
+      const parsedUser = JSON.parse(localStorageUser);
+      setUserInfo(parsedUser as UserModel);
+    }
+  }, []);
+
+  // This effect updates the UID once `userInfo` is set
+  useEffect(() => {
+    if (userInfo && userInfo.user_id) {
+      setUID(userInfo.user_id);
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const url = uri + "User/friendsof/";
+        const response = await fetch(url + uid); // must not be hard coded
+        const json = await response.json();
+
+        const users: UserModel[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        json.forEach((user: any) => {
+          const newUser: UserModel = {
+            user_id: user.user_id,
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            biography: user.biography,
+            nickname: user.nickname,
+            pfp: user.pfp,
+          };
+          users.push(newUser);
+        });
+
+        setUsers(users);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error getting post data");
+      }
+    };
+    fetchUsers();
+  }, [uid]);
 
   const sharedURL = `http://localhost:5173/IsolatedPost/?id=${props.post_id}`;
 
@@ -73,7 +127,12 @@ function ShareIcon(props: { post_id: number }) {
               {/* Modal body */}
               <div className="p-4 md:p-5 space-y-4">
                 <h2>Send to Friend</h2>
-                <div>------------OR-------------</div>
+                <ShareFriendProfile
+                  pfp="https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
+                  nickname="Lebron"
+                  user_id="19"
+                ></ShareFriendProfile>
+                <div className="text-gray-100">------------OR-------------</div>
                 <h2>
                   Share by link:{" "}
                   <a

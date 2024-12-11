@@ -50,8 +50,6 @@ function IsolatedPostComponent(props: { post_id: string }) {
 
   useEffect(() => {
     fetchPosts();
-    console.log("under");
-    console.log(post);
   }, [props.post_id]);
 
   if (loading) {

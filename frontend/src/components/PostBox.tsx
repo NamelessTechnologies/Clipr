@@ -7,14 +7,11 @@ import { CommentBox } from "./CommentBox";
 function PostBox(props: { postID: number }) {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
-  // console.log("CURRENT USER -=--------------------------------------");
-  // console.log(userInfo['user_id']);
   const [post, setPost] = useState<PostModel>({});
   const [loading, setLoading] = useState(true);
 
   // const [loading, setLoading] = useState<boolean>(true);
-  console.log(props.postID + "postbox.tsx");
-  console.log(userInfo["user_id"]);
+
   const fetchPosts = async () => {
     try {
       const response = await fetch(
@@ -55,8 +52,6 @@ function PostBox(props: { postID: number }) {
 
   useEffect(() => {
     fetchPosts();
-    console.log("under");
-    console.log(post);
   }, [props.postID]);
 
   // const TempPost: PostModel = post;

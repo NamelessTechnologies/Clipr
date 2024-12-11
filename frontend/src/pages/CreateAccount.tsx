@@ -39,7 +39,7 @@ const CreateAccount: React.FC = () => {
       if (type == "image") {
         const previewURL = URL.createObjectURL(file);
         const previewImgElement = document.getElementById(
-          "img-preview",
+          "img-preview"
         ) as HTMLImageElement;
         previewImgElement.src = previewURL;
       } else {
@@ -77,7 +77,7 @@ const CreateAccount: React.FC = () => {
 
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
       );
       valid = false;
     }
@@ -132,9 +132,6 @@ const CreateAccount: React.FC = () => {
       // UPLOAD TO S3
       const s3 = new ReactS3Client(s3Config);
       try {
-        console.log(
-          "Attempting to upload " + image.name + " of type " + image.type,
-        );
         var fileName = image.name;
         fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
         const res = await s3.uploadFile(image, fileName);
@@ -147,13 +144,12 @@ const CreateAccount: React.FC = () => {
          *   }
          * }
          */
-        console.log(res);
+
         var res_json = JSON.stringify(res);
         var parsed = JSON.parse(res_json);
-        // console.log("parsed.location: " + parsed.location);
+
         fileLocation = parsed.location;
         pfp.current = fileLocation;
-        // console.log("fileLocation: " + fileLocation);
       } catch (exception) {
         console.log(exception);
       }
@@ -332,7 +328,6 @@ const CreateAccount: React.FC = () => {
             value={biography}
             onChange={(e) => {
               setBiography(e.target.value);
-              console.log(biography.length);
             }}
             maxLength={100}
             required
