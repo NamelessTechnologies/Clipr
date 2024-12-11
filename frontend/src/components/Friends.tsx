@@ -4,11 +4,11 @@ import UserModel from "../types/User";
 import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
-// interface FriendsProps {
-//   threeFsState: string;
-// }
+interface FriendsProps {
+  onSendFriendCount: (data: number) => void;
+}
 
-function Friends () {
+function Friends ({onSendFriendCount}: FriendsProps) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -18,7 +18,7 @@ function Friends () {
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
 
-  // const [friendCount, setFriendCount] = useState<number>(0);
+  const [friendCount, setFriendCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -65,7 +65,7 @@ function Friends () {
         users.push(newUser);
       });
 
-      // setFriendCount(users.length)
+      setFriendCount(users.length)
       setUser(users);
       setLoading(false);
     } catch (error) {
@@ -77,6 +77,12 @@ function Friends () {
   useEffect(() => {
     fetchUsers();
   }, [uid]);
+
+  useEffect(() => {
+    if (friendCount) {
+      onSendFriendCount(user.length);
+    }
+  }, [friendCount, onSendFriendCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);

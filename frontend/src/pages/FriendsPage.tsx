@@ -1,5 +1,5 @@
 // import { Sidebar } from "../components/Sidebar";
-import { Friends } from "../components/Friends";
+// import { Friends } from "../components/Friends";
 // import logo from "../assets/hsr_logo.png";
 // import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ function FriendsPage() {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
   console.log(foundUser, uid);
+  // const [friendsCount, setFriendsCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -28,6 +29,11 @@ function FriendsPage() {
     }
   }, [userInfo]);
 
+  // const handleFriendCount = useCallback((data: number) => {
+  //   setFriendsCount(data);
+  //   console.log(friendsCount);
+  // }, []);
+
   return (
     <>
       <div className="flex justify-center mt-6 mb-4">
@@ -37,7 +43,7 @@ function FriendsPage() {
         
         <br></br>
         
-        <Friends />
+        {/* <Friends onSendFriendCount={handleFriendCount}/> */}
       </div>
     </>
   );

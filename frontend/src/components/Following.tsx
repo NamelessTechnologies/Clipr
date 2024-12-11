@@ -4,11 +4,11 @@ import UserModel from "../types/User";
 import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
-// interface FriendsProps {
-//   onSendFriendCount: (data: number) => void;
-// }
+interface FollowingProps {
+  onSendFollowingCount: (data: number) => void;
+}
 
-function Following () {
+function Following ({onSendFollowingCount}: FollowingProps) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -18,7 +18,7 @@ function Following () {
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
 
-  // const [friendCount, setFriendCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -65,7 +65,7 @@ function Following () {
         users.push(newUser);
       });
 
-      // setFriendCount(users.length)
+      setFollowingCount(users.length)
       setUser(users);
       setLoading(false);
     } catch (error) {
@@ -77,6 +77,12 @@ function Following () {
   useEffect(() => {
     fetchUsers();
   }, [uid]);
+
+  useEffect(() => {
+    if (followingCount) {
+      onSendFollowingCount(user.length);
+    }
+  }, [followingCount, onSendFollowingCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
