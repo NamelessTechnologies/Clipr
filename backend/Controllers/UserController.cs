@@ -552,6 +552,137 @@ public class UserController : ControllerBase
             return Ok(allUsers);
         }
     }
+    [HttpGet("followersof/{id}")]
+    public IActionResult getAllFollowers(int id)
+    {
+        var sql = "SELECT from_id FROM following WHERE to_id = " + id;
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var allFollowersID = new List<int>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (!rdr.HasRows)
+            {
+                return NotFound("No followers found.");
+            }
+            while (rdr.Read())
+            {
+                allFollowersID.Add(rdr.GetInt32(0));
+            }
+        }
+        var allFollowers = new List<User>();
+        foreach (int follower_id in allFollowersID)
+        {
+            var sql2 = "SELECT * FROM users WHERE user_id = " + follower_id;
+
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
+            {
+                if (rdr.Read())
+                {
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    Console.WriteLine(user_id);
+                    Console.WriteLine(username);
+                    Console.WriteLine(email);
+                    Console.WriteLine(password);
+                    Console.WriteLine(biography);
+                    Console.WriteLine(nickname);
+                    Console.WriteLine(pfp);
+
+                    User oneFollower = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFollowers.Add(oneFollower);
+                }
+            }
+        }
+        return Ok(allFollowers);
+    }
+
+    [HttpGet("followingsof/{id}")]
+    public IActionResult getAllFollowings(int id)
+    {
+        var sql = "SELECT to_id FROM following WHERE from_id = " + id;
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var allFollowingsID = new List<int>();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (!rdr.HasRows)
+            {
+                return NotFound("No followings found.");
+            }
+            while (rdr.Read())
+            {
+                allFollowingsID.Add(rdr.GetInt32(0));
+            }
+        }
+        var allFollowings = new List<User>();
+        foreach (int following_id in allFollowingsID)
+        {
+            var sql2 = "SELECT * FROM users WHERE user_id = " + following_id;
+
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
+            {
+                if (rdr.Read())
+                {
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    Console.WriteLine(user_id);
+                    Console.WriteLine(username);
+                    Console.WriteLine(email);
+                    Console.WriteLine(password);
+                    Console.WriteLine(biography);
+                    Console.WriteLine(nickname);
+                    Console.WriteLine(pfp);
+
+                    User oneFollowing = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFollowings.Add(oneFollowing);
+                }
+            }
+        }
+        return Ok(allFollowings);
+    }
 
     [HttpGet("friendsof/{id}")]
     public IActionResult getAllFriends(int id)
