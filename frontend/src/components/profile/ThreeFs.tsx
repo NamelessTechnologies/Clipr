@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ThreeFsModal } from "./ThreeFsModal";
 import { Friends } from "../Friends";
 import { Followers } from "../Followers";
@@ -37,93 +37,12 @@ function ThreeFs(props: {profile_id: string}) {
         const json = await response.json();
 
         const parsedFollowCounts: number[] = json;
-        // console.log("skibidi" + parsedFollowCounts);
 
         setFollowerCount(parsedFollowCounts[0]);
         setFollowingCount(parsedFollowCounts[1]);
         setFriendCount(parsedFollowCounts[2]);
     }
 
-  // This effect loads the user from localStorage
-  // useEffect(() => {
-  //   const localStorageUser = localStorage.getItem("user");
-  //   if (localStorageUser) {
-  //     const parsedUser = JSON.parse(localStorageUser);
-  //     setUserInfo(parsedUser as UserModel);
-  //   }
-  // }, []);
-
-  // This effect updates the UID once `userInfo` is set
-  // useEffect(() => {
-  //   if (userInfo && userInfo.user_id) {
-  //     setUID(userInfo.user_id);
-  //   }
-  // }, [userInfo]);
-
-  // const fetchFollowCount = async (fquery: string) => {
-  //   try {
-  //     const url = local_uri + "User/" + fquery +"/";
-  //     const response = await fetch(url + uid);
-  //     const json = await response.json();
-
-  //     if (!Array.isArray(json) || json.length === 0) {
-  //       // Handle empty or invalid response
-  //       console.warn("No users found in the response.");
-      
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     const users: UserModel[] = [];
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     json.forEach((user: any) => {
-  //       const newUser: UserModel = {
-  //         user_id: user.user_id,
-  //         username: user.username,
-  //         email: user.email,
-  //         password: user.password,
-  //         biography: user.biography,
-  //         nickname: user.nickname,
-  //         pfp: user.pfp,
-  //       };
-  //       users.push(newUser);
-  //     });
-  //     // if (fquery === "followersof") {
-  //     //   setFollowerCount(users.length);
-  //     // }
-  //     // else if (fquery === "followingsof") {
-  //     //   setFollowingCount(users.length);
-  //     // }
-  //     // else if (fquery === "friendsof") {
-  //     //   setFriendsCount(users.length);
-  //     // }
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw new Error("Error getting count");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchFollowCount("followersof");
-  //   fetchFollowCount("followingsof");
-  //   fetchFollowCount("friendsof");
-  // }, [followerCount, followingCount, friendsCount]);
-
-  
-  // const tempFollowing = 234;
-
-//   const handleFollowerCount = useCallback((data: number) => {
-//     setFollowerCount(data);
-//   }, []);
-
-//   const handleFollowingCount = useCallback((data: number) => {
-//     setFollowingCount(data);
-//   }, []);
-
-//   const handleFriendCount = useCallback((data: number) => {
-//     setFriendCount(data);
-//   }, []);
   return (
 
       <div className="flex justify-center gap-5 mt-3">
