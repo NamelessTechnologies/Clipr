@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
-import { uri } from "../App";
+import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
-function Friends() {
+// interface FriendsProps {
+//   onSendFriendCount: (data: number) => void;
+// }
+
+function Friends () {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -13,6 +17,8 @@ function Friends() {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
+
+  // const [friendCount, setFriendCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -32,9 +38,17 @@ function Friends() {
 
   const fetchUsers = async () => {
     try {
-      const url = uri + "User/friendsof/";
+      const url = local_uri + "User/friendsof/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
+
+      if (!Array.isArray(json) || json.length === 0) {
+        // Handle empty or invalid response
+        console.warn("No users found in the response.");
+      
+        setLoading(false);
+        return;
+      }
 
       const users: UserModel[] = [];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +65,7 @@ function Friends() {
         users.push(newUser);
       });
 
+      // setFriendCount(users.length)
       setUser(users);
       setLoading(false);
     } catch (error) {
@@ -63,36 +78,33 @@ function Friends() {
     fetchUsers();
   }, [uid]);
 
-  if (loading) {
-    return (
-      <div className="text-yellow-100 italic text-m pr-2 text-5xl">
-        Loading...
-      </div>
-    );
-  }
+  // useEffect(() => {
+  //   if (friendCount) {
+  //     onSendFriendCount(user.length);
+  //   }
+  // }, [friendCount, onSendFriendCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
   };
 
+  if (loading) {
+    return <div className="text-yellow-100 italic text-m pr-2 text-5xl">Loading...</div>;
+  }
+
   return (
     <div className="friends-container pt-3">
       <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
-        Friends!
+        Friends
       </div>
 
       {user?.map((user) => (
-        <div
-          onClick={() => goToTheProfile(user.user_id.toString())}
-          className="flex p-4 text-white hover:cursor-pointer space-x-6"
-          key={user.user_id}
-        >
+        <div 
+        onClick={() => goToTheProfile(user.user_id.toString())} 
+        className="flex p-4 text-white hover:cursor-pointer space-x-6" 
+        key={user.user_id}>
           <div className="circle-small border ">
-            <img
-              src={user.pfp}
-              alt="pfp"
-              className="object-cover w-full h-full"
-            />
+            <img src={user.pfp} alt="pfp" className="object-cover w-full h-full"/>
           </div>
           <div className="flex flex-col">
             <div className="text-yellow-100 italic text-m pr-2">
@@ -100,9 +112,11 @@ function Friends() {
             </div>
             <div className="text-yellow-100 italic text-xl pr-2">
               {user.username}
-            </div>
+          </div>
           </div>
         </div>
+
+        
       ))}
     </div>
   );

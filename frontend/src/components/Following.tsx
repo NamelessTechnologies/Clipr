@@ -4,11 +4,11 @@ import UserModel from "../types/User";
 import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
-// interface FollowersProps {
-//   onSendFollowersCount: (data: number) => void;
+// interface FollowingProps {
+//   onSendFollowingCount: (data: number) => void;
 // }
 
-function Followers () {
+function Following () {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -18,7 +18,7 @@ function Followers () {
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
 
-  // const [followersCount, setFollowersCount] = useState<number>(0);
+//   const [followingCount, setFollowingCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -38,7 +38,7 @@ function Followers () {
 
   const fetchUsers = async () => {
     try {
-      const url = local_uri + "User/followers/";
+      const url = local_uri + "User/following/";
       const response = await fetch(url + uid); // must not be hard coded
       const json = await response.json();
 
@@ -65,7 +65,7 @@ function Followers () {
         users.push(newUser);
       });
 
-      // setFollowersCount(users.length)
+    //   setFollowingCount(users.length)
       setUser(users);
       setLoading(false);
     } catch (error) {
@@ -78,11 +78,11 @@ function Followers () {
     fetchUsers();
   }, [uid]);
 
-  // useEffect(() => {
-  //   if (followersCount) {
-  //     onSendFollowersCount(user.length);
-  //   }
-  // }, [followersCount, onSendFollowersCount])
+//   useEffect(() => {
+//     if (followingCount) {
+//       onSendFollowingCount(user.length);
+//     }
+//   }, [followingCount, onSendFollowingCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
@@ -95,7 +95,7 @@ function Followers () {
   return (
     <div className="friends-container pt-3">
       <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
-        Followers
+        Following
       </div>
 
       {user?.map((user) => (
@@ -121,4 +121,4 @@ function Followers () {
     </div>
   );
 }
-export { Followers };
+export { Following };

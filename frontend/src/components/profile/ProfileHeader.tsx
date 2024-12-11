@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
 import { uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
+import { ThreeFs } from "./ThreeFs";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -97,19 +98,19 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
 
-  const TripleFs = () => {
-    return (
-      <div className="flex flex-row">
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Followers: 69
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Following: 1738
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-      </div>
-    );
-  };
+  // const TripleFs = () => {
+  //   return (
+  //     <div className="flex flex-row">
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Followers: 69
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Following: 1738
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+  //     </div>
+  //   );
+  // };
 
   const clickButton = async () => {
     if (status === "Friends") {
@@ -239,9 +240,9 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
-  const tempFollowing = 234;
-  const tempFollowers = 27;
-  const tempFriends = 420;
+  // const tempFollowing = 234;
+  // const tempFollowers = 27;
+  // const tempFriends = 420;
 
   return (
     <div className="flex justify-center w-full mt-4">
@@ -280,7 +281,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
 
             {/* following, followers, etc. */}
-            <div className="flex justify-center gap-5 mt-3">
+            {/* <div className="flex justify-center gap-5 mt-3">
               <div className="text-white text-base">
                 <span className="font-bold">{tempFollowers + " "}</span>
                 Followers
@@ -293,7 +294,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 <span className="font-bold">{tempFriends + " "}</span>
                 Friends
               </div>
-            </div>
+            </div> */}
+            <ThreeFs profile_id={profileID}/>
             {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
@@ -333,7 +335,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Message
               </button>
             </div>
-            <TripleFs></TripleFs>
+            <ThreeFs profile_id={profileID}/>
           </div>
         </div>
       )}
