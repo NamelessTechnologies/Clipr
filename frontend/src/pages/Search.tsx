@@ -3,7 +3,7 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { uri } from "../App";
+import { local_uri } from "../App";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
 
@@ -21,12 +21,17 @@ function Search() {
   const query = searchParams.get("q") as string;
   const [searchResults, setSearchResults] = useState<PartialUserModel[]>([]);
   const [foundResults, setFoundResults] = useState<boolean>(false);
+  const [searchMessage, setSearchMessage] = useState("Searching...");
+
   // const [category, setCategory] = useState<Category>(); Later
 
   useEffect(() => {
+    setFoundResults(false);
+    setSearchMessage("Searching...")
+
     async function fetchData() {
       try {
-        const queryString = uri + "searchname/" + query;
+        const queryString = local_uri + "searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setSearchResults(json);
@@ -41,6 +46,12 @@ function Search() {
     if (query) {
       fetchData();
     }
+
+    const timer = setTimeout(() => {
+      setSearchMessage("No results found for: " + query)
+    }, 1000)
+    return () => clearTimeout(timer);
+
   }, [query]);
 
   const goToTheProfile = (index: string) => {
@@ -67,7 +78,8 @@ function Search() {
         </div>
       ) : (
         <div className="text-center text-2xl font-medium text-white">
-          No Results found for: {query}
+          {/* No Results found for: {query} */}
+          {searchMessage}
         </div>
       )}
     </>

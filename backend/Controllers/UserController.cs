@@ -733,7 +733,7 @@ public class UserController : ControllerBase
     [HttpGet("/searchname/{u}")]
     public IActionResult getUserFromSearchName(string u)
     {
-        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
+        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u.ToLower() + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u.ToLower() + "' || '%')";
         // Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
         conn.Open();
