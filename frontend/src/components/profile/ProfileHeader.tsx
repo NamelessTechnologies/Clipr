@@ -312,7 +312,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
 
-            <div className="flex justify-center gap-5 mt-3">
+            <div className="flex gap-5 mt-3 border">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
                 <span className="font-bold">{followerCount + " "}</span>
@@ -336,7 +336,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
           </div>
 
-          <div className="flex text-white text-base pt-5">
+          <div className="flex text-white text-base pt-5 max-w-[350px] break-words whitespace-normal">
             {props.userData.biography}
           </div>
 
@@ -380,7 +380,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
 
-            <div className="flex justify-center gap-5 mt-3">
+            <div className="flex gap-5 mt-3">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
                 <span className="font-bold">{followerCount + " "}</span>
@@ -404,7 +404,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
           </div>
           
-          <div className="flex text-white text-base pt-5">
+          <div className="flex text-white text-base pt-5 max-w-[350px] break-words whitespace-normal">
             {props.userData.biography}
           </div>
 
