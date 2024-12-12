@@ -1,5 +1,5 @@
 // import { Sidebar } from "../components/Sidebar";
-import { Friends } from "../components/Friends";
+// import { Friends } from "../components/Friends";
 // import logo from "../assets/hsr_logo.png";
 // import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ function FriendsPage() {
 
         <br></br>
 
-        <Friends />
+        {/* <Friends /> */}
       </div>
     </>
   );
