@@ -79,20 +79,22 @@ function Inbox() {
   useEffect(() => {
     const fetchConvos = async (message: ExtendedMessageModel) => {
       try {
-        const newArray = [];
+        const newArray: ProfilePreview[] = [];
         newArray.push({
-          user_id: message.user_id,
-          nickname: message.nickname,
+          user_id: message.user_id as unknown as string,
+          nickname: message.nickname as unknown as string,
           pfp: message.user_pfp,
           lastMessage: message.content,
           latestDate: message.datesent,
-          convo_id: message.convo_id,
+          convo_id: message.convo_id as unknown as string,
         });
         for (const pp of conversation) {
+          console.log(message.convo_id, pp.convo_id);
           if ((message.convo_id as unknown as string) != pp.convo_id) {
             newArray.push(pp);
           }
         }
+        setConversation(newArray);
       } catch (error) {
         console.error("Error fetching conversations:", error);
       }
@@ -103,7 +105,7 @@ function Inbox() {
     return () => {
       socket.off("recieve-message", fetchConvos);
     };
-  }, [userID]); // Add userID as a dependency
+  }, [conversation]); // Add userID as a dependency
 
   useEffect(() => {
     console.log(
