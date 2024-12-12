@@ -124,7 +124,6 @@ const EditProfileForm: React.FC = () => {
       }
 
         // UPLOAD TO S3
-        // toggleLoading();
         setIsLoading(!isLoading);
         console.log("before uploading: "+isLoading);
         const s3 = new ReactS3Client(s3Config);
@@ -213,6 +212,7 @@ const EditProfileForm: React.FC = () => {
     <div>
         {(isLoading) && <LoadingSpinner />}
     </div>
+    
     <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
