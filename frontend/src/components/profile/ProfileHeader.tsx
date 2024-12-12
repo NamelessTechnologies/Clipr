@@ -34,16 +34,14 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [friendCount, setFriendCount] = useState<number>(0);
 
-   // FOR SHOWING EDIT PROFILE MODAL
-   const [isModalVisible, setIsModalVisible] = useState(false);
-   const handleShowModal = () => {
-     setIsModalVisible(true);
-    //  console.log("After handleShowModal: "+isModalVisible);
-   };
-   const handleCloseModal = () => {
-     setIsModalVisible(false);
-    //  console.log("After handleCloseModal: "+isModalVisible);
-   };
+  // FOR SHOWING EDIT PROFILE MODAL
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleShowModal = () => {
+    setIsModalVisible(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   // FOR NAVIGATING TO MESSAGES PAGE
   const [currentUser] = useState(localStorage.getItem("user") || "");
@@ -68,10 +66,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   useEffect(() => {
     async function fetchData() {
-      // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
       if (!lookingAtOwnProfile) {
         if (userID) {
-          // console.log("looking at other person's profile!");
           try {
             let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
             let response = await fetch(queryString);

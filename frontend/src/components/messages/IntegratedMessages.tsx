@@ -4,7 +4,12 @@ import { MessageBox } from "./MessageBox";
 import { socket } from "../../socket";
 import { uri } from "../../App";
 import { useNavigate } from "react-router-dom";
+import { EmbeddedPost } from "./EmbeddedPost";
 
+interface ExtendedMessageModel extends MessageModel {
+  hasMedia?: boolean;
+  mediaType: string;
+}
 function IntegratedMessages(props: {
   convo_id: string;
   nickname: string;
@@ -16,13 +21,14 @@ function IntegratedMessages(props: {
   const userPFP = userInfo["pfp"] as string;
 
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<MessageModel[]>([]);
+  const [messages, setMessages] = useState<ExtendedMessageModel[]>([]);
 
   const secondUser = props.nickname;
   const secondUserID = props.user_id;
   const [secondUserPFP, setSecondUserPFP] = useState("");
   const convoID = props.convo_id;
-  const [incomingMessage, setIncomingMessage] = useState<MessageModel>();
+  const [incomingMessage, setIncomingMessage] =
+    useState<ExtendedMessageModel>();
 
   const scrollToBottom = useRef<HTMLDivElement | null>(null);
 
@@ -33,7 +39,7 @@ function IntegratedMessages(props: {
 
   //Recieving Messages with Sockets
   useEffect(() => {
-    const handleMessage = (message: MessageModel) => {
+    const handleMessage = (message: ExtendedMessageModel) => {
       setIncomingMessage(message);
     };
 
@@ -64,17 +70,35 @@ function IntegratedMessages(props: {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`,
+          `${uri}conversation?User_1=${userID}&User_2=${secondUserID}`
         );
         const json = await response.json();
-        const messages: MessageModel[] = json.map((media: MessageModel) => ({
-          id: media.id,
-          convo_id: media.convo_id,
-          content: media.content,
-          datesent: media.datesent,
-          user_id: media.user_id,
-          user_pfp: media.user_pfp,
-        }));
+        const messages: ExtendedMessageModel[] = json.map(
+          (media: MessageModel) => {
+            if (media.content.includes("π")) {
+              const hasMedia = true;
+              const [mediaUrl, mediaType] = media.content.split("π");
+              return {
+                id: media.id,
+                convo_id: media.convo_id,
+                content: mediaUrl,
+                datesent: media.datesent,
+                user_id: media.user_id,
+                user_pfp: media.user_pfp,
+                hasMedia,
+                mediaType,
+              };
+            }
+            return {
+              id: media.id,
+              convo_id: media.convo_id,
+              content: media.content,
+              datesent: media.datesent,
+              user_id: media.user_id,
+              user_pfp: media.user_pfp,
+            };
+          }
+        );
         setMessages(messages);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -126,7 +150,7 @@ function IntegratedMessages(props: {
         datesent: new Date(),
         user_id: userID,
         user_pfp: userPFP,
-      } as unknown as MessageModel;
+      } as unknown as ExtendedMessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();
       setMessage("");
@@ -162,19 +186,27 @@ function IntegratedMessages(props: {
           className="flex flex-col text-white w-full px-5 pb-5 overflow-auto"
           style={{ height: "72vh", maxHeight: "72vh" }}
         >
-          {messages.map((msg) => (
-            <MessageBox
-              key={msg.id}
-              username={
-                msg.user_id === userInfo["user_id"]
-                  ? userInfo["username"]
-                  : secondUser
-              }
-              content={msg.content}
-              user_pfp={msg.user_pfp}
-              sender={msg.user_id === userInfo["user_id"] ? true : false}
-            />
-          ))}
+          {messages.map((msg) =>
+            msg.hasMedia ? (
+              <EmbeddedPost
+                msg={msg}
+                sender={msg.user_id === userInfo["user_id"]}
+              ></EmbeddedPost>
+            ) : (
+              <MessageBox
+                key={msg.id}
+                username={
+                  msg.user_id === userInfo["user_id"]
+                    ? userInfo["username"]
+                    : secondUser
+                }
+                content={msg.content}
+                user_pfp={msg.user_pfp}
+                sender={msg.user_id === userInfo["user_id"]}
+              />
+            )
+          )}
+
           <div ref={scrollToBottom}></div>
         </div>
 
