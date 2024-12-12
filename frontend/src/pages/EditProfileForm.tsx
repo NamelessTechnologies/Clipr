@@ -5,6 +5,8 @@ import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+
 
 const EditProfileForm: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -21,6 +23,9 @@ const EditProfileForm: React.FC = () => {
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+
 
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
@@ -118,37 +123,38 @@ const EditProfileForm: React.FC = () => {
         return;
       }
 
-      // UPLOAD TO S3
-      const s3 = new ReactS3Client(s3Config);
-      try {
-        console.log(
-          "Attempting to upload " + image.name + " of type " + image.type,
-        );
-        var fileName = image.name;
-        fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
-        const res = await s3.uploadFile(image, fileName);
-        /*
-         * {
-         *   Response: {
-         *     bucket: "bucket-name",
-         *     key: "directory-name/filename-to-be-uploaded",
-         *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
-         *   }
-         * }
-         */
-        console.log(res);
-        var res_json = JSON.stringify(res);
-        var parsed = JSON.parse(res_json);
-        // console.log("parsed.location: " + parsed.location);
-        fileLocation = parsed.location;
-        pfp.current = fileLocation;
-        // console.log("fileLocation: " + fileLocation);
-      } catch (exception) {
-        console.log(exception);
-      }
-    }
+        // UPLOAD TO S3
+        setIsLoading(!isLoading);
+        console.log("before uploading: "+isLoading);
+        const s3 = new ReactS3Client(s3Config);
+        try {
+            console.log("Attempting to upload " + image.name + " of type " + image.type);
+            var fileName = image.name;
+            fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
+            const res = await s3.uploadFile(image, fileName);
+            /*
+            * {
+            *   Response: {
+            *     bucket: "bucket-name",
+            *     key: "directory-name/filename-to-be-uploaded",
+            *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
+            *   }
+            * }
+            */
+            console.log(res);
+            var res_json = JSON.stringify(res);
+            var parsed = JSON.parse(res_json);
+            // console.log("parsed.location: " + parsed.location);
+            fileLocation = parsed.location;
+            pfp.current = fileLocation;
+            // console.log("fileLocation: " + fileLocation);
+        } catch (exception) {
+            console.log(exception);
+        }
+    } 
 
-    console.log("PFP before posting: " + pfp);
+    
+    console.log("isLoading after uploading pfp: " + isLoading);
 
     // POST ACCT TO DB
     const newUser = {
@@ -181,7 +187,8 @@ const EditProfileForm: React.FC = () => {
           console.error(error);
         }
         alert("Success!");
-        location.reload();
+        setIsLoading(false);
+        // location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -197,10 +204,16 @@ const EditProfileForm: React.FC = () => {
 
   useEffect(() => {
     setBioLength(biography.length);
+    // toggleLoading();
   }, [biography]);
 
   return (
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2">
+    <>
+    <div>
+        {(isLoading) && <LoadingSpinner />}
+    </div>
+    
+    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
@@ -313,10 +326,7 @@ const EditProfileForm: React.FC = () => {
           <textarea
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
-            onChange={(e) => {
-              setBiography(e.target.value);
-              console.log(biography.length);
-            }}
+            onChange={(e) => setBiography(e.target.value)}
             maxLength={100}
             required
             placeholder="Type your bio here!"
@@ -347,15 +357,9 @@ const EditProfileForm: React.FC = () => {
             Submit
           </button>
         </div>
-
-        {/* <div className="flex justify-center mt-4">
-          <span className="text-white text-sm">Already a member?</span>
-          <Link to="/Clipr/LogIn" className="text-amber-500 text-sm ml-1">
-            Log in
-          </Link>
-        </div> */}
       </form>
     </div>
+    </>
   );
 };
 
