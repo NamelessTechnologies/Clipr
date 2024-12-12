@@ -295,7 +295,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
 
             {/* buttons */}
-            <div className="flex pt-2 pb-2 justify-center gap-5">
+            <div className="flex pt-2 pb-2 justify-left gap-5">
               <button
                 onClick={handleShowModal}
                 className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2"
