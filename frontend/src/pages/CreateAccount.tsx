@@ -192,17 +192,17 @@ const CreateAccount: React.FC = () => {
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
-        try {
-          const queryString = `${uri}email/` + email;
-          const response = await fetch(queryString);
-          const json = (await response.json()) as UserModel;
-          localStorage.setItem("user", JSON.stringify(json));
-          window.dispatchEvent(new Event("storage"));
-        } catch (error) {
-          console.error(error);
-        }
+        // try {
+        //   const queryString = `${uri}email/` + email;
+        //   const response = await fetch(queryString);
+        //   const json = (await response.json()) as UserModel;
+        //   localStorage.setItem("user", JSON.stringify(json));
+        //   window.dispatchEvent(new Event("storage"));
+        // } catch (error) {
+        //   console.error(error);
+        // }
         socket.connect();
-        navigate("../");
+        navigate("../LogIn");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
