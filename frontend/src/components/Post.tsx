@@ -46,6 +46,7 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
               src={photo_data}
               controls
               autoPlay={true}
+              loop
               className="mb-4 h-auto mx-auto rounded-xl"
               style={{ minHeight: "65vh", maxHeight: "65vh" }}
             ></video>
