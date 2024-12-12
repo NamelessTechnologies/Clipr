@@ -59,12 +59,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setUserID(currentUserID);
       if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
-        // console.log("looking @ own prof after setting true: "+lookingAtOwnProfile);
+        setPFP(parsedUser.pfp);
       } else {
         setLookingAtOwnProfile(false);
+        setPFP(props.userData.pfp);
       }
     }
-  }, [profileID]);
+  }, [props]);
 
   useEffect(() => {
     async function fetchData() {
@@ -106,7 +107,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     }
     fetchData();
-  }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
+  }, [profileFollowingUser, profileID, userFollowingProfile, userID, props]); // added props here so that when some1 follows u, and u check their pfp it shows "Follow Back" instead of "Error"
 
   // const TripleFs = () => {
   //   return (
@@ -284,7 +285,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           {/* below div contains name, buttons, followers, following, etc. */}
           <div className="flex flex-col">
             {/* username + nickname + crown*/}
-            <div className="flex mt-10 p-2 justify-center ">
+            <div className="flex mt-10 p-2 ">
               <span className="text-yellow-100 italic text-4xl pr-2">
                 {props.userData.username} -
               </span>
@@ -295,34 +296,15 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
 
             {/* buttons */}
-            <div className="flex pt-2 pb-2 justify-left gap-5">
+            <div className="flex pt-2 pb-2 pl-3">
               <button
                 onClick={handleShowModal}
                 className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2"
               >
                 Edit Profile
               </button>
-              {/* <button className="text-white bg-yellow-600 hover:bg-amber-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
-                Settings
-              </button> */}
             </div>
 
-            {/* following, followers, etc. */}
-            {/* <div className="flex justify-center gap-5 mt-3">
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowers + " "}</span>
-                Followers
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowing + " "}</span>
-                Following
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFriends + " "}</span>
-                Friends
-              </div>
-            </div> */}
-            {/* <ThreeFs profile_id={profileID}/> */}
             <div className="flex justify-center gap-5 mt-3">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
@@ -346,50 +328,47 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </div>
             </div>
           </div>
-
-
-
 
             {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
       ) : (
         <div className="flex flex-row">
-          <div className="pt-3">
-            <div className="circle-big">
               <img
                 onError={failedPFP}
                 src={
                   PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
                 }
+                className="w-56 h-56 rounded-full mr-5"
               />
+
+          {/* below div contains name, buttons, followers, following, etc. */}
+          <div className="flex flex-col">
+            {/* username + nickname + crown*/}
+            <div className="flex mt-10 p-2">
+              <span className="text-yellow-100 italic text-4xl pr-2">
+                {props.userData.username} -
+              </span>
+              <span className="text-white italic text-3xl pr-2 mt-auto">
+                {props.userData.nickname}
+              </span>
             </div>
-          </div>
-          <div className="flex flex-col pl-5">
-            <div className="flex flex-row pt-20">
-              <div className="text-yellow-100 italic text-5xl pr-2">
-                <b>{props.userData.username}</b> -
-              </div>
-              <div className="text-yellow-100 italic text-3xl pr-2 pt-2">
-                <i>{props.userData.nickname}</i>
-              </div>
-            </div>
-            <div className="flex flex-row pt-2 pb-2">
+
+            {/* buttons */}
+            <div className="flex pt-2 pb-2 pl-3 gap-4">
               <button
                 onClick={clickButton}
-                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-              >
+                className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
                 {status}
               </button>
 
               <button
-                className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-                onClick={NavigateToMessagePage}
-              >
+                className="text-white bg-amber-500 hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+                onClick={NavigateToMessagePage}>
                 Message
               </button>
             </div>
-            {/* <ThreeFs profile_id={profileID}/> */}
+
             <div className="flex justify-center gap-5 mt-3">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
@@ -413,9 +392,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </div>
             </div>
           </div>
-
-
-
 
           </div>
         </div>

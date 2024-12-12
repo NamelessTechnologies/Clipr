@@ -25,10 +25,9 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
   // const [loading, setLoading] = useState<boolean>(true);
 
   const [userInfo, setUserInfo] = useState<UserModel>();
-  const [uid, setUID] = useState<number>();
+  const [, setUID] = useState<number>();
   const navigate = useNavigate();
   const profileID = props.profile_id;
-  console.log(uid);
 
   // const [followersCount, setFollowersCount] = useState<number>(0);
 
