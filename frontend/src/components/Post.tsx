@@ -82,7 +82,13 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
             post_id={props.postData.post_id!}
             user_id={props.currentUserID!}
           />
-          <ShareIcon post_id={props.postData.post_id!} />
+          {photo_data && (
+            <ShareIcon
+              s3link={photo_data}
+              media_type={media_type}
+              post_id={props.postData.post_id!}
+            />
+          )}
         </div>
       </div>
 

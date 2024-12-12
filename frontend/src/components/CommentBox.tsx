@@ -29,27 +29,31 @@ function CommentBox(props: {
     fetchComments();
   }, [props]);
 
-    const fetchComments = async() => {
-        const response = await fetch(uri + "comment/post/" + props.post_id + '/' + props.user_id);
-        const json = await response.json();
+  const fetchComments = async () => {
+    // console.log("fetching posts : " + uri + "comment/post/" + props.post_id + '/' + props.user_id);
+    const response = await fetch(
+      uri + "comment/post/" + props.post_id + "/" + props.user_id
+    );
+    const json = await response.json();
 
-        const comments: CommentModel[] = [];
-        json.forEach((comment: any) => {
-            const PostComment: CommentModel = {
-                comment_id: comment.commentID,
-                parent_id: comment.parentID,
-                post_id: comment.postID,
-                user_id: comment.userID,
-                username: comment.username,
-                content: comment.content,
-                pfp_url: comment.pfp,
-                num_likes: comment.likeCount,
-                liked: comment.liked
-            };
-=            comments.push(PostComment);
-        });
-        setComments(comments);
-    }
+    const comments: CommentModel[] = [];
+    json.forEach((comment: any) => {
+      const PostComment: CommentModel = {
+        comment_id: comment.commentID,
+        parent_id: comment.parentID,
+        post_id: comment.postID,
+        user_id: comment.userID,
+        username: comment.username,
+        content: comment.content,
+        pfp_url: comment.pfp,
+        num_likes: comment.likeCount,
+        liked: comment.liked,
+      };
+      console.log(PostComment.username);
+      comments.push(PostComment);
+    });
+    setComments(comments);
+  };
 
   // ADD BACKEND LOGIC TO POST NEW COMMENT TO DATABASE
   const postComment = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -95,23 +99,31 @@ function CommentBox(props: {
       setComments((prevComments) => [...prevComments, newlyPostedComment]);
       setUserComment("");
     } catch (exception) {
+      console.log("Error posting comment");
       console.log(exception);
     }
   };
 
-    return (
-        <div className="flex flex-col w-96 h-5/6 bg-neutral-900 rounded-xl">
-            {/* comment section header */}
-            <div className="flex items-center pl-4 w-full h-16 bg-navbar rounded-t-xl border-b">
-                <span className="text-xl text-white">{comments.length} Comments</span>
-            </div>
+  return (
+    <div className="flex flex-col w-96 h-5/6 bg-neutral-900 rounded-xl">
+      {/* comment section header */}
+      <div className="flex items-center pl-4 w-full h-16 bg-navbar rounded-t-xl border-b">
+        <span className="text-xl text-white">{comments.length} Comments</span>
+      </div>
 
-            {/* all comments */}
-            <div className="flex flex-col items-center w-full overflow-auto" style={{ height: '70vh', maxHeight: '70vh' }}>
-                {comments.map((comment, index) => (
-                    <CommentWrapper key={index} commentData={comment} current_user_id={props.user_id} />
-                ))}
-            </div>
+      {/* all comments */}
+      <div
+        className="flex flex-col items-center w-full overflow-auto"
+        style={{ height: "70vh", maxHeight: "70vh" }}
+      >
+        {comments.map((comment, index) => (
+          <CommentWrapper
+            key={index}
+            commentData={comment}
+            current_user_id={props.user_id}
+          />
+        ))}
+      </div>
 
       {/* textbox to post comment */}
       <div className="flex items-center pl-4 pr-6 py-10 mt-auto w-full h-16 rounded-b-xl border-t">
