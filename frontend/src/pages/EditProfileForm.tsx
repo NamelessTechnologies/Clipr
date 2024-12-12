@@ -24,15 +24,8 @@ const EditProfileForm: React.FC = () => {
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
 
-  // LOADING SPINNER LOGIC
-  const toggleLoading = () => {
-    if (isLoading) {
-        setIsLoading(false);
-    } else {
-        setIsLoading(true);
-    }
-  };
 
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
@@ -131,7 +124,8 @@ const EditProfileForm: React.FC = () => {
       }
 
         // UPLOAD TO S3
-        toggleLoading();
+        // toggleLoading();
+        setIsLoading(!isLoading);
         console.log("before uploading: "+isLoading);
         const s3 = new ReactS3Client(s3Config);
         try {
@@ -155,14 +149,13 @@ const EditProfileForm: React.FC = () => {
             fileLocation = parsed.location;
             pfp.current = fileLocation;
             // console.log("fileLocation: " + fileLocation);
-            toggleLoading();
         } catch (exception) {
             console.log(exception);
         }
     } 
 
-    console.log("PFP before posting: " + pfp);
-    console.log("isLoading before posting: " + isLoading);
+    
+    console.log("isLoading after uploading pfp: " + isLoading);
 
     // POST ACCT TO DB
     const newUser = {
@@ -195,7 +188,8 @@ const EditProfileForm: React.FC = () => {
           console.error(error);
         }
         alert("Success!");
-        location.reload();
+        setIsLoading(false);
+        // location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -217,7 +211,7 @@ const EditProfileForm: React.FC = () => {
   return (
     <>
     <div>
-        {isLoading && <LoadingSpinner />}
+        {(isLoading) && <LoadingSpinner />}
     </div>
     <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
       <form
