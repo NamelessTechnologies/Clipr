@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //   onSendFollowersCount: (data: number) => void;
 // }
 
-function Followers () {
+function Followers (props: { profile_id: string; onModalEvent: () => void }) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -17,6 +17,8 @@ function Followers () {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
+  const profileID = props.profile_id;
+  console.log(uid);
 
   // const [followersCount, setFollowersCount] = useState<number>(0);
 
@@ -39,7 +41,7 @@ function Followers () {
   const fetchUsers = async () => {
     try {
       const url = local_uri + "User/followers/";
-      const response = await fetch(url + uid); // must not be hard coded
+      const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 
       if (!Array.isArray(json) || json.length === 0) {
@@ -76,7 +78,7 @@ function Followers () {
 
   useEffect(() => {
     fetchUsers();
-  }, [uid]);
+  }, [props]);
 
   // useEffect(() => {
   //   if (followersCount) {
@@ -87,6 +89,10 @@ function Followers () {
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
   };
+
+  const handleCloseModal = () => {
+    props.onModalEvent();
+  }
 
   if (loading) {
     return <div className="text-yellow-100 italic text-m pr-2 text-5xl">Loading...</div>;
@@ -100,7 +106,10 @@ function Followers () {
 
       {user?.map((user) => (
         <div 
-        onClick={() => goToTheProfile(user.user_id.toString())} 
+        onClick={() => {
+          goToTheProfile(user.user_id.toString());
+          handleCloseModal();
+        }} 
         className="flex p-4 text-white hover:cursor-pointer space-x-6" 
         key={user.user_id}>
           <div className="circle-small border ">

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //   onSendFriendCount: (data: number) => void;
 // }
 
-function Friends () {
+function Friends (props: {profile_id: string}) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -17,6 +17,8 @@ function Friends () {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
+  const profileID = props.profile_id;
+  console.log(uid);
 
   // const [friendCount, setFriendCount] = useState<number>(0);
 
@@ -39,7 +41,7 @@ function Friends () {
   const fetchUsers = async () => {
     try {
       const url = local_uri + "User/friendsof/";
-      const response = await fetch(url + uid); // must not be hard coded
+      const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 
       if (!Array.isArray(json) || json.length === 0) {
@@ -76,7 +78,7 @@ function Friends () {
 
   useEffect(() => {
     fetchUsers();
-  }, [uid]);
+  }, [props]);
 
   // useEffect(() => {
   //   if (friendCount) {

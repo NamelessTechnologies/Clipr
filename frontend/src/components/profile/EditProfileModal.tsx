@@ -6,7 +6,7 @@ interface ModalProps {
 
 export default function ModalBox({ onClose }: ModalProps) {
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-70">
+    <div className="fixed inset-0 z-50 top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-70">
       <div className="bg-white rounded-md overflow-hidden max-w-md w-full mx-4">
         <nav className="bg-black text-white flex justify-between px-4 py-2">
           <span className="text-lg">Edit Profile</span>

@@ -9,39 +9,51 @@ import { local_uri } from "../../App";
 
 function ThreeFs(props: {profile_id: string}) {
 
-    ShouldBeLoggedIn(true);
+  ShouldBeLoggedIn(true);
 
-    // const [user, setUser] = useState<UserModel[]>([]);
-    // const [loading, setLoading] = useState<boolean>(true);
+  // const [user, setUser] = useState<UserModel[]>([]);
+  // const [loading, setLoading] = useState<boolean>(true);
 
-    // const [userInfo, setUserInfo] = useState<UserModel>();
-    // const [uid, setUID] = useState<number>();
+  // const [userInfo, setUserInfo] = useState<UserModel>();
+  // const [uid, setUID] = useState<number>();
 
-    const [followersOpen, setFollowersOpen] = useState<boolean>(false);
-    const [followingOpen, setFollowingOpen] = useState<boolean>(false);
-    const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
-    const [followerCount, setFollowerCount] = useState<number>(0);
-    const [followingCount, setFollowingCount] = useState<number>(0);
-    const [friendCount, setFriendCount] = useState<number>(0);
-    const profileID = props.profile_id;
+  const [followersOpen, setFollowersOpen] = useState<boolean>(false);
+  const [followingOpen, setFollowingOpen] = useState<boolean>(false);
+  const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [friendCount, setFriendCount] = useState<number>(0);
+  const profileID = props.profile_id;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
 
-    useEffect(() => {
-        fetchFollowCount();
-    }, []);
+  useEffect(() => {
+      fetchFollowCount();
+  }, [props]);
 
-    const fetchFollowCount = async () => {
-        const response = await fetch(
-            local_uri + "User/followCounts/" + profileID,
-        );
-        const json = await response.json();
+  const fetchFollowCount = async () => {
+      const response = await fetch(
+          local_uri + "User/followCounts/" + profileID,
+      );
+      const json = await response.json();
 
-        const parsedFollowCounts: number[] = json;
+      const parsedFollowCounts: number[] = json;
 
-        setFollowerCount(parsedFollowCounts[0]);
-        setFollowingCount(parsedFollowCounts[1]);
-        setFriendCount(parsedFollowCounts[2]);
-    }
+      setFollowerCount(parsedFollowCounts[0]);
+      setFollowingCount(parsedFollowCounts[1]);
+      setFriendCount(parsedFollowCounts[2]);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    console.log("After handleCloseModal: " + isModalVisible);
+  };
+
+  // const handleShowModal = () => {
+  //   setIsModalVisible(true);
+  //   console.log("After handleShowModal: " + isModalVisible);
+  // };
 
   return (
 
@@ -53,7 +65,7 @@ function ThreeFs(props: {profile_id: string}) {
                 <ThreeFsModal open={followersOpen} onClose={() => setFollowersOpen(false)}>
                   <div>
                     {/* <Followers onSendFollowersCount={handleFollowerCount}/> */}
-                    <Followers />
+                    <Followers profile_id={profileID} onModalEvent={handleCloseModal}/>
                   </div>
                 </ThreeFsModal>
               </div>
@@ -65,7 +77,7 @@ function ThreeFs(props: {profile_id: string}) {
                 <ThreeFsModal open={followingOpen} onClose={() => setFollowingOpen(false)}>
                   <div>
                     {/* <Following onSendFollowingCount={handleFollowingCount}/> */}
-                    <Following />
+                    <Following profile_id={profileID}/>
                   </div>
                 </ThreeFsModal>
               </div>
@@ -77,7 +89,7 @@ function ThreeFs(props: {profile_id: string}) {
                 <ThreeFsModal open={friendsOpen} onClose={() => setFriendsOpen(false)}>
                   <div>
                     {/* <Friends onSendFriendCount={handleFriendCount}/> */}
-                    <Friends />
+                    <Friends profile_id={profileID}/>
                   </div>
                 </ThreeFsModal>
               </div>

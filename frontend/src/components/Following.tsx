@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //   onSendFollowingCount: (data: number) => void;
 // }
 
-function Following () {
+function Following (props: {profile_id: string}) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -17,6 +17,8 @@ function Following () {
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
   const navigate = useNavigate();
+  const profileID = props.profile_id;
+  console.log(uid);
 
 //   const [followingCount, setFollowingCount] = useState<number>(0);
 
@@ -39,7 +41,7 @@ function Following () {
   const fetchUsers = async () => {
     try {
       const url = local_uri + "User/following/";
-      const response = await fetch(url + uid); // must not be hard coded
+      const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 
       if (!Array.isArray(json) || json.length === 0) {
@@ -76,7 +78,7 @@ function Following () {
 
   useEffect(() => {
     fetchUsers();
-  }, [uid]);
+  }, [props]);
 
 //   useEffect(() => {
 //     if (followingCount) {
