@@ -115,7 +115,7 @@ public class UserController : ControllerBase
     [HttpPut]
     public async void editUser([FromBody] User user) {
         var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
         conn.Open();
         await using (var cmd = new NpgsqlCommand(sql, conn))
@@ -214,13 +214,13 @@ public class UserController : ControllerBase
                     var nickname = rdr.GetString(5);
                     var pfp = rdr.GetString(6);
 
-                    Console.WriteLine(user_id);
-                    Console.WriteLine(username);
-                    Console.WriteLine(email);
-                    Console.WriteLine(password);
-                    Console.WriteLine(biography);
-                    Console.WriteLine(nickname);
-                    Console.WriteLine(pfp);
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
 
                     User oneFollower = new User
                     {
@@ -333,13 +333,13 @@ public class UserController : ControllerBase
                     var nickname = rdr.GetString(5);
                     var pfp = rdr.GetString(6);
 
-                    Console.WriteLine(user_id);
-                    Console.WriteLine(username);
-                    Console.WriteLine(email);
-                    Console.WriteLine(password);
-                    Console.WriteLine(biography);
-                    Console.WriteLine(nickname);
-                    Console.WriteLine(pfp);
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
 
                     User oneFollowing = new User
                     {
@@ -421,13 +421,13 @@ public class UserController : ControllerBase
                     var nickname = rdr.GetString(5);
                     var pfp = rdr.GetString(6);
 
-                    Console.WriteLine(user_id);
-                    Console.WriteLine(username);
-                    Console.WriteLine(email);
-                    Console.WriteLine(password);
-                    Console.WriteLine(biography);
-                    Console.WriteLine(nickname);
-                    Console.WriteLine(pfp);
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
 
                     User oneFriend = new User
                     {
@@ -545,7 +545,7 @@ public class UserController : ControllerBase
     public IActionResult getAllConversations()
     {
         var sql = "SELECT * FROM conversation";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -581,7 +581,7 @@ public class UserController : ControllerBase
     public IActionResult getAllMessages()
     {
         var sql = "SELECT * FROM message";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
         
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -621,7 +621,7 @@ public class UserController : ControllerBase
     {
         // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE email = '" + e + "'";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
        conn.Open();
@@ -640,13 +640,13 @@ public class UserController : ControllerBase
                 var nickname = rdr.GetString(5);
                 var pfp = rdr.GetString(6);
 
-                Console.WriteLine(user_id);
-                Console.WriteLine(username);
-                Console.WriteLine(email);
-                Console.WriteLine(password);
-                Console.WriteLine(biography);
-                Console.WriteLine(nickname);
-                Console.WriteLine(pfp);
+                // Console.WriteLine(user_id);
+                // Console.WriteLine(username);
+                // Console.WriteLine(email);
+                // Console.WriteLine(password);
+                // Console.WriteLine(biography);
+                // Console.WriteLine(nickname);
+                // Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
@@ -670,7 +670,7 @@ public class UserController : ControllerBase
     public IActionResult getUserFromUsername(string u)
     {
         var sql = "SELECT * FROM users WHERE username = '" + u + "'";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -711,7 +711,7 @@ public class UserController : ControllerBase
     public IActionResult getUserFromSearchName(string u)
     {
         var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
         conn.Open();
 
@@ -803,13 +803,13 @@ public class UserController : ControllerBase
                     var nickname = rdr.GetString(5);
                     var pfp = rdr.GetString(6);
 
-                    Console.WriteLine(user_id);
-                    Console.WriteLine(username);
-                    Console.WriteLine(email);
-                    Console.WriteLine(password);
-                    Console.WriteLine(biography);
-                    Console.WriteLine(nickname);
-                    Console.WriteLine(pfp);
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
 
                     User oneFriend = new User
                     {

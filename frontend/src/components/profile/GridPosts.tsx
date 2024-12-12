@@ -13,7 +13,14 @@ function GridPosts(props: { profile_id: string }) {
   const [bookmarks, setBookMarks] = useState<ProfilePostModel[]>([]);
 
   useEffect(() => {
+    // reset posts
+    setBookMarks([]);
+    setPosts([]);
+
+    // set to bookmarks when going to profile
+    setDisplayBookmarks(false);
     fetchPosts();
+    fetchBookmarks();
   }, [props]);
 
   const fetchPosts = async () => {
@@ -50,7 +57,7 @@ function GridPosts(props: { profile_id: string }) {
       bookmarkPosts.push(profilePost);
     });
     setBookMarks(bookmarkPosts);
-    setDisplayBookmarks(true);
+    // setDisplayBookmarks(true);
   };
 
   // to switch between user's posts and saved posts
@@ -67,30 +74,26 @@ function GridPosts(props: { profile_id: string }) {
     <div className="flex flex-col w-1/2 mt-10 mx-auto justify-center">
       {/* posts and saves button */}
       <div className="flex justify-center gap-20">
-        <div className="flex items-center">
+        {/* user's posts tab */}
+        <div className="flex items-center cursor-pointer" onClick={() => {if (displayBookmarks) { switchTabs(); } }} >
           {displayBookmarks ? (
             <BsGrid className="w-4 h-4 mr-1 text-white" />
           ) : (
             <BsGridFill className="w-4 h-4 mr-1 text-white" />
           )}
-          <span
-            className={`text-white text-xl cursor-pointer ${!displayBookmarks && "border-b font-bold"}`}
-            onClick={switchTabs}
-          >
+          <span className={`text-white text-xl cursor-pointer ${!displayBookmarks && "border-b font-bold"}`}>
             Posts
           </span>
         </div>
 
-        <div className="flex items-center">
+        {/* user's saves tab */}
+        <div className="flex items-center cursor-pointer" onClick={() => {if (!displayBookmarks) { switchTabs(); } }}>
           {displayBookmarks ? (
             <IoBookmark className="w-4 h-4 mr-1 text-white" />
           ) : (
             <IoBookmarkOutline className="w-4 h-4 mr-1 text-white" />
           )}
-          <span
-            className={`text-white text-xl cursor-pointer ${displayBookmarks && "border-b font-bold"}`}
-            onClick={switchTabs}
-          >
+          <span className={`text-white text-xl cursor-pointer ${displayBookmarks && "border-b font-bold"}`}>
             Saved
           </span>
         </div>

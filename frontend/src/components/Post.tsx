@@ -65,7 +65,7 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
             <img
               src={photo_data}
               className="mb-4 h-auto mx-auto rounded-xl"
-              style={{ minHeight: "70vh", maxHeight: "70vh" }}
+              style={{ minHeight: "65vh", maxHeight: "65vh" }}
             ></img>
           )}
           {media_type == "video" && (
@@ -74,7 +74,7 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
               controls
               autoPlay={true}
               className="mb-4 h-auto mx-auto rounded-xl"
-              style={{ minHeight: "70vh", maxHeight: "70vh" }}
+              style={{ minHeight: "65vh", maxHeight: "65vh" }}
             ></video>
           )}
         </div>

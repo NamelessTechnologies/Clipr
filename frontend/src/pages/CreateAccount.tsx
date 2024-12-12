@@ -114,6 +114,17 @@ const CreateAccount: React.FC = () => {
     event.preventDefault();
     resetErrorMessages();
     var fileLocation = ""; // if no upload, use default pfp
+    try {
+      const queryString2 = `${uri}email/` + email;
+      const response2 = await fetch(queryString2);
+      const json2 = (await response2.json()) as UserModel;
+      if(json2) {
+        alert("Duplicate email!");
+        return;
+      }
+    } catch(exception) {
+      console.log("Unique");
+    }
 
     // VALIDATE INPUT
     if (!validate()) {
@@ -181,17 +192,17 @@ const CreateAccount: React.FC = () => {
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
-        try {
-          const queryString = `${uri}email/` + email;
-          const response = await fetch(queryString);
-          const json = (await response.json()) as UserModel;
-          localStorage.setItem("user", JSON.stringify(json));
-          window.dispatchEvent(new Event("storage"));
-        } catch (error) {
-          console.error(error);
-        }
+        // try {
+        //   const queryString = `${uri}email/` + email;
+        //   const response = await fetch(queryString);
+        //   const json = (await response.json()) as UserModel;
+        //   localStorage.setItem("user", JSON.stringify(json));
+        //   window.dispatchEvent(new Event("storage"));
+        // } catch (error) {
+        //   console.error(error);
+        // }
         socket.connect();
-        navigate("../");
+        navigate("../LogIn");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -213,27 +224,23 @@ const CreateAccount: React.FC = () => {
       >
         <div className="flex justify-center items-center">
           <div className="relative z-0">
-            <img src={stelle} className="w-30 h-30 mx-auto rounded-full"></img>
+            <img src={stelle} className="w-28 h-28 mx-auto"></img>
           </div>
         </div>
 
-        <div className="w-full text-white text-center text-4xl mb-6">
+        <div className="w-full text-white text-center text-4xl mb-4">
           Welcome to Clipr
         </div>
         <div className="w-full text-amber-500 text-center text-2xl mb-6">
           Create Account
         </div>
 
-        <label className="block text-white text-sm font-semibold mt-12 mb-2">
-          Upload your profile picture here!
-        </label>
-
-        <div className="flex justify-center ">
+        <div className="flex justify-center mb-2">
           <div className="relative z-0" onClick={clickFileInputDIV}>
             <img
               id="img-preview"
               src={defaultPfp}
-              className="w-28 h-28 mx-auto rounded-full"
+              className="w-24 h-24 mx-auto rounded-full"
             ></img>
             <input
               id="fileInput"
@@ -242,8 +249,8 @@ const CreateAccount: React.FC = () => {
               onChange={handleFileChange}
               className="hidden"
             ></input>
-            <div className="absolute inset-y-0 left-20 top-16 flex justify-right text-right z-10">
-              <FaPencil className="text-gray-700 w-10 h-10 opacity-90"></FaPencil>
+            <div className="absolute inset-y-0 left-[4.5rem] top-16 flex justify-right text-right z-10">
+              <FaPencil className="text-gray-500 w-8 h-8 opacity-90"></FaPencil>
             </div>
           </div>
         </div>
@@ -323,7 +330,7 @@ const CreateAccount: React.FC = () => {
           </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
