@@ -128,7 +128,7 @@ function Inbox() {
           </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <div className="text-white m-7 text-xl">No conversations started!</div>
       )}
     </>
   );

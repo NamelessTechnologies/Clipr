@@ -49,7 +49,7 @@ public class CommentController : ControllerBase {
         SELECT * FROM comment_like WHERE user_id = @user_id AND comment_id IN 
         (SELECT id as comment_id FROM COMMENT WHERE post_id = @post_id AND parent_id IS NULL ORDER BY id DESC)
         )
-        SELECT comment_info.*, COALESCE(liked_info.user_id, 0) AS liked_by_user FROM comment_info LEFT JOIN liked_info ON comment_info.id = liked_info.comment_id";
+        SELECT comment_info.*, CASE WHEN liked_info.user_id IS NULL THEN 0 ELSE 1 END AS liked_by_user FROM comment_info LEFT JOIN liked_info ON comment_info.id = liked_info.comment_id";
         using var conn = DBConn.GetConn();
         conn.Open();
         using var cmd = new NpgsqlCommand(sql, conn);

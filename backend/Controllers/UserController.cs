@@ -5,6 +5,7 @@ using Npgsql;
 using System.Threading.Tasks.Dataflow;
 using System.Data.SqlClient;
 using Azure.Core.Serialization;
+using backend.Utils;
 
 namespace backend.Controllers;
 
@@ -13,6 +14,31 @@ namespace backend.Controllers;
 
 public class UserController : ControllerBase
 {
+
+    [HttpPost("passwordtest/")]
+    public void passwordTest([FromBody] PasswordTEST password) {
+
+        Console.WriteLine("Hashing password: " + password.password);
+
+        if (password.password != null) {
+            var hashedPassword = PasswordHash.HashPassword(password.password);
+            Console.WriteLine(hashedPassword);
+        }
+    }
+
+    [HttpPost("password/verify")]
+    public bool verifyPassword([FromForm] string hashedPassword, [FromForm] string passwordInput) {
+
+        bool verified = PasswordHash.Verify(hashedPassword, passwordInput);
+
+        if (verified) {
+            Console.WriteLine("PASSWORD IS EQUAL");
+        } else {
+            Console.WriteLine("PASSWORD IS NOT EQUAL");
+        }
+        return verified;
+    }
+
     [HttpGet("{id}")]
     public IActionResult getOneUser(int id)
     {
@@ -58,39 +84,74 @@ public class UserController : ControllerBase
     public async void postUser([FromBody] User user) {
         var sql = "INSERT INTO users(username, email, password, biography, nickname, pfp) VALUES (@username, @email, @password, @biography, @nickname, @pfp)";
 
-        using var conn = DBConn.GetConn();
-        conn.Open();
+        try {
+            using var conn = DBConn.GetConn();
+            conn.Open();
 
-        await using (var cmd = new NpgsqlCommand(sql, conn))
-        {
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("email", user.Email);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("biography", user.Biography);
-            cmd.Parameters.AddWithValue("nickname", user.Nickname);
-            cmd.Parameters.AddWithValue("pfp", user.Pfp);
+            await using (var cmd = new NpgsqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("username", user.Username);
+                cmd.Parameters.AddWithValue("email", user.Email);
 
-            await cmd.ExecuteNonQueryAsync();
+                if (user.Password != null) {
+                    var hashedPassword = PasswordHash.HashPassword(user.Password);
+                    if (hashedPassword == null) {
+                        throw new InvalidOperationException("Error hashing password");
+                    }
+                    cmd.Parameters.AddWithValue("password", hashedPassword);
+                }            
+                cmd.Parameters.AddWithValue("biography", user.Biography);
+                cmd.Parameters.AddWithValue("nickname", user.Nickname);
+                cmd.Parameters.AddWithValue("pfp", user.Pfp);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        } catch (Exception ex) {
+            Console.WriteLine("Error creating/posting new user");
+            Console.Write(ex);
         }
     }
 
     [HttpPut]
-    public async void editUser([FromBody] User user) {
-        var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
-        Console.WriteLine(sql);
-        using var conn = DBConn.GetConn();
-        conn.Open();
-        await using (var cmd = new NpgsqlCommand(sql, conn))
-        {
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("email", user.Email);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("biography", user.Biography);
-            cmd.Parameters.AddWithValue("nickname", user.Nickname);
-            cmd.Parameters.AddWithValue("pfp", user.Pfp);
-            cmd.Parameters.AddWithValue("user_id",user.User_id);
+    public async void editUser([FromBody] EdittedUser user) {
+        // var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp where user_id = @user_id";
+        var final = "UPDATE users SET username = @username, email = @email, biography = @biography, nickname = @nickname, pfp = @pfp";
+        var right = " WHERE user_id = @user_id";
+        var addPassword = ", password = @password";
 
-            await cmd.ExecuteNonQueryAsync();
+        try {
+            using var conn = DBConn.GetConn();
+            conn.Open();
+            
+            if ((user.Password != null) && (user.Password != "")) {
+                final += addPassword;   
+            }
+            final += right;
+            await using (var cmd = new NpgsqlCommand(final, conn))
+            {
+                cmd.Parameters.AddWithValue("username", user.Username);
+                cmd.Parameters.AddWithValue("email", user.Email);
+
+                if ((user.Password != null) && (user.Password != "")) {
+                    var hashedPassword = PasswordHash.HashPassword(user.Password);
+                    if (hashedPassword == null) {
+                        throw new InvalidOperationException("Error hashing password");
+                    }
+                    Console.WriteLine("hashed password: " + hashedPassword);
+                    cmd.Parameters.AddWithValue("password", hashedPassword);
+                }   
+
+                // cmd.Parameters.AddWithValue("password", user.Password);
+                cmd.Parameters.AddWithValue("biography", user.Biography);
+                cmd.Parameters.AddWithValue("nickname", user.Nickname);
+                cmd.Parameters.AddWithValue("pfp", user.Pfp);
+                cmd.Parameters.AddWithValue("user_id",user.User_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        } catch (Exception ex) {
+            Console.WriteLine("Error editing user data");
+            Console.Write(ex);
         }
     }
 
@@ -138,116 +199,283 @@ public class UserController : ControllerBase
     [HttpGet("followers/{id}")]
     public IActionResult GetAllFollowers(int id)
     {
-        // --- query list of follower IDs ---
-        var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
-        Console.WriteLine(follower_query);
+        var sql = "SELECT from_id FROM following WHERE to_id = " + id;
 
         using var conn = DBConn.GetConn();
         conn.Open();
 
-        using var cmd = new NpgsqlCommand(follower_query, conn);
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var allFollowersID = new List<int>();
 
-        List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
             if (!rdr.HasRows)
             {
                 return NotFound("No followers found.");
             }
-
             while (rdr.Read())
             {
-
-                followerIDs.Add(rdr.GetInt32(0));
+                allFollowersID.Add(rdr.GetInt32(0));
             }
         }
-
-        // --- query each follower's basic info ---
-        var followers = new List<Follower>();
-        foreach (int follower_id in followerIDs)
+        var allFollowers = new List<User>();
+        foreach (int follower_id in allFollowersID)
         {
-            var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
-            using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
+            var sql2 = "SELECT * FROM users WHERE user_id = " + follower_id;
 
-            using var rdr = cmd2.ExecuteReader();
-            while (rdr.Read())
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
             {
-
-                if (!rdr.HasRows)
+                if (rdr.Read())
                 {
-                    return BadRequest("Error querying for user data.");
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
+
+                    User oneFollower = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFollowers.Add(oneFollower);
                 }
-
-                Follower follower = new Follower
-                {
-                    UserID = rdr.GetInt32(0),
-                    Username = rdr.GetString(1),
-                    Nickname = rdr.GetString(2),
-                    PFP_URL = rdr.GetString(3)
-                };
-
-                followers.Add(follower);
             }
         }
-        return Ok(followers);
+        return Ok(allFollowers);
+    //     // --- query list of follower IDs ---
+    //     var follower_query = "SELECT from_id FROM following WHERE to_id = " + id;
+    //     Console.WriteLine(follower_query);
+
+    //     using var conn = DBConn.GetConn();
+    //     conn.Open();
+
+    //     using var cmd = new NpgsqlCommand(follower_query, conn);
+
+    //     List<int> followerIDs = [];
+    //     using (var rdr = cmd.ExecuteReader())
+    //     {
+    //         if (!rdr.HasRows)
+    //         {
+    //             return NotFound("No followers found.");
+    //         }
+
+    //         while (rdr.Read())
+    //         {
+
+    //             followerIDs.Add(rdr.GetInt32(0));
+    //         }
+    //     }
+
+    //     // --- query each follower's basic info ---
+    //     var followers = new List<Follower>();
+    //     foreach (int follower_id in followerIDs)
+    //     {
+    //         var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
+    //         using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
+
+    //         using var rdr = cmd2.ExecuteReader();
+    //         while (rdr.Read())
+    //         {
+
+    //             if (!rdr.HasRows)
+    //             {
+    //                 return BadRequest("Error querying for user data.");
+    //             }
+
+    //             Follower follower = new Follower;
+    //             {
+    //                 UserID = rdr.GetInt32(0),
+    //                 Username = rdr.GetString(1),
+    //                 Nickname = rdr.GetString(2),
+    //                 PFP_URL = rdr.GetString(3)
+    //             };
+
+    //             followers.Add(follower);
+    //         }
+    //     }
+    //     return Ok(followers);
+    // }
     }
 
     [HttpGet("following/{id}")]
     public IActionResult GetAllFollowing(int id)
     {
-        // --- query list of IDs for following ---
-        var follower_query = "SELECT to_id FROM following WHERE from_id = " + id;
-        Console.WriteLine(follower_query);
+        var sql = "SELECT to_id FROM following WHERE from_id = " + id;
 
-       using var conn = DBConn.GetConn();
-       conn.Open();
+        using var conn = DBConn.GetConn();
+        conn.Open();
 
-        using var cmd = new NpgsqlCommand(follower_query, conn);
+        using var cmd = new NpgsqlCommand(sql, conn);
+        var allFollowingsID = new List<int>();
 
-        List<int> followerIDs = [];
         using (var rdr = cmd.ExecuteReader())
         {
             if (!rdr.HasRows)
             {
-                return NotFound("User not found.");
+                return NotFound("No followings found.");
             }
-
             while (rdr.Read())
             {
-                followerIDs.Add(rdr.GetInt32(0));
+                allFollowingsID.Add(rdr.GetInt32(0));
             }
         }
-
-        // --- query each person you're following's basic info ---
-        var followers = new List<Follower>();
-        foreach (int follower_id in followerIDs)
+        var allFollowings = new List<User>();
+        foreach (int following_id in allFollowingsID)
         {
-            var follower_info_query = "SELECT user_id, username, nickname, pfp FROM users WHERE user_id = " + follower_id;
-            using var cmd2 = new NpgsqlCommand(follower_info_query, conn);
+            var sql2 = "SELECT * FROM users WHERE user_id = " + following_id;
 
-            using var rdr = cmd2.ExecuteReader();
-            while (rdr.Read())
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
             {
-
-                if (!rdr.HasRows)
+                if (rdr.Read())
                 {
-                    return BadRequest("Error querying for user data.");
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
+
+                    User oneFollowing = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFollowings.Add(oneFollowing);
                 }
-
-                Follower follower = new Follower
-                {
-                    UserID = rdr.GetInt32(0),
-                    Username = rdr.GetString(1),
-                    Nickname = rdr.GetString(2),
-                    PFP_URL = rdr.GetString(3)
-                };
-
-                followers.Add(follower);
             }
         }
-        return Ok(followers);
+        return Ok(allFollowings);
     }
 
+    [HttpGet("followCounts/{id}")]
+    public IActionResult GetFollowCounts(int id)
+    {
+        // get follower count
+        var sql = "SELECT * FROM following WHERE from_id = " + id + " OR to_id = " + id;
+
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+
+        var allFollowingID = new List<int>();
+        var allFollowersID = new List<int>();
+        var followCounts = Enumerable.Repeat(0, 3).ToList();
+
+        using (var rdr = cmd.ExecuteReader())
+        {
+            if (!rdr.HasRows)
+            {
+                return Ok(followCounts);
+            }
+
+            while (rdr.Read())
+            {
+
+                
+                if (rdr.GetInt32(0) == id)
+                {
+                    allFollowingID.Add(rdr.GetInt32(1));
+                }
+                else
+                {
+                    allFollowersID.Add(rdr.GetInt32(0));
+                }
+            }
+        }
+
+        var intersection = allFollowersID.Intersect(allFollowingID);
+        
+        
+        // if (intersection.Count() == 0)
+        // {
+        //     return NotFound("No friends found.");
+        // }
+
+        var allFriends = new List<User>();
+        foreach (int friend_id in intersection)
+        {
+            var sql2 = "SELECT * FROM users WHERE user_id = " + friend_id;
+            using var cmd2 = new NpgsqlCommand(sql2, conn);
+
+            using (var rdr = cmd2.ExecuteReader())
+            {
+                if (rdr.Read())
+                {
+                    var user_id = rdr.GetInt32(0);
+                    var username = rdr.GetString(1);
+                    var email = rdr.GetString(2);
+                    var password = rdr.GetString(3);
+                    var biography = rdr.GetString(4);
+                    var nickname = rdr.GetString(5);
+                    var pfp = rdr.GetString(6);
+
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
+
+                    User oneFriend = new User
+                    {
+                        User_id = user_id,
+                        Username = username,
+                        Email = email,
+                        Password = password,
+                        Biography = biography,
+                        Nickname = nickname,
+                        Pfp = pfp,
+                    };
+                    allFriends.Add(oneFriend);
+                }
+            }
+        }
+
+        // followCounts.Add(allFollowersID.Count);
+        // followCounts.Add(allFollowingID.Count);
+        // followCounts.Add(allFriends.Count);
+        followCounts[0] = allFollowersID.Count;
+        followCounts[1] = allFollowingID.Count;
+        followCounts[2] = allFriends.Count;
+
+        return Ok(followCounts);
+    }
 
     [HttpDelete("following")]
     public async Task<IActionResult> UnfollowUser([FromQuery]FollowingPairQuery unfollowQuery) {
@@ -340,7 +568,7 @@ public class UserController : ControllerBase
     public IActionResult getAllConversations()
     {
         var sql = "SELECT * FROM conversation";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -376,7 +604,7 @@ public class UserController : ControllerBase
     public IActionResult getAllMessages()
     {
         var sql = "SELECT * FROM message";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
         
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -416,7 +644,7 @@ public class UserController : ControllerBase
     {
         // var connString = "Host=clipr-pg.postgres.database.azure.com;Username=clipr_admin;Password=password123!;Database=clipr_database";
         var sql = "SELECT * FROM users WHERE email = '" + e + "'";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
        using var conn = DBConn.GetConn();
        conn.Open();
@@ -435,13 +663,13 @@ public class UserController : ControllerBase
                 var nickname = rdr.GetString(5);
                 var pfp = rdr.GetString(6);
 
-                Console.WriteLine(user_id);
-                Console.WriteLine(username);
-                Console.WriteLine(email);
-                Console.WriteLine(password);
-                Console.WriteLine(biography);
-                Console.WriteLine(nickname);
-                Console.WriteLine(pfp);
+                // Console.WriteLine(user_id);
+                // Console.WriteLine(username);
+                // Console.WriteLine(email);
+                // Console.WriteLine(password);
+                // Console.WriteLine(biography);
+                // Console.WriteLine(nickname);
+                // Console.WriteLine(pfp);
 
                 return Ok(new User
                 {
@@ -465,7 +693,7 @@ public class UserController : ControllerBase
     public IActionResult getUserFromUsername(string u)
     {
         var sql = "SELECT * FROM users WHERE username = '" + u + "'";
-        Console.WriteLine(sql);
+        // Console.WriteLine(sql);
 
         using var conn = DBConn.GetConn();
         conn.Open();
@@ -505,8 +733,8 @@ public class UserController : ControllerBase
     [HttpGet("/searchname/{u}")]
     public IActionResult getUserFromSearchName(string u)
     {
-        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u + "' || '%')";
-        Console.WriteLine(sql);
+        var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + u.ToLower() + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u.ToLower() + "' || '%')";
+        // Console.WriteLine(sql);
         using var conn = DBConn.GetConn();
         conn.Open();
 
@@ -598,13 +826,13 @@ public class UserController : ControllerBase
                     var nickname = rdr.GetString(5);
                     var pfp = rdr.GetString(6);
 
-                    Console.WriteLine(user_id);
-                    Console.WriteLine(username);
-                    Console.WriteLine(email);
-                    Console.WriteLine(password);
-                    Console.WriteLine(biography);
-                    Console.WriteLine(nickname);
-                    Console.WriteLine(pfp);
+                    // Console.WriteLine(user_id);
+                    // Console.WriteLine(username);
+                    // Console.WriteLine(email);
+                    // Console.WriteLine(password);
+                    // Console.WriteLine(biography);
+                    // Console.WriteLine(nickname);
+                    // Console.WriteLine(pfp);
 
                     User oneFriend = new User
                     {

@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import UserModel from "../types/User";
 import ShouldBeLoggedIn from "../components/Authenticate";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+
 
 const EditProfileForm: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -12,8 +14,10 @@ const EditProfileForm: React.FC = () => {
   const userInfo = JSON.parse(currentUser);
   const [username, setUsername] = useState(userInfo["username"]);
   const [email, setEmail] = useState(userInfo["email"]);
-  const [password, setPassword] = useState(userInfo["password"]);
-  const [password2, setPassword2] = useState(userInfo["password"]);
+  // const [password, setPassword] = useState(userInfo["password"]);
+  // const [password2, setPassword2] = useState(userInfo["password"]);
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [biography, setBiography] = useState(userInfo["biography"]);
   const [biolength, setBioLength] = useState(0);
   const [nickname, setNickname] = useState(userInfo["nickname"]);
@@ -21,6 +25,9 @@ const EditProfileForm: React.FC = () => {
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+
 
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
@@ -64,11 +71,20 @@ const EditProfileForm: React.FC = () => {
       setEmailErrorMsg("Must be a valid email address");
       valid = false;
     }
-    if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
-      setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
-      );
-      valid = false;
+
+    if ((password.length != 0) || (password2.length != 0)) {
+
+      if (password != password2) {
+        setpasswordErrorMsg("Passwords don't match!");
+        valid = false;
+      }
+
+      if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+        setpasswordErrorMsg(
+          "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        );
+        valid = false;
+      }
     }
     return valid;
   };
@@ -118,30 +134,38 @@ const EditProfileForm: React.FC = () => {
         return;
       }
 
-      // UPLOAD TO S3
-      const s3 = new ReactS3Client(s3Config);
-      try {
-        var fileName = image.name;
-        fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
-        const res = await s3.uploadFile(image, fileName);
-        /*
-         * {
-         *   Response: {
-         *     bucket: "bucket-name",
-         *     key: "directory-name/filename-to-be-uploaded",
-         *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
-         *   }
-         * }
-         */
+        // UPLOAD TO S3
+        setIsLoading(!isLoading);
+        console.log("before uploading: "+isLoading);
+        const s3 = new ReactS3Client(s3Config);
+        try {
+            console.log("Attempting to upload " + image.name + " of type " + image.type);
+            var fileName = image.name;
+            fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
+            const res = await s3.uploadFile(image, fileName);
+            /*
+            * {
+            *   Response: {
+            *     bucket: "bucket-name",
+            *     key: "directory-name/filename-to-be-uploaded",
+            *     location: "https:/your-aws-s3-bucket-url/directory-name/filename-to-be-uploaded"
+            *   }
+            * }
+            */
+            console.log(res);
+            var res_json = JSON.stringify(res);
+            var parsed = JSON.parse(res_json);
+            // console.log("parsed.location: " + parsed.location);
+            fileLocation = parsed.location;
+            pfp.current = fileLocation;
+            // console.log("fileLocation: " + fileLocation);
+        } catch (exception) {
+            console.log(exception);
+        }
+    } 
 
-        var res_json = JSON.stringify(res);
-        var parsed = JSON.parse(res_json);
-        fileLocation = parsed.location;
-        pfp.current = fileLocation;
-      } catch (exception) {
-        console.log(exception);
-      }
-    }
+    
+    console.log("isLoading after uploading pfp: " + isLoading);
 
     // POST ACCT TO DB
     const newUser = {
@@ -154,7 +178,7 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp.current,
     };
     try {
-      const response = await fetch(uri + "user/", {
+      const response = await fetch(local_uri + "user/", {
         body: JSON.stringify(newUser),
         method: "PUT",
         headers: {
@@ -174,6 +198,7 @@ const EditProfileForm: React.FC = () => {
           console.error(error);
         }
         alert("Success!");
+        setIsLoading(false);
         location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
@@ -190,10 +215,16 @@ const EditProfileForm: React.FC = () => {
 
   useEffect(() => {
     setBioLength(biography.length);
+    // toggleLoading();
   }, [biography]);
 
   return (
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 ">
+    <>
+    <div>
+        {(isLoading) && <LoadingSpinner />}
+    </div>
+    
+    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
@@ -216,8 +247,8 @@ const EditProfileForm: React.FC = () => {
               onChange={handleFileChange}
               className="hidden"
             ></input>
-            <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10">
-              <FaPencil className="text-gray-600 w-10 h-10 opacity-90"></FaPencil>
+            <div className="absolute inset-y-0 left-[4.5rem] top-16 flex justify-right text-right z-10">
+              <FaPencil className="text-gray-500 w-8 h-8 opacity-90"></FaPencil>
             </div>
           </div>
         </div>
@@ -273,9 +304,9 @@ const EditProfileForm: React.FC = () => {
           <input
             type="password"
             className="mb-2 border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
-            value={password}
+            // value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
-            required
+            // required
             placeholder="Create a password"
           />
 
@@ -285,9 +316,9 @@ const EditProfileForm: React.FC = () => {
           <input
             type="password"
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
-            value={password2}
+            // value={password2}
             onChange={(e) => onPassword2Change(e.target.value)}
-            required
+            // required
             placeholder="Confirm your password"
           />
           <span
@@ -299,16 +330,14 @@ const EditProfileForm: React.FC = () => {
           </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
           <textarea
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
-            onChange={(e) => {
-              setBiography(e.target.value);
-            }}
+            onChange={(e) => setBiography(e.target.value)}
             maxLength={100}
             required
             placeholder="Type your bio here!"
@@ -317,7 +346,7 @@ const EditProfileForm: React.FC = () => {
             {biolength} / 100
           </span>
         </div>
-        <div className="mb-4">
+        <div className="mb-8">
           <label className="block text-white text-sm font-semibold mb-2">
             Nickname
           </label>
@@ -339,15 +368,9 @@ const EditProfileForm: React.FC = () => {
             Submit
           </button>
         </div>
-
-        {/* <div className="flex justify-center mt-4">
-          <span className="text-white text-sm">Already a member?</span>
-          <Link to="/Clipr/LogIn" className="text-amber-500 text-sm ml-1">
-            Log in
-          </Link>
-        </div> */}
       </form>
     </div>
+    </>
   );
 };
 

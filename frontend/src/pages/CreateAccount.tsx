@@ -8,6 +8,7 @@ import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const CreateAccount: React.FC = () => {
   ShouldBeLoggedIn(false);
@@ -25,6 +26,9 @@ const CreateAccount: React.FC = () => {
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
+
+  // DATA FOR SPINNER
+  const [isLoading, setIsLoading] = useState(false);
 
   // DATA FOR PFP UPLOAD
   const [image, setImage] = useState<File | null>(null);
@@ -114,6 +118,17 @@ const CreateAccount: React.FC = () => {
     event.preventDefault();
     resetErrorMessages();
     var fileLocation = ""; // if no upload, use default pfp
+    try {
+      const queryString2 = `${uri}email/` + email;
+      const response2 = await fetch(queryString2);
+      const json2 = (await response2.json()) as UserModel;
+      if(json2) {
+        alert("Duplicate email!");
+        return;
+      }
+    } catch(exception) {
+      console.log("Unique");
+    }
 
     // VALIDATE INPUT
     if (!validate()) {
@@ -130,6 +145,7 @@ const CreateAccount: React.FC = () => {
       }
 
       // UPLOAD TO S3
+      setIsLoading(!isLoading);
       const s3 = new ReactS3Client(s3Config);
       try {
         var fileName = image.name;
@@ -176,18 +192,19 @@ const CreateAccount: React.FC = () => {
       });
       if (response.status === 200) {
         alert("Success!");
+        setIsLoading(false);
         resetErrorMessages();
-        try {
-          const queryString = `${uri}email/` + email;
-          const response = await fetch(queryString);
-          const json = (await response.json()) as UserModel;
-          localStorage.setItem("user", JSON.stringify(json));
-          window.dispatchEvent(new Event("storage"));
-        } catch (error) {
-          console.error(error);
-        }
+        // try {
+        //   const queryString = `${uri}email/` + email;
+        //   const response = await fetch(queryString);
+        //   const json = (await response.json()) as UserModel;
+        //   localStorage.setItem("user", JSON.stringify(json));
+        //   window.dispatchEvent(new Event("storage"));
+        // } catch (error) {
+        //   console.error(error);
+        // }
         socket.connect();
-        navigate("../");
+        navigate("../LogIn");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
@@ -202,172 +219,175 @@ const CreateAccount: React.FC = () => {
   }, [biography]);
 
   return (
-    <div className="flex flex-row justify-center pt-2">
-      <form
-        onSubmit={createAccount}
-        className="bg-navbar rounded px-20 pt-5 pb-5 mt-10 mb-4 items-center border border-x-gray-300 max-w-md"
-      >
-        <div className="flex justify-center items-center">
-          <div className="relative z-0">
-            <img src={stelle} className="w-30 h-30 mx-auto rounded-full"></img>
-          </div>
+    <>
+        <div>
+            {(isLoading) && <LoadingSpinner />}
         </div>
-
-        <div className="w-full text-white text-center text-4xl mb-6">
-          Welcome to Clipr
-        </div>
-        <div className="w-full text-amber-500 text-center text-2xl mb-6">
-          Create Account
-        </div>
-
-        <label className="block text-white text-sm font-semibold mt-12 mb-2">
-          Upload your profile picture here!
-        </label>
-
-        <div className="flex justify-center ">
-          <div className="relative z-0" onClick={clickFileInputDIV}>
-            <img
-              id="img-preview"
-              src={defaultPfp}
-              className="w-28 h-28 mx-auto rounded-full"
-            ></img>
-            <input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            ></input>
-            <div className="absolute inset-y-0 left-20 top-16 flex justify-right text-right z-10">
-              <FaPencil className="text-gray-700 w-10 h-10 opacity-90"></FaPencil>
+        
+        <div className="flex flex-row justify-center pt-2">
+        <form
+            onSubmit={createAccount}
+            className="bg-navbar rounded px-20 pt-5 pb-5 mt-10 mb-4 items-center border border-x-gray-300 max-w-md"
+        >
+            <div className="flex justify-center items-center">
+            <div className="relative z-0">
+                <img src={stelle} className="w-28 h-28 mx-auto"></img>
             </div>
-          </div>
-        </div>
+            </div>
 
-        <div className="mb-4">
-          <label className="block text-white text-sm font-semibold mb-2">
-            Username
-          </label>
-          <input
-            type="text"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={username}
-            onChange={(e) => onUsernameChange(e.target.value)}
-            required
-            placeholder="Username"
-          />
-          <span
-            className={`block text-red-600 text-xs font-semibold ml-auto ${
-              usernameErrorMsg ? "visible" : "invisible"
-            }`}
-          >
-            {usernameErrorMsg}
-          </span>
-        </div>
+            <div className="w-full text-white text-center text-4xl mb-4">
+            Welcome to Clipr
+            </div>
+            <div className="w-full text-amber-500 text-center text-2xl mb-6">
+            Create Account
+            </div>
 
-        <div className="mb-4">
-          <label className="block text-white text-sm font-semibold mb-2">
-            Email
-          </label>
-          <input
-            type="email"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={email}
-            onChange={(e) => onEmailChange(e.target.value)}
-            required
-            placeholder="Email"
-          />
-          <span
-            className={`block text-red-600 text-xs font-semibold ml-auto ${
-              emailErrorMsg ? "visible" : "invisible"
-            }`}
-          >
-            {emailErrorMsg}
-          </span>
-        </div>
+            <div className="flex justify-center mb-2">
+            <div className="relative z-0" onClick={clickFileInputDIV}>
+                <img
+                id="img-preview"
+                src={defaultPfp}
+                className="w-24 h-24 mx-auto rounded-full"
+                ></img>
+                <input
+                id="fileInput"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+                ></input>
+                <div className="absolute inset-y-0 left-[4.5rem] top-16 flex justify-right text-right z-10">
+                <FaPencil className="text-gray-500 w-8 h-8 opacity-90"></FaPencil>
+                </div>
+            </div>
+            </div>
 
-        <div className="mb-4">
-          <label className="block text-white text-sm font-semibold mb-2">
-            Password
-          </label>
-          <input
-            type="password"
-            className="mb-2 border-2 w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={password}
-            onChange={(e) => onPasswordChange(e.target.value)}
-            required
-            placeholder="Create a password"
-          />
+            <div className="mb-4">
+            <label className="block text-white text-sm font-semibold mb-2">
+                Username
+            </label>
+            <input
+                type="text"
+                className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={username}
+                onChange={(e) => onUsernameChange(e.target.value)}
+                required
+                placeholder="Username"
+            />
+            <span
+                className={`block text-red-600 text-xs font-semibold ml-auto ${
+                usernameErrorMsg ? "visible" : "invisible"
+                }`}
+            >
+                {usernameErrorMsg}
+            </span>
+            </div>
 
-          <label className="block text-white text-sm font-semibold mb-2">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            className="border-2 w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={password2}
-            onChange={(e) => onPassword2Change(e.target.value)}
-            required
-            placeholder="Confirm your password"
-          />
-          <span
-            className={`block text-red-600 text-xs font-semibold ml-auto ${
-              passwordErrorMsg ? "visible" : "invisible"
-            }`}
-          >
-            {passwordErrorMsg}
-          </span>
-        </div>
+            <div className="mb-4">
+            <label className="block text-white text-sm font-semibold mb-2">
+                Email
+            </label>
+            <input
+                type="email"
+                className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={email}
+                onChange={(e) => onEmailChange(e.target.value)}
+                required
+                placeholder="Email"
+            />
+            <span
+                className={`block text-red-600 text-xs font-semibold ml-auto ${
+                emailErrorMsg ? "visible" : "invisible"
+                }`}
+            >
+                {emailErrorMsg}
+            </span>
+            </div>
 
-        <div className="mb-4">
-          <label className="block text-white text-sm font-semibold mb-2">
-            Biography
-          </label>
-          <textarea
-            className="border w-full py-2 px-3 text-black  leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={biography}
-            onChange={(e) => {
-              setBiography(e.target.value);
-            }}
-            maxLength={100}
-            required
-            placeholder="Type your bio here!"
-          ></textarea>
-          <span className="block text-white text-xs text-right">
-            {biolength} / 100
-          </span>
-        </div>
-        <div className="mb-4">
-          <label className="block text-white text-sm font-semibold mb-2">
-            Nickname
-          </label>
-          <input
-            type="text"
-            className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            required
-            placeholder="Nickname"
-          />
-        </div>
+            <div className="mb-4">
+            <label className="block text-white text-sm font-semibold mb-2">
+                Password
+            </label>
+            <input
+                type="password"
+                className="mb-2 border-2 w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={password}
+                onChange={(e) => onPasswordChange(e.target.value)}
+                required
+                placeholder="Create a password"
+            />
 
-        <div className="flex justify-center mt-5">
-          <button
-            type="submit"
-            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded "
-          >
-            Submit
-          </button>
-        </div>
+            <label className="block text-white text-sm font-semibold mb-2">
+                Confirm Password
+            </label>
+            <input
+                type="password"
+                className="border-2 w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={password2}
+                onChange={(e) => onPassword2Change(e.target.value)}
+                required
+                placeholder="Confirm your password"
+            />
+            <span
+                className={`block text-red-600 text-xs font-semibold ml-auto ${
+                passwordErrorMsg ? "visible" : "invisible"
+                }`}
+            >
+                {passwordErrorMsg}
+            </span>
+            </div>
 
-        <div className="flex justify-center mt-4">
-          <span className="text-white text-sm">Already a member?</span>
-          <Link to="/Login" className="text-amber-500 text-sm ml-1">
-            Log in
-          </Link>
+            <div className="mb-2">
+            <label className="block text-white text-sm font-semibold mb-2">
+                Biography
+            </label>
+            <textarea
+                className="border w-full py-2 px-3 text-black  leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={biography}
+                onChange={(e) => {
+                setBiography(e.target.value);
+                console.log(biography.length);
+                }}
+                maxLength={100}
+                required
+                placeholder="Type your bio here!"
+            ></textarea>
+            <span className="block text-white text-xs text-right">
+                {biolength} / 100
+            </span>
+            </div>
+            <div className="mb-4">
+            <label className="block text-white text-sm font-semibold mb-2">
+                Nickname
+            </label>
+            <input
+                type="text"
+                className="border w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-neutral-200"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                required
+                placeholder="Nickname"
+            />
+            </div>
+
+            <div className="flex justify-center mt-5">
+            <button
+                type="submit"
+                className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded "
+            >
+                Submit
+            </button>
+            </div>
+
+            <div className="flex justify-center mt-4">
+            <span className="text-white text-sm">Already a member?</span>
+            <Link to="/Login" className="text-amber-500 text-sm ml-1">
+                Log in
+            </Link>
+            </div>
+        </form>
         </div>
-      </form>
-    </div>
+    </>
   );
 };
 

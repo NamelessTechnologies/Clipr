@@ -5,8 +5,11 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
-import { uri } from "../../App";
+import { local_uri, uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
+import { FollowersModal } from "./FollowersModal";
+import { FollowingModal } from "./FollowingModal";
+import { FriendsModal } from "./FriendsModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -23,6 +26,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
+
+  const [followersOpen, setFollowersOpen] = useState<boolean>(false);
+  const [followingOpen, setFollowingOpen] = useState<boolean>(false);
+  const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [friendCount, setFriendCount] = useState<number>(0);
 
   // FOR SHOWING EDIT PROFILE MODAL
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -46,11 +56,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setUserID(currentUserID);
       if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
+        setPFP(parsedUser.pfp);
       } else {
         setLookingAtOwnProfile(false);
+        setPFP(props.userData.pfp);
       }
     }
-  }, [profileID]);
+  }, [props]);
 
   useEffect(() => {
     async function fetchData() {
@@ -90,25 +102,29 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     }
     fetchData();
-  }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
+  }, [profileFollowingUser, profileID, userFollowingProfile, userID, props]); // added props here so that when some1 follows u, and u check their pfp it shows "Follow Back" instead of "Error"
 
-  const TripleFs = () => {
-    return (
-      <div className="flex flex-row">
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Followers: 69
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Following: 1738
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-      </div>
-    );
-  };
+  // const TripleFs = () => {
+  //   return (
+  //     <div className="flex flex-row">
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Followers: 69
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Following: 1738
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+  //     </div>
+  //   );
+  // };
 
   const clickButton = async () => {
     if (status === "Friends") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount -= 1);
+      setFriendCount(newFriendCount -= 1);
       setStatus("Follow Back");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -125,6 +141,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow") {
       // follow profileID
+      let newNumber = followerCount;
+      setFollowerCount(newNumber += 1);
       setStatus("Following");
       const followBody = {
         User_1: userID,
@@ -146,6 +164,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow Back") {
       // follow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount += 1);
+      setFriendCount(newFriendCount += 1);
       setStatus("Friends");
       const followBody = {
         User_1: userID,
@@ -167,6 +189,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Following") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      setFollowerCount(newFollowCount -= 1);
       setStatus("Follow");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -234,9 +258,22 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
-  const tempFollowing = 234;
-  const tempFollowers = 27;
-  const tempFriends = 420;
+  useEffect(() => {
+        fetchFollowCount();
+    }, [props, profileFollowingUser, userFollowingProfile]);
+  
+    const fetchFollowCount = async () => {
+        const response = await fetch(
+            local_uri + "User/followCounts/" + profileID,
+        );
+        const json = await response.json();
+  
+        const parsedFollowCounts: number[] = json;
+  
+        setFollowerCount(parsedFollowCounts[0]);
+        setFollowingCount(parsedFollowCounts[1]);
+        setFriendCount(parsedFollowCounts[2]);
+    }
 
   return (
     <div className="flex justify-center w-full mt-4">
@@ -251,7 +288,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
           {/* below div contains name, buttons, followers, following, etc. */}
           <div className="flex flex-col">
             {/* username + nickname + crown*/}
-            <div className="flex mt-10 p-2 justify-center ">
+            <div className="flex mt-10 p-2 ">
               <span className="text-yellow-100 italic text-4xl pr-2">
                 {props.userData.username} -
               </span>
@@ -262,73 +299,111 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
 
             {/* buttons */}
-            <div className="flex pt-2 pb-2 justify-center gap-5">
+            <div className="flex pt-2 pb-2 pl-3">
               <button
                 onClick={handleShowModal}
                 className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2"
               >
                 Edit Profile
               </button>
-              <button className="text-white bg-yellow-600 hover:bg-amber-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
-                Settings
-              </button>
             </div>
 
-            {/* following, followers, etc. */}
             <div className="flex justify-center gap-5 mt-3">
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowers + " "}</span>
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
                 Followers
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowing + " "}</span>
-                Following
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFriends + " "}</span>
-                Friends
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
               </div>
             </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex text-white text-base pt-5">
+            {props.userData.biography}
+          </div>
+
             {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
       ) : (
         <div className="flex flex-row">
-          <div className="pt-3">
-            <div className="circle-big">
               <img
                 onError={failedPFP}
                 src={
                   PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
                 }
+                className="w-56 h-56 rounded-full mr-5"
               />
+
+          {/* below div contains name, buttons, followers, following, etc. */}
+          <div className="flex flex-col">
+            {/* username + nickname + crown*/}
+            <div className="flex mt-10 p-2">
+              <span className="text-yellow-100 italic text-4xl pr-2">
+                {props.userData.username} -
+              </span>
+              <span className="text-white italic text-3xl pr-2 mt-auto">
+                {props.userData.nickname}
+              </span>
             </div>
-          </div>
-          <div className="flex flex-col pl-5">
-            <div className="flex flex-row pt-20">
-              <div className="text-yellow-100 italic text-5xl pr-2">
-                <b>{props.userData.username}</b> -
-              </div>
-              <div className="text-yellow-100 italic text-3xl pr-2 pt-2">
-                <i>{props.userData.nickname}</i>
-              </div>
-            </div>
-            <div className="flex flex-row pt-2 pb-2">
+
+            {/* buttons */}
+            <div className="flex pt-2 pb-2 pl-3 gap-4">
               <button
                 onClick={clickButton}
-                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-              >
+                className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2">
                 {status}
               </button>
 
               <button
-                className="text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
-                onClick={NavigateToMessagePage}
-              >
+                className="text-white bg-amber-500 hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2"
+                onClick={NavigateToMessagePage}>
                 Message
               </button>
             </div>
-            <TripleFs></TripleFs>
+
+            <div className="flex justify-center gap-5 mt-3">
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
+                Followers
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex text-white text-base pt-5">
+            {props.userData.biography}
+          </div>
+
           </div>
         </div>
       )}
