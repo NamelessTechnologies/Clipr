@@ -62,14 +62,14 @@ function NavBar() {
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
                 </Link>
               </li>
-              <li className="pt-3">
+              {/* <li className="pt-3">
                 <Link
                   to="/Friends"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   Friends
                 </Link>
-              </li>
+              </li> */}
               <li className="pt-3">
                 <Link
                   to="/Inbox"

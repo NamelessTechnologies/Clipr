@@ -4,11 +4,11 @@ import UserModel from "../types/User";
 import { local_uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
-// interface FriendsProps {
-//   onSendFriendCount: (data: number) => void;
+// interface FollowingProps {
+//   onSendFollowingCount: (data: number) => void;
 // }
 
-function Friends (props: {profile_id: string}) {
+function Following (props: {profile_id: string}) {
   ShouldBeLoggedIn(true);
 
   const [user, setUser] = useState<UserModel[]>([]);
@@ -20,7 +20,7 @@ function Friends (props: {profile_id: string}) {
   const profileID = props.profile_id;
   console.log(uid);
 
-  // const [friendCount, setFriendCount] = useState<number>(0);
+//   const [followingCount, setFollowingCount] = useState<number>(0);
 
   // This effect loads the user from localStorage
   useEffect(() => {
@@ -40,7 +40,7 @@ function Friends (props: {profile_id: string}) {
 
   const fetchUsers = async () => {
     try {
-      const url = local_uri + "User/friendsof/";
+      const url = local_uri + "User/following/";
       const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 
@@ -67,7 +67,7 @@ function Friends (props: {profile_id: string}) {
         users.push(newUser);
       });
 
-      // setFriendCount(users.length)
+    //   setFollowingCount(users.length)
       setUser(users);
       setLoading(false);
     } catch (error) {
@@ -80,11 +80,11 @@ function Friends (props: {profile_id: string}) {
     fetchUsers();
   }, [props]);
 
-  // useEffect(() => {
-  //   if (friendCount) {
-  //     onSendFriendCount(user.length);
-  //   }
-  // }, [friendCount, onSendFriendCount])
+//   useEffect(() => {
+//     if (followingCount) {
+//       onSendFollowingCount(user.length);
+//     }
+//   }, [followingCount, onSendFollowingCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
@@ -97,7 +97,7 @@ function Friends (props: {profile_id: string}) {
   return (
     <div className="friends-container pt-3">
       <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
-        Friends
+        Following
       </div>
 
       {user?.map((user) => (
@@ -123,4 +123,4 @@ function Friends (props: {profile_id: string}) {
     </div>
   );
 }
-export { Friends };
+export { Following };
