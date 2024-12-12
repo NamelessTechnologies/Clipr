@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
 import { local_uri, uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
-// import { ThreeFs } from "./ThreeFs";
 import { FollowersModal } from "./FollowersModal";
 import { FollowingModal } from "./FollowingModal";
 import { FriendsModal } from "./FriendsModal";
@@ -108,23 +107,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
 
-  // const TripleFs = () => {
-  //   return (
-  //     <div className="flex flex-row">
-  //       <div className="text-yellow-100 italic text-1xl pr-2">
-  //         Followers: 69
-  //       </div>
-  //       <div className="text-yellow-100 italic text-1xl pr-2">
-  //         Following: 1738
-  //       </div>
-  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-  //     </div>
-  //   );
-  // };
-
   const clickButton = async () => {
     if (status === "Friends") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount -= 1);
+      setFriendCount(newFriendCount -= 1);
       setStatus("Follow Back");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -141,6 +130,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow") {
       // follow profileID
+      let newNumber = followerCount;
+      setFollowerCount(newNumber += 1);
       setStatus("Following");
       const followBody = {
         User_1: userID,
@@ -162,6 +153,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow Back") {
       // follow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount += 1);
+      setFriendCount(newFriendCount += 1);
       setStatus("Friends");
       const followBody = {
         User_1: userID,
@@ -183,6 +178,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Following") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      setFollowerCount(newFollowCount -= 1);
       setStatus("Follow");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -250,10 +247,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
-  // const tempFollowing = 234;
-  // const tempFollowers = 27;
-  // const tempFriends = 420;
-
   useEffect(() => {
         fetchFollowCount();
     }, [props, profileFollowingUser, userFollowingProfile]);
@@ -307,22 +300,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
 
-            {/* following, followers, etc. */}
-            {/* <div className="flex justify-center gap-5 mt-3">
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowers + " "}</span>
-                Followers
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFollowing + " "}</span>
-                Following
-              </div>
-              <div className="text-white text-base">
-                <span className="font-bold">{tempFriends + " "}</span>
-                Friends
-              </div>
-            </div> */}
-            {/* <ThreeFs profile_id={profileID}/> */}
             <div className="flex justify-center gap-5 mt-3">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
@@ -346,7 +323,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </div>
             </div>
           </div>
-
 
 
 
