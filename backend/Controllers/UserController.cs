@@ -371,12 +371,13 @@ public class UserController : ControllerBase
 
         var allFollowingID = new List<int>();
         var allFollowersID = new List<int>();
+        var followCounts = Enumerable.Repeat(0, 3).ToList();
 
         using (var rdr = cmd.ExecuteReader())
         {
             if (!rdr.HasRows)
             {
-                return NotFound("No friends found.");
+                return Ok(followCounts);
             }
 
             while (rdr.Read())
@@ -395,12 +396,12 @@ public class UserController : ControllerBase
         }
 
         var intersection = allFollowersID.Intersect(allFollowingID);
-        var followCounts = new List<int>();
         
-        if (intersection.Count() == 0)
-        {
-            return NotFound("No friends found.");
-        }
+        
+        // if (intersection.Count() == 0)
+        // {
+        //     return NotFound("No friends found.");
+        // }
 
         var allFriends = new List<User>();
         foreach (int friend_id in intersection)
@@ -443,9 +444,12 @@ public class UserController : ControllerBase
             }
         }
 
-        followCounts.Add(allFollowersID.Count);
-        followCounts.Add(allFollowingID.Count);
-        followCounts.Add(allFriends.Count);
+        // followCounts.Add(allFollowersID.Count);
+        // followCounts.Add(allFollowingID.Count);
+        // followCounts.Add(allFriends.Count);
+        followCounts[0] = allFollowersID.Count;
+        followCounts[1] = allFollowingID.Count;
+        followCounts[2] = allFriends.Count;
 
         return Ok(followCounts);
     }

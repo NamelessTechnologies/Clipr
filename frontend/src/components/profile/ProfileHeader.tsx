@@ -256,7 +256,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   useEffect(() => {
         fetchFollowCount();
-    }, [props]);
+    }, [props, profileFollowingUser, userFollowingProfile]);
   
     const fetchFollowCount = async () => {
         const response = await fetch(

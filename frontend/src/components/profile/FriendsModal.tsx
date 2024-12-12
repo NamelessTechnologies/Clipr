@@ -22,7 +22,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
   const onClose = props.onClose;
 
   const [user, setUser] = useState<UserModel[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
   const [userInfo, setUserInfo] = useState<UserModel>();
   const [uid, setUID] = useState<number>();
@@ -58,7 +58,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
         // Handle empty or invalid response
         console.warn("No users found in the response.");
       
-        setLoading(false);
+        // setLoading(false);
         return;
       }
 
@@ -79,7 +79,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
 
       // setFollowersCount(users.length)
       setUser(users);
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       console.error(error);
       throw new Error("Error getting post data");
@@ -100,9 +100,9 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
 //     props.onModalEvent();
 //   }
 
-  if (loading) {
-    return <div className="text-yellow-100 italic text-m pr-2 text-s">Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div className="text-yellow-100 italic text-m pr-2 text-s">Loading...</div>;
+  // }
 
   return (
     <div 
@@ -110,7 +110,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
       bg-gray-500 bg-opacity-70 ${open ? "visible bg-black/20" : "invisible"}`} 
       onClick={onClose}>
         <div
-          className={`bg-gray-500 rounded-lg shadow p-6 transition-all max-w-md
+          className={`bg-gray-500 rounded-lg shadow p-6 transition-all max-w-md w-96 h-96 overflow-y-auto
           ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
           onClick={(e) => e.stopPropagation()}
           >
