@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import UserModel from "../types/User";
 import ShouldBeLoggedIn from "../components/Authenticate";
-import { uri } from "../App";
+import { uri, local_uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
@@ -12,8 +12,10 @@ const EditProfileForm: React.FC = () => {
   const userInfo = JSON.parse(currentUser);
   const [username, setUsername] = useState(userInfo["username"]);
   const [email, setEmail] = useState(userInfo["email"]);
-  const [password, setPassword] = useState(userInfo["password"]);
-  const [password2, setPassword2] = useState(userInfo["password"]);
+  // const [password, setPassword] = useState(userInfo["password"]);
+  // const [password2, setPassword2] = useState(userInfo["password"]);
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [biography, setBiography] = useState(userInfo["biography"]);
   const [biolength, setBioLength] = useState(0);
   const [nickname, setNickname] = useState(userInfo["nickname"]);
@@ -64,11 +66,20 @@ const EditProfileForm: React.FC = () => {
       setEmailErrorMsg("Must be a valid email address");
       valid = false;
     }
-    if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
-      setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
-      );
-      valid = false;
+
+    if ((password.length != 0) || (password2.length != 0)) {
+
+      if (password != password2) {
+        setpasswordErrorMsg("Passwords don't match!");
+        valid = false;
+      }
+
+      if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+        setpasswordErrorMsg(
+          "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
+        );
+        valid = false;
+      }
     }
     return valid;
   };
@@ -161,7 +172,7 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp.current,
     };
     try {
-      const response = await fetch(uri + "user/", {
+      const response = await fetch(local_uri + "user/", {
         body: JSON.stringify(newUser),
         method: "PUT",
         headers: {
@@ -280,9 +291,9 @@ const EditProfileForm: React.FC = () => {
           <input
             type="password"
             className="mb-2 border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
-            value={password}
+            // value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
-            required
+            // required
             placeholder="Create a password"
           />
 
@@ -292,9 +303,9 @@ const EditProfileForm: React.FC = () => {
           <input
             type="password"
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
-            value={password2}
+            // value={password2}
             onChange={(e) => onPassword2Change(e.target.value)}
-            required
+            // required
             placeholder="Confirm your password"
           />
           <span
@@ -315,7 +326,6 @@ const EditProfileForm: React.FC = () => {
             value={biography}
             onChange={(e) => {
               setBiography(e.target.value);
-              console.log(biography.length);
             }}
             maxLength={100}
             required
