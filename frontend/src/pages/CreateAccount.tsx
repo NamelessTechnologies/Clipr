@@ -114,6 +114,17 @@ const CreateAccount: React.FC = () => {
     event.preventDefault();
     resetErrorMessages();
     var fileLocation = ""; // if no upload, use default pfp
+    try {
+      const queryString2 = `${uri}email/` + email;
+      const response2 = await fetch(queryString2);
+      const json2 = (await response2.json()) as UserModel;
+      if(json2) {
+        alert("Duplicate email!");
+        return;
+      }
+    } catch(exception) {
+      console.log("Unique");
+    }
 
     // VALIDATE INPUT
     if (!validate()) {
@@ -181,17 +192,17 @@ const CreateAccount: React.FC = () => {
       if (response.status === 200) {
         alert("Success!");
         resetErrorMessages();
-        try {
-          const queryString = `${uri}email/` + email;
-          const response = await fetch(queryString);
-          const json = (await response.json()) as UserModel;
-          localStorage.setItem("user", JSON.stringify(json));
-          window.dispatchEvent(new Event("storage"));
-        } catch (error) {
-          console.error(error);
-        }
+        // try {
+        //   const queryString = `${uri}email/` + email;
+        //   const response = await fetch(queryString);
+        //   const json = (await response.json()) as UserModel;
+        //   localStorage.setItem("user", JSON.stringify(json));
+        //   window.dispatchEvent(new Event("storage"));
+        // } catch (error) {
+        //   console.error(error);
+        // }
         socket.connect();
-        navigate("../");
+        navigate("../LogIn");
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
