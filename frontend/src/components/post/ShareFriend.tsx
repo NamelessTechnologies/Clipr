@@ -93,7 +93,27 @@ function ShareFriend(props: {
         `${uri}conversation/convoid/?user_1=${userID}&user_2=${id}`
       );
       const json = await response.json();
-      setConvoID(json.id);
+      console.log(json.id);
+      if (json.id == -1) {
+        const newConvo = {
+          user_id: userID,
+          user_id_2: id,
+        };
+        const response = await fetch(uri + "conversation/", {
+          body: JSON.stringify(newConvo),
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        if (response.ok) {
+          const json = await response.json();
+          setConvoID(json.id);
+        }
+      } else {
+        setConvoID(json.id);
+      }
       try {
         const recentMessage = {
           convo_id: json.id,
@@ -111,7 +131,7 @@ function ShareFriend(props: {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row justify-start">
+      <div className="flex flex-row justify-start w-full overflow-scroll">
         {props.users.map((user) => (
           <div onClick={() => changeSelected(user.user_id)}>
             <ShareFriendProfile

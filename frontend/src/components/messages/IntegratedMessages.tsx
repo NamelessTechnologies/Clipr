@@ -4,7 +4,7 @@ import { MessageBox } from "./MessageBox";
 import { socket } from "../../socket";
 import { uri } from "../../App";
 import { useNavigate } from "react-router-dom";
-import ProfilePost from "../profile/ProfilePost";
+import { EmbeddedPost } from "./EmbeddedPost";
 
 interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
@@ -188,10 +188,10 @@ function IntegratedMessages(props: {
         >
           {messages.map((msg) =>
             msg.hasMedia ? (
-              <ProfilePost
-                post_url={msg.content}
-                media_type={msg.mediaType}
-              ></ProfilePost>
+              <EmbeddedPost
+                msg={msg}
+                sender={msg.user_id === userInfo["user_id"]}
+              ></EmbeddedPost>
             ) : (
               <MessageBox
                 key={msg.id}
