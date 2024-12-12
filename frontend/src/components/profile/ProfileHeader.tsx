@@ -59,12 +59,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       setUserID(currentUserID);
       if (currentUserID === profileID) {
         setLookingAtOwnProfile(true);
-        // console.log("looking @ own prof after setting true: "+lookingAtOwnProfile);
+        setPFP(parsedUser.pfp);
       } else {
         setLookingAtOwnProfile(false);
+        setPFP(props.userData.pfp);
       }
     }
-  }, [profileID]);
+  }, [props]);
 
   useEffect(() => {
     async function fetchData() {

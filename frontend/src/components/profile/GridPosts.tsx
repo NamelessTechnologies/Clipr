@@ -13,7 +13,14 @@ function GridPosts(props: { profile_id: string }) {
   const [bookmarks, setBookMarks] = useState<ProfilePostModel[]>([]);
 
   useEffect(() => {
+    // reset posts
+    setBookMarks([]);
+    setPosts([]);
+
+    // set to bookmarks when going to profile
+    setDisplayBookmarks(false);
     fetchPosts();
+    fetchBookmarks();
   }, [props]);
 
   const fetchPosts = async () => {
@@ -50,7 +57,7 @@ function GridPosts(props: { profile_id: string }) {
       bookmarkPosts.push(profilePost);
     });
     setBookMarks(bookmarkPosts);
-    setDisplayBookmarks(true);
+    // setDisplayBookmarks(true);
   };
 
   // to switch between user's posts and saved posts
