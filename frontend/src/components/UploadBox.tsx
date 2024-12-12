@@ -59,29 +59,6 @@ const CreatePost: React.FC = () => {
     const uid = userInfo["user_id"];
     let postID = 0;
 
-    const formData = new FormData();
-    formData.append("user_id", uid);
-    formData.append("title", title);
-    formData.append("description", post.content);
-    formData.append("media_type", media_type);
-
-    try {
-      const response = await fetch(uri + "post/realpost", {
-        body: formData,
-        method: "POST",
-      });
-      const data = await response.json();
-      postID = data["post_id"];
-      // if (response.status === 200) {
-      //   alert("Success!");
-      // } else {
-      //   alert(`${response.status}: ${response.statusText}`);
-      // }
-    } catch (error) {
-      alert(error);
-      console.error(error);
-    }
-
     if (media_type != "text") {
       var fileLocation = "";
 
@@ -98,6 +75,12 @@ const CreatePost: React.FC = () => {
           var fileName = image.name;
           fileName = fileName.substring(0, fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
           const res = await s3.uploadFile(image, fileName);
+          console.log(res);
+          var res_json = JSON.stringify(res);
+          var parsed = JSON.parse(res_json);
+          console.log("parsed.location: " + parsed.location);
+          fileLocation = parsed.location;
+          console.log("fileLocation: " + fileLocation);
           /*
            * {
            *   Response: {
@@ -107,12 +90,19 @@ const CreatePost: React.FC = () => {
            *   }
            * }
            */
-          console.log(res);
-          var res_json = JSON.stringify(res);
-          var parsed = JSON.parse(res_json);
-          console.log("parsed.location: " + parsed.location);
-          fileLocation = parsed.location;
-          console.log("fileLocation: " + fileLocation);
+
+          const formData = new FormData();
+          formData.append("user_id", uid);
+          formData.append("title", title);
+          formData.append("description", post.content);
+          formData.append("media_type", media_type);
+          
+          const response = await fetch(uri + "post/realpost", {
+            body: formData,
+            method: "POST",
+          });
+          const data = await response.json();
+          postID = data["post_id"];
 
           const formData2 = new FormData();
           formData2.append("post_id", postID.toString());
@@ -121,6 +111,15 @@ const CreatePost: React.FC = () => {
             body: formData2,
             method: "POST",
           });
+
+
+          // if (response.status === 200) {
+          //   alert("Success!");
+          // } else {
+          //   alert(`${response.status}: ${response.statusText}`);
+          // }
+
+
           if (response2.status === 200) {
             alert("Success!");
           } else {
