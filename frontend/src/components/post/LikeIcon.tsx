@@ -42,14 +42,14 @@ function LikeIcon(props: {
     if (liked) {
       setLiked(false);
       setLikes(num_likes - 1);
-      const response = await fetch(uri + "post/unlikePost", {
+      await fetch(uri + "post/unlikePost", {
         body: formData,
         method: "DELETE",
       });
     } else {
       setLiked(true);
       setLikes(num_likes + 1);
-      const response2 = await fetch(uri + "post/likePost", {
+      await fetch(uri + "post/likePost", {
         body: formData,
         method: "POST",
       });
