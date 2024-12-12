@@ -5,9 +5,12 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
-import { uri } from "../../App";
+import { local_uri, uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
-import { ThreeFs } from "./ThreeFs";
+// import { ThreeFs } from "./ThreeFs";
+import { FollowersModal } from "./FollowersModal";
+import { FollowingModal } from "./FollowingModal";
+import { FriendsModal } from "./FriendsModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -24,6 +27,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
+
+  const [followersOpen, setFollowersOpen] = useState<boolean>(false);
+  const [followingOpen, setFollowingOpen] = useState<boolean>(false);
+  const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [friendCount, setFriendCount] = useState<number>(0);
 
   // FOR SHOWING EDIT PROFILE MODAL
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -244,6 +254,23 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   // const tempFollowers = 27;
   // const tempFriends = 420;
 
+  useEffect(() => {
+        fetchFollowCount();
+    }, [props]);
+  
+    const fetchFollowCount = async () => {
+        const response = await fetch(
+            local_uri + "User/followCounts/" + profileID,
+        );
+        const json = await response.json();
+  
+        const parsedFollowCounts: number[] = json;
+  
+        setFollowerCount(parsedFollowCounts[0]);
+        setFollowingCount(parsedFollowCounts[1]);
+        setFriendCount(parsedFollowCounts[2]);
+    }
+
   return (
     <div className="flex justify-center w-full mt-4">
       {lookingAtOwnProfile ? (
@@ -295,7 +322,34 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Friends
               </div>
             </div> */}
-            <ThreeFs profile_id={profileID}/>
+            {/* <ThreeFs profile_id={profileID}/> */}
+            <div className="flex justify-center gap-5 mt-3">
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
+                Followers
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+
+
+
+
             {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
@@ -335,7 +389,34 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Message
               </button>
             </div>
-            <ThreeFs profile_id={profileID}/>
+            {/* <ThreeFs profile_id={profileID}/> */}
+            <div className="flex justify-center gap-5 mt-3">
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
+                Followers
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+
+
+
+
           </div>
         </div>
       )}

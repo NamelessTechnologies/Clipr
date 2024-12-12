@@ -80,11 +80,6 @@ function Followers (props: { profile_id: string; onModalEvent: () => void }) {
     fetchUsers();
   }, [props]);
 
-  // useEffect(() => {
-  //   if (followersCount) {
-  //     onSendFollowersCount(user.length);
-  //   }
-  // }, [followersCount, onSendFollowersCount])
 
   const goToTheProfile = (index: string) => {
     navigate(`/Profile?profile_id=${index}`);
