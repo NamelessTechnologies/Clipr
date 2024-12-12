@@ -48,6 +48,7 @@ const FollowersModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()
   }, [userInfo]);
 
   const fetchUsers = async () => {
+    setUser([]);
     try {
       const url = uri + "User/followers/";
       const response = await fetch(url + profileID); // must not be hard coded

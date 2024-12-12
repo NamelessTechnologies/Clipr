@@ -48,6 +48,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
   }, [userInfo]);
 
   const fetchUsers = async () => {
+    setUser([]);
     try {
       const url = uri + "User/friendsof/";
       const response = await fetch(url + profileID); // must not be hard coded
