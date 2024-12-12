@@ -200,7 +200,7 @@ const EditProfileForm: React.FC = () => {
   }, [biography]);
 
   return (
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 ">
+    <div className=" bg-neutral-900 flex flex-row justify-center pt-2">
       <form
         onSubmit={createAccount}
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
@@ -223,8 +223,8 @@ const EditProfileForm: React.FC = () => {
               onChange={handleFileChange}
               className="hidden"
             ></input>
-            <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-10">
-              <FaPencil className="text-gray-600 w-10 h-10 opacity-90"></FaPencil>
+            <div className="absolute inset-y-0 left-[4.5rem] top-16 flex justify-right text-right z-10">
+              <FaPencil className="text-gray-500 w-8 h-8 opacity-90"></FaPencil>
             </div>
           </div>
         </div>
@@ -306,7 +306,7 @@ const EditProfileForm: React.FC = () => {
           </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
@@ -325,7 +325,7 @@ const EditProfileForm: React.FC = () => {
             {biolength} / 100
           </span>
         </div>
-        <div className="mb-4">
+        <div className="mb-8">
           <label className="block text-white text-sm font-semibold mb-2">
             Nickname
           </label>
