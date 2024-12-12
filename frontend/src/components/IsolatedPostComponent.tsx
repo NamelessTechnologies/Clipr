@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import { local_uri } from "../App";
+import { uri } from "../App";
 import { Post } from "../components/Post";
 import { CommentBox } from "../components/CommentBox";
 
@@ -13,7 +13,7 @@ function IsolatedPostComponent(props: { post_id: string }) {
   const fetchPosts = async () => {
     try {
       const response = await fetch(
-        local_uri +
+        uri +
           "post/real/getPostInfo/" +
           props.post_id +
           "/" +

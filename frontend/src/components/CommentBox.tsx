@@ -3,7 +3,7 @@ import { SendIcon } from "./comment/SendCommentIcon";
 import "../styles/Scrollbar.css";
 import { CommentWrapper } from "./comment/CommentWrapper";
 import { useEffect, useState } from "react";
-import { local_uri, uri } from "../App";
+import { uri } from "../App";
 
 function CommentBox(props: {
   post_id: number;
@@ -32,7 +32,7 @@ function CommentBox(props: {
   const fetchComments = async () => {
     // console.log("fetching posts : " + uri + "comment/post/" + props.post_id + '/' + props.user_id);
     const response = await fetch(
-      local_uri + "comment/post/" + props.post_id + "/" + props.user_id
+      uri + "comment/post/" + props.post_id + "/" + props.user_id
     );
     const json = await response.json();
 
