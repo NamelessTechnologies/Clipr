@@ -113,22 +113,45 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public async void editUser([FromBody] User user) {
-        var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp  where user_id = @user_id";
-        // Console.WriteLine(sql);
-        using var conn = DBConn.GetConn();
-        conn.Open();
-        await using (var cmd = new NpgsqlCommand(sql, conn))
-        {
-            cmd.Parameters.AddWithValue("username", user.Username);
-            cmd.Parameters.AddWithValue("email", user.Email);
-            cmd.Parameters.AddWithValue("password", user.Password);
-            cmd.Parameters.AddWithValue("biography", user.Biography);
-            cmd.Parameters.AddWithValue("nickname", user.Nickname);
-            cmd.Parameters.AddWithValue("pfp", user.Pfp);
-            cmd.Parameters.AddWithValue("user_id",user.User_id);
+    public async void editUser([FromBody] EdittedUser user) {
+        // var sql = "UPDATE users SET username = @username, email = @email, password = @password, biography = @biography, nickname = @nickname, pfp = @pfp where user_id = @user_id";
+        var final = "UPDATE users SET username = @username, email = @email, biography = @biography, nickname = @nickname, pfp = @pfp";
+        var right = " WHERE user_id = @user_id";
+        var addPassword = ", password = @password";
 
-            await cmd.ExecuteNonQueryAsync();
+        try {
+            using var conn = DBConn.GetConn();
+            conn.Open();
+            
+            if ((user.Password != null) && (user.Password != "")) {
+                final += addPassword;   
+            }
+            final += right;
+            await using (var cmd = new NpgsqlCommand(final, conn))
+            {
+                cmd.Parameters.AddWithValue("username", user.Username);
+                cmd.Parameters.AddWithValue("email", user.Email);
+
+                if ((user.Password != null) && (user.Password != "")) {
+                    var hashedPassword = PasswordHash.HashPassword(user.Password);
+                    if (hashedPassword == null) {
+                        throw new InvalidOperationException("Error hashing password");
+                    }
+                    Console.WriteLine("hashed password: " + hashedPassword);
+                    cmd.Parameters.AddWithValue("password", hashedPassword);
+                }   
+
+                // cmd.Parameters.AddWithValue("password", user.Password);
+                cmd.Parameters.AddWithValue("biography", user.Biography);
+                cmd.Parameters.AddWithValue("nickname", user.Nickname);
+                cmd.Parameters.AddWithValue("pfp", user.Pfp);
+                cmd.Parameters.AddWithValue("user_id",user.User_id);
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        } catch (Exception ex) {
+            Console.WriteLine("Error editing user data");
+            Console.Write(ex);
         }
     }
 
