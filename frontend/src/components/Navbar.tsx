@@ -47,12 +47,11 @@ function NavBar() {
       {foundUser ? (
         <nav className="bg-navbar text-white py-4 px-6 border-b border-white">
           <div className="flex justify-between items-center">
-            <Link
-              to="/"
+            <a href="/"
               className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300"
             >
               Clipr
-            </Link>
+            </a>
             <ul className="flex space-x-4">
               <li>
                 <SearchBar data-testid="search-bar"></SearchBar>
