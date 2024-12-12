@@ -114,6 +114,17 @@ const CreateAccount: React.FC = () => {
     event.preventDefault();
     resetErrorMessages();
     var fileLocation = ""; // if no upload, use default pfp
+    try {
+      const queryString2 = `${uri}email/` + email;
+      const response2 = await fetch(queryString2);
+      const json2 = (await response2.json()) as UserModel;
+      if(json2) {
+        alert("Duplicate email!");
+        return;
+      }
+    } catch(exception) {
+      console.log("Unique");
+    }
 
     // VALIDATE INPUT
     if (!validate()) {
