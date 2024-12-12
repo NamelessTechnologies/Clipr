@@ -5,7 +5,7 @@ import { Friends } from "../Friends";
 import { Followers } from "../Followers";
 import { Following } from "../Following";
 import ShouldBeLoggedIn from "../Authenticate";
-import { local_uri } from "../../App";
+import { uri } from "../../App";
 
 function ThreeFs(props: {profile_id: string}) {
 
@@ -34,7 +34,7 @@ function ThreeFs(props: {profile_id: string}) {
 
   const fetchFollowCount = async () => {
       const response = await fetch(
-          local_uri + "User/followCounts/" + profileID,
+          uri + "User/followCounts/" + profileID,
       );
       const json = await response.json();
 
