@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import UserModel from "../types/User";
 import ShouldBeLoggedIn from "../components/Authenticate";
-import { uri, local_uri } from "../App";
+import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "../components/s3Config";
 import { FaPencil } from "react-icons/fa6";
@@ -178,7 +178,7 @@ const EditProfileForm: React.FC = () => {
       Pfp: pfp.current,
     };
     try {
-      const response = await fetch(local_uri + "user/", {
+      const response = await fetch(uri + "user/", {
         body: JSON.stringify(newUser),
         method: "PUT",
         headers: {

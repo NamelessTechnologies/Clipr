@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ShouldBeLoggedIn from "./Authenticate";
 import UserModel from "../types/User";
-import { local_uri } from "../App";
+import { uri } from "../App";
 import { useNavigate } from "react-router-dom";
 
 // interface FollowingProps {
@@ -40,7 +40,7 @@ function Following (props: {profile_id: string}) {
 
   const fetchUsers = async () => {
     try {
-      const url = local_uri + "User/following/";
+      const url = uri + "User/following/";
       const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 

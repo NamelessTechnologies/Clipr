@@ -5,7 +5,7 @@ import ShouldBeLoggedIn from "../Authenticate";
 import { useState, useEffect } from "react";
 import UserModel from "../../types/User";
 import { useNavigate } from "react-router-dom";
-import { local_uri } from "../../App";
+import { uri } from "../../App";
 
 interface propTypes {
   open: boolean;
@@ -49,7 +49,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
 
   const fetchUsers = async () => {
     try {
-      const url = local_uri + "User/friendsof/";
+      const url = uri + "User/friendsof/";
       const response = await fetch(url + profileID); // must not be hard coded
       const json = await response.json();
 

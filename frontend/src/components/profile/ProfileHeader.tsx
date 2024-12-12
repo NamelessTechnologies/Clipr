@@ -5,7 +5,7 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
-import { local_uri, uri } from "../../App";
+import { uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
 import { FollowersModal } from "./FollowersModal";
 import { FollowingModal } from "./FollowingModal";
@@ -264,7 +264,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   
     const fetchFollowCount = async () => {
         const response = await fetch(
-            local_uri + "User/followCounts/" + profileID,
+            uri + "User/followCounts/" + profileID,
         );
         const json = await response.json();
   
@@ -308,7 +308,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
               </button>
             </div>
 
-            <div className="flex gap-5 mt-3 border">
+            <div className="flex gap-5 mt-3">
             <div className="Followers-box">
               <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
                 <span className="font-bold">{followerCount + " "}</span>
