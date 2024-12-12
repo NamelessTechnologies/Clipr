@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
 import { local_uri, uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
-// import { ThreeFs } from "./ThreeFs";
 import { FollowersModal } from "./FollowersModal";
 import { FollowingModal } from "./FollowingModal";
 import { FriendsModal } from "./FriendsModal";
@@ -126,6 +125,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const clickButton = async () => {
     if (status === "Friends") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount -= 1);
+      setFriendCount(newFriendCount -= 1);
       setStatus("Follow Back");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -142,6 +145,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow") {
       // follow profileID
+      let newNumber = followerCount;
+      setFollowerCount(newNumber += 1);
       setStatus("Following");
       const followBody = {
         User_1: userID,
@@ -163,6 +168,10 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Follow Back") {
       // follow profileID
+      let newFollowCount = followerCount;
+      let newFriendCount = friendCount;
+      setFollowerCount(newFollowCount += 1);
+      setFriendCount(newFriendCount += 1);
       setStatus("Friends");
       const followBody = {
         User_1: userID,
@@ -184,6 +193,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     } else if (status === "Following") {
       // unfollow profileID
+      let newFollowCount = followerCount;
+      setFollowerCount(newFollowCount -= 1);
       setStatus("Follow");
       const queryString = `${uri}user/following?User_1=${userID}&User_2=${profileID}`;
       try {
@@ -250,10 +261,6 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       state: [props.userData.username, profileID, convoid],
     });
   }; // end NavigateToMessagePage
-
-  // const tempFollowing = 234;
-  // const tempFollowers = 27;
-  // const tempFriends = 420;
 
   useEffect(() => {
         fetchFollowCount();
