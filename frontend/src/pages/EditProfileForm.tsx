@@ -15,9 +15,9 @@ const EditProfileForm: React.FC = () => {
   const [username, setUsername] = useState(userInfo["username"]);
   const [email, setEmail] = useState(userInfo["email"]);
   const [password, setPassword] = useState(userInfo["password"]);
-  const [password2, setPassword2] = useState(userInfo["password"])
+  const [password2, setPassword2] = useState(userInfo["password"]);
   const [biography, setBiography] = useState(userInfo["biography"]);
-  const [biolength,setBioLength] = useState(0);
+  const [biolength, setBioLength] = useState(0);
   const [nickname, setNickname] = useState(userInfo["nickname"]);
   var pfp = useRef(userInfo["pfp"]);
   const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
@@ -39,27 +39,28 @@ const EditProfileForm: React.FC = () => {
   const [media_type, setMediaType] = useState("");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    if(file) {
+    if (file) {
       const temp_type = file?.type;
-      const type = temp_type?.split('/')[0];
+      const type = temp_type?.split("/")[0];
       setMediaType(type);
       setImage(file);
-      if (type == 'image') {
-          const previewURL = URL.createObjectURL(file);
-          const previewImgElement = document.getElementById("img-preview") as HTMLImageElement;
-          previewImgElement.src = previewURL;
+      if (type == "image") {
+        const previewURL = URL.createObjectURL(file);
+        const previewImgElement = document.getElementById(
+          "img-preview",
+        ) as HTMLImageElement;
+        previewImgElement.src = previewURL;
       } else {
-          alert("Please upload only image files!");
-          return;
+        alert("Please upload only image files!");
+        return;
       }
-      
     }
   };
 
   const clickFileInputDIV = () => {
-    const fileInput = document.getElementById('fileInput');
+    const fileInput = document.getElementById("fileInput");
     if (fileInput) {
-        fileInput.click();
+      fileInput.click();
     }
   };
 
@@ -77,7 +78,7 @@ const EditProfileForm: React.FC = () => {
     }
     if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
       setpasswordErrorMsg(
-        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit"
+        "Must be at least 8 characters long, contain 1 uppercase letter, and 1 digit",
       );
       valid = false;
     }
@@ -123,11 +124,11 @@ const EditProfileForm: React.FC = () => {
 
     // ATTEMPT PHOTO UPLOAD
     if (image) {
-        // VALIDATE FILE
-        if (media_type != "image") {
-            alert("Please upload file of type image!");
-            return;
-        }
+      // VALIDATE FILE
+      if (media_type != "image") {
+        alert("Please upload file of type image!");
+        return;
+      }
 
         // UPLOAD TO S3
         toggleLoading();
@@ -204,20 +205,15 @@ const EditProfileForm: React.FC = () => {
     }
   };
 
-
   if (!userInfo) {
-    return (
-        <div className='text-white'>
-            Loading...
-        </div>
-    );
-}
+    return <div className="text-white">Loading...</div>;
+  }
 
-useEffect (() => {
+  useEffect(() => {
     setBioLength(biography.length);
     // toggleLoading();
   }, [biography]);
-  
+
   return (
     <>
     <div>
@@ -229,30 +225,30 @@ useEffect (() => {
         className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
       >
         <div className="w-full text-amber-500 text-center text-3xl mb-6">
-            Edit Profile
+          Edit Profile
         </div>
 
-        <div className = 'flex justify-center '>
-            <div className='relative z-20'
-                onClick={clickFileInputDIV}>
-                <img 
-                    id='img-preview'
-                    src={pfp.current} 
-                    className="w-24 h-24 mx-auto rounded-full"></img>
-                <input
-                    id='fileInput'
-                    type='file'
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className='hidden'></input>
-                <div className="absolute inset-y-0 left-16 top-16 flex justify-right text-right z-30"
-                    >
-                    <FaPencil className='text-gray-600 w-10 h-10 opacity-90'></FaPencil>
-                </div>
+        <div className="flex justify-center ">
+          <div className="relative z-0" onClick={clickFileInputDIV}>
+            <img
+              id="img-preview"
+              src={pfp.current}
+              className="w-24 h-24 mx-auto rounded-full"
+            ></img>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            ></input>
+            <div className="absolute inset-y-0 left-[4.5rem] top-16 flex justify-right text-right z-10">
+              <FaPencil className="text-gray-500 w-8 h-8 opacity-90"></FaPencil>
             </div>
+          </div>
         </div>
 
-        <div className='h-10'> </div>
+        <div className="h-10"> </div>
 
         <div className="mb-4">
           <label className="block text-white text-sm font-semibold mb-2">
@@ -329,11 +325,11 @@ useEffect (() => {
           </span>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
           <label className="block text-white text-sm font-semibold mb-2">
             Biography
           </label>
-          <textarea 
+          <textarea
             className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
             value={biography}
             onChange={(e) => setBiography(e.target.value)}
@@ -341,9 +337,11 @@ useEffect (() => {
             required
             placeholder="Type your bio here!"
           ></textarea>
-          <span className='block text-white text-xs text-right'>{biolength} / 100</span>
+          <span className="block text-white text-xs text-right">
+            {biolength} / 100
+          </span>
         </div>
-        <div className="mb-4">
+        <div className="mb-8">
           <label className="block text-white text-sm font-semibold mb-2">
             Nickname
           </label>
@@ -356,7 +354,6 @@ useEffect (() => {
             placeholder="Nickname"
           />
         </div>
-        
 
         <div className="flex justify-center">
           <button

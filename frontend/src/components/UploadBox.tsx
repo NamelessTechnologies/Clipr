@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { uri, local_uri } from "../App";
 import { uri } from "../App";
 import ReactS3Client from "react-aws-s3-typescript";
 import { s3Config } from "./s3Config";
@@ -57,9 +56,9 @@ const CreatePost: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("This runs");
     const file = e.target.files ? e.target.files[0] : null;
-    if(file) {
+    if (file) {
       const temp_type = file?.type;
-      const type = temp_type?.split('/')[0];
+      const type = temp_type?.split("/")[0];
       setMediaType(type);
       setImage(file);
     }
@@ -67,7 +66,7 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("LETS DO THIS")
+    console.log("LETS DO THIS");
 
     const uid = userInfo["user_id"];
     let postID = 0;
@@ -81,10 +80,10 @@ const CreatePost: React.FC = () => {
     try {
       const response = await fetch(uri + "post/realpost", {
         body: formData,
-        method: "POST"
+        method: "POST",
       });
       const data = await response.json();
-      postID = data['post_id'];
+      postID = data["post_id"];
       // if (response.status === 200) {
       //   alert("Success!");
       // } else {
@@ -95,7 +94,7 @@ const CreatePost: React.FC = () => {
       console.error(error);
     }
 
-    if(media_type != 'text') {
+    if (media_type != "text") {
       var fileLocation = "";
 
       // check if image provided
@@ -144,16 +143,16 @@ const CreatePost: React.FC = () => {
               /* handle the exception */
           }
       } else {
-          alert("Please select a file first.");
-          return;
+        alert("Please select a file first.");
+        return;
       }
     }
     setTitle("");
     setPost({ content: "" });
     setImage(null);
-    setMediaType('text');
+    setMediaType("text");
     const fileInput = document.getElementById("fileInput") as HTMLInputElement;
-    fileInput.value = '';
+    fileInput.value = "";
   };
 
   return (

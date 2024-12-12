@@ -1,9 +1,9 @@
 /* go this from chatgpt not sure what its rly doing */
 
 :root {
-    --tw-scrollbar-track: #171717; 
-    --tw-scrollbar-thumb: #333333;
-  }
+  --tw-scrollbar-track: #171717;
+  --tw-scrollbar-thumb: #333333;
+}
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -27,4 +27,4 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--tw-scrollbar-thumb) var(--tw-scrollbar-track);
-} 
+}

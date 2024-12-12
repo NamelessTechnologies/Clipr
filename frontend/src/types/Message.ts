@@ -4,5 +4,5 @@ export default interface MessageModel {
   content: string;
   datesent: Date;
   user_id: number;
-  user_pfp: string
+  user_pfp: string;
 }

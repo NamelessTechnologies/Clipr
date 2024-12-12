@@ -5,8 +5,12 @@ import { FaCrown } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConversationModel from "../../types/Conversation";
-import { uri } from "../../App";
+import { local_uri, uri } from "../../App";
 import EditProfileModal from "./EditProfileModal";
+// import { ThreeFs } from "./ThreeFs";
+import { FollowersModal } from "./FollowersModal";
+import { FollowingModal } from "./FollowingModal";
+import { FriendsModal } from "./FriendsModal";
 
 type status = "Friends" | "Following" | "Follow Back" | "Follow" | "Error";
 
@@ -23,6 +27,13 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
   const [userFollowingProfile, setUserFollwingProfile] = useState<boolean>();
   const [profileFollowingUser, setProfileFollwingUser] = useState<boolean>();
   const [status, setStatus] = useState<status>("Error");
+
+  const [followersOpen, setFollowersOpen] = useState<boolean>(false);
+  const [followingOpen, setFollowingOpen] = useState<boolean>(false);
+  const [friendsOpen, setFriendsOpen] = useState<boolean>(false);
+  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [friendCount, setFriendCount] = useState<number>(0);
 
    // FOR SHOWING EDIT PROFILE MODAL
    const [isModalVisible, setIsModalVisible] = useState(false);
@@ -57,59 +68,59 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
   useEffect(() => {
     async function fetchData() {
-        // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
-        if (!lookingAtOwnProfile) {
-            if (userID){
-                // console.log("looking at other person's profile!");
-            try {
-                let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
-                let response = await fetch(queryString);
-                let json = await response.json();
-                if (json.user_1 == -1) {
-                    setUserFollwingProfile(false);
-                } else {
-                    setUserFollwingProfile(true);
-                }
-                queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
-                response = await fetch(queryString);
-                json = await response.json();
-                if (json.user_1 == -1) {
-                setProfileFollwingUser(false);
-                } else {
-                setProfileFollwingUser(true);
-                }
-
-                if (profileFollowingUser && userFollowingProfile) {
-                    setStatus("Friends");
-                } else if (profileFollowingUser && !userFollowingProfile) {
-                    setStatus("Follow Back");
-                } else if (!profileFollowingUser && userFollowingProfile) {
-                    setStatus("Following");
-                } else if (!profileFollowingUser && !userFollowingProfile) {
-                    setStatus("Follow");
-                }
-            } catch (error) {
-                console.error(error);
+      // console.log("From fetchData: lookingat me = "+lookingAtOwnProfile);
+      if (!lookingAtOwnProfile) {
+        if (userID) {
+          // console.log("looking at other person's profile!");
+          try {
+            let queryString = `${uri}User/checkfollow?User_1=${userID}&User_2=${profileID}`;
+            let response = await fetch(queryString);
+            let json = await response.json();
+            if (json.user_1 == -1) {
+              setUserFollwingProfile(false);
+            } else {
+              setUserFollwingProfile(true);
             }
+            queryString = `${uri}User/checkfollow?User_1=${profileID}&User_2=${userID}`;
+            response = await fetch(queryString);
+            json = await response.json();
+            if (json.user_1 == -1) {
+              setProfileFollwingUser(false);
+            } else {
+              setProfileFollwingUser(true);
+            }
+
+            if (profileFollowingUser && userFollowingProfile) {
+              setStatus("Friends");
+            } else if (profileFollowingUser && !userFollowingProfile) {
+              setStatus("Follow Back");
+            } else if (!profileFollowingUser && userFollowingProfile) {
+              setStatus("Following");
+            } else if (!profileFollowingUser && !userFollowingProfile) {
+              setStatus("Follow");
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
-        }
+      }
     }
     fetchData();
   }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
 
-  const TripleFs = () => {
-    return (
-      <div className="flex flex-row">
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Followers: 69
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">
-          Following: 1738
-        </div>
-        <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
-      </div>
-    );
-  };
+  // const TripleFs = () => {
+  //   return (
+  //     <div className="flex flex-row">
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Followers: 69
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">
+  //         Following: 1738
+  //       </div>
+  //       <div className="text-yellow-100 italic text-1xl pr-2">Friends: 420</div>
+  //     </div>
+  //   );
+  // };
 
   const clickButton = async () => {
     if (status === "Friends") {
@@ -239,34 +250,56 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
     });
   }; // end NavigateToMessagePage
 
+  // const tempFollowing = 234;
+  // const tempFollowers = 27;
+  // const tempFriends = 420;
 
-  const tempFollowing = 234;
-  const tempFollowers = 27;
-  const tempFriends = 420;
+  useEffect(() => {
+        fetchFollowCount();
+    }, [props, profileFollowingUser, userFollowingProfile]);
+  
+    const fetchFollowCount = async () => {
+        const response = await fetch(
+            local_uri + "User/followCounts/" + profileID,
+        );
+        const json = await response.json();
+  
+        const parsedFollowCounts: number[] = json;
+  
+        setFollowerCount(parsedFollowCounts[0]);
+        setFollowingCount(parsedFollowCounts[1]);
+        setFriendCount(parsedFollowCounts[2]);
+    }
 
   return (
     <div className="flex justify-center w-full mt-4">
       {lookingAtOwnProfile ? (
         <div className="flex flex-row">
-              <img
-                onError={failedPFP}
-                src={
-                  PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"
-                }
-                className="w-56 h-56 rounded-full mr-5"/>
+          <img
+            onError={failedPFP}
+            src={PFP ? PFP : "https://i.ytimg.com/vi/0XM809ENceM/hqdefault.jpg"}
+            className="w-56 h-56 rounded-full mr-5"
+          />
 
           {/* below div contains name, buttons, followers, following, etc. */}
           <div className="flex flex-col">
             {/* username + nickname + crown*/}
             <div className="flex mt-10 p-2 justify-center ">
-              <span className="text-yellow-100 italic text-4xl pr-2">{props.userData.username} -</span>
-              <span className="text-white italic text-3xl pr-2 mt-auto">{props.userData.nickname}</span>
+              <span className="text-yellow-100 italic text-4xl pr-2">
+                {props.userData.username} -
+              </span>
+              <span className="text-white italic text-3xl pr-2 mt-auto">
+                {props.userData.nickname}
+              </span>
               <FaCrown className="text-yellow-600" />
             </div>
 
             {/* buttons */}
             <div className="flex pt-2 pb-2 justify-center gap-5">
-              <button onClick={handleShowModal} className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2">
+              <button
+                onClick={handleShowModal}
+                className="text-white bg-red-500 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-4 py-2"
+              >
                 Edit Profile
               </button>
               <button className="text-white bg-yellow-600 hover:bg-amber-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
@@ -275,8 +308,8 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
             </div>
 
             {/* following, followers, etc. */}
-            <div className="flex justify-center gap-5 mt-3">
-              <div className="text-white text-base"> 
+            {/* <div className="flex justify-center gap-5 mt-3">
+              <div className="text-white text-base">
                 <span className="font-bold">{tempFollowers + " "}</span>
                 Followers
               </div>
@@ -288,7 +321,35 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 <span className="font-bold">{tempFriends + " "}</span>
                 Friends
               </div>
+            </div> */}
+            {/* <ThreeFs profile_id={profileID}/> */}
+            <div className="flex justify-center gap-5 mt-3">
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
+                Followers
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
+              </div>
             </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+
+
+
+
             {isModalVisible && <EditProfileModal onClose={handleCloseModal} />}
           </div>
         </div>
@@ -328,7 +389,34 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
                 Message
               </button>
             </div>
-            <TripleFs></TripleFs>
+            {/* <ThreeFs profile_id={profileID}/> */}
+            <div className="flex justify-center gap-5 mt-3">
+            <div className="Followers-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowersOpen(true)}> 
+                <span className="font-bold">{followerCount + " "}</span>
+                Followers
+                <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Following-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFollowingOpen(true)}>
+                <span className="font-bold">{followingCount + " "}</span>
+                Following
+                <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+            <div className="Friends-box">
+              <div className="text-white text-base hover:cursor-pointer" onClick={() => setFriendsOpen(true)}>
+                <span className="font-bold">{friendCount + " "}</span>
+                Friends
+                <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
+              </div>
+            </div>
+          </div>
+
+
+
+
           </div>
         </div>
       )}

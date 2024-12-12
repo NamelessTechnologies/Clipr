@@ -47,12 +47,11 @@ function NavBar() {
       {foundUser ? (
         <nav className="bg-navbar text-white py-4 px-6 border-b border-white">
           <div className="flex justify-between items-center">
-            <Link
-              to="/"
+            <a href="/"
               className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-300"
             >
               Clipr
-            </Link>
+            </a>
             <ul className="flex space-x-4">
               <li>
                 <SearchBar data-testid="search-bar"></SearchBar>
@@ -62,12 +61,20 @@ function NavBar() {
                   <HiMiniPencilSquare className="w-8 h-7 rounded-full hover:bg-gray-600" />
                 </Link>
               </li>
-              <li className="pt-3">
+              {/* <li className="pt-3">
                 <Link
                   to="/Friends"
                   className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
                 >
                   Friends
+                </Link>
+              </li> */}
+              <li className="pt-3">
+                <Link
+                  to="/Inbox"
+                  className="text-lg hover:bg-gray-600 px-3 py-2 rounded"
+                >
+                  Messages
                 </Link>
               </li>
               <li className="pt-3">
