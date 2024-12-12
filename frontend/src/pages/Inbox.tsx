@@ -4,6 +4,7 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import IntegratedMessages from "../components/messages/IntegratedMessages";
 import { uri } from "../App";
 import { socket } from "../socket";
+import MessageModel from "../types/Message";
 
 interface ProfilePreview {
   user_id: string;
@@ -13,6 +14,12 @@ interface ProfilePreview {
   convo_id: string;
   latestDate: Date;
 }
+interface ExtendedMessageModel extends MessageModel {
+  hasMedia?: boolean;
+  mediaType: string;
+  nickname?: string;
+}
+
 function Inbox() {
   ShouldBeLoggedIn(true);
   const currentUser = localStorage.getItem("user");
@@ -67,6 +74,29 @@ function Inbox() {
     };
 
     fetchConvos();
+  }, [userID]); // Add userID as a dependency
+
+  useEffect(() => {
+    const fetchConvos = async (message: ExtendedMessageModel) => {
+      try {
+        const newArray = [];
+        newArray.push({
+          user_id: message.user_id,
+          nickname: message.nickname,
+          pfp: message.user_pfp,
+          lastMessage: message.content,
+          latestDate: message.datesent,
+          convo_id: message.convo_id,
+        });
+        for (const pp of conversation) {
+          if ((message.convo_id as unknown as string) != pp.convo_id) {
+            newArray.push(pp);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching conversations:", error);
+      }
+    };
 
     // Socket listener with cleanup
     socket.on("recieve-message", fetchConvos);

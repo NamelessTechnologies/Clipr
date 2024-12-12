@@ -11,6 +11,7 @@ import { EmbeddedPost } from "../components/messages/EmbeddedPost";
 interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
   mediaType: string;
+  nickname?: string;
 }
 const Messages: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -19,6 +20,7 @@ const Messages: React.FC = () => {
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const userID = userInfo["user_id"] as number;
   const userPFP = userInfo["pfp"] as string;
+  const userNickname = userInfo["nickname"] as string;
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ExtendedMessageModel[]>([]);
@@ -145,6 +147,7 @@ const Messages: React.FC = () => {
         datesent: new Date(),
         user_id: userID,
         user_pfp: userPFP,
+        nickname: userNickname,
       } as unknown as ExtendedMessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();

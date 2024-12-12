@@ -75,7 +75,7 @@ function ShareIcon(props: {
     fetchUsers();
   }, [uid]);
 
-  const sharedURL = `http://localhost:5173/IsolatedPost/?id=${props.post_id}`;
+  const sharedURL = `https://clipr.vercel.app/IsolatedPost/?id=${props.post_id}`;
 
   return (
     <div>
