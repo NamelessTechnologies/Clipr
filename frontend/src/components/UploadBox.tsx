@@ -20,14 +20,6 @@ const CreatePost: React.FC = () => {
   const [post, setPost] = useState<PostContent>({ content: "" });
 
   const [isLoading,setIsLoading] = useState(false);
-    // LOADING SPINNER LOGIC
-    const toggleLoading = () => {
-        if (isLoading) {
-            setIsLoading(false);
-        } else {
-            setIsLoading(true);
-        }
-      };
     
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("user") || "",
@@ -102,10 +94,10 @@ const CreatePost: React.FC = () => {
           // alert(`File "${image.name}" is ready for upload!`);
           // Upload logic
           const s3 = new ReactS3Client(s3Config);
-  
+          setIsLoading(!isLoading);
+          
           try {
               console.log("Attempting to upload " + image.name + " of type " + image.type);
-              toggleLoading();
               var fileName = image.name;
               fileName = fileName.substring(0,fileName.lastIndexOf(".")); // remove the file extension (it will be added by endpoint)
               const res = await s3.uploadFile(image, fileName);
@@ -124,7 +116,7 @@ const CreatePost: React.FC = () => {
               console.log("parsed.location: " + parsed.location);
               fileLocation = parsed.location;
               console.log("fileLocation: " + fileLocation);
-              toggleLoading();
+
               
               const formData2 = new FormData();
               formData2.append("post_id", postID.toString());
@@ -138,10 +130,12 @@ const CreatePost: React.FC = () => {
                 location.reload();
               } else {
                 alert(`${response2.status}: ${response2.statusText}`);
-              }          } catch (exception) {
+              }          
+            } catch (exception) {
               console.log(exception);
               /* handle the exception */
-          }
+            }
+            setIsLoading(false);
       } else {
         alert("Please select a file first.");
         return;

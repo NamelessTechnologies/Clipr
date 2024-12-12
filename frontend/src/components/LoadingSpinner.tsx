@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 function LoadingSpinner () {
-    // const [spinnerImgPath,setSpinnerImgPath] = useState("https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif");
+    const [spinnerImgPath,setSpinnerImgPath] = useState("https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif");
+    console.log(spinnerImgPath);
+    setSpinnerImgPath(spinnerImgPath);
     // const basePool = [
     //     'https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif',
     //     'https://clipr-bucket.s3.us-east-1.amazonaws.com/mako-growing.gif',
@@ -22,11 +24,11 @@ function LoadingSpinner () {
     //     return basePool[Math.floor(Math.random() * basePool.length)];
     // }
 
-    const spinnerImgPath = 'https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif';
+    const hertaPath = 'https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif';
 
     useEffect(() => {
         // setSpinnerImgPath(getRandomLoadingAnimation);
-        console.log("spinner path: "+spinnerImgPath);
+        console.log("spinner path: " + hertaPath);
     }, []);
 
     return (
