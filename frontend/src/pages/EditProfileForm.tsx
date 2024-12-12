@@ -199,7 +199,7 @@ const EditProfileForm: React.FC = () => {
         }
         alert("Success!");
         setIsLoading(false);
-        // location.reload();
+        location.reload();
       } else {
         alert(`${response.status}: ${response.statusText}`);
       }
