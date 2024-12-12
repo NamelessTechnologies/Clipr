@@ -107,7 +107,7 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
       }
     }
     fetchData();
-  }, [profileFollowingUser, profileID, userFollowingProfile, userID]);
+  }, [profileFollowingUser, profileID, userFollowingProfile, userID, props]); // added props here so that when some1 follows u, and u check their pfp it shows "Follow Back" instead of "Error"
 
   // const TripleFs = () => {
   //   return (
