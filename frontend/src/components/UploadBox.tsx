@@ -41,12 +41,12 @@ const CreatePost: React.FC = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log("This runs");
+    // console.log("This runs");
     setPost({ ...post, content: e.target.value });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("This runs");
+    // console.log("This runs");
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const temp_type = file?.type;
@@ -127,7 +127,6 @@ const CreatePost: React.FC = () => {
               });
               if (response2.status === 200) {
                 alert("Success!");
-                location.reload();
               } else {
                 alert(`${response2.status}: ${response2.statusText}`);
               }          
@@ -154,6 +153,7 @@ const CreatePost: React.FC = () => {
         <div>
             {isLoading && <LoadingSpinner />}
         </div>
+
         <div className="flex-col w-1/3 h-4/6 mt-14 px-10 bg-navbar border border-x-gray-300">
         <div className="w-full text-white text-center text-3xl mt-6 mb-6">
             Create New Post
@@ -208,7 +208,6 @@ const CreatePost: React.FC = () => {
             Post
             </button>
         </form>
-        {/* <h1 className="text-white">UID: {userInfo["user_id"]}</h1> */}
         </div>
     </>
   );

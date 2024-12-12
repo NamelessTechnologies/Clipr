@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 function LoadingSpinner () {
-    const [spinnerImgPath,setSpinnerImgPath] = useState("https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif");
-    console.log(spinnerImgPath);
-    setSpinnerImgPath(spinnerImgPath);
+    // const [spinnerImgPath,setSpinnerImgPath] = useState("https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif");
+    // console.log(spinnerImgPath);
+    // setSpinnerImgPath(spinnerImgPath);
     // const basePool = [
     //     'https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif',
     //     'https://clipr-bucket.s3.us-east-1.amazonaws.com/mako-growing.gif',
@@ -26,10 +26,10 @@ function LoadingSpinner () {
 
     const hertaPath = 'https://clipr-bucket.s3.us-east-1.amazonaws.com/herta-kurukuru.gif';
 
-    useEffect(() => {
-        // setSpinnerImgPath(getRandomLoadingAnimation);
-        console.log("spinner path: " + hertaPath);
-    }, []);
+    // useEffect(() => {
+    //     // setSpinnerImgPath(getRandomLoadingAnimation);
+    //     // console.log("spinner path: " + hertaPath);
+    // }, []);
 
     return (
         <div className='fixed top-0 w-screen left-0 h-screen bg-black bg-opacity-90 z-50 flex items-center justify-center'>
@@ -38,7 +38,7 @@ function LoadingSpinner () {
                 <div className='flex-col items-center justify-center'>
                 <div className='w-full text-white mx-auto text-center text-4xl mb-10'>File Uploading...</div>
                     <img
-                    src={spinnerImgPath}
+                    src={hertaPath}
                     className='rounded-md w-36 h-36  mx-auto '>
                     </img>
                 </div>
