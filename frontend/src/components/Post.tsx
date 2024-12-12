@@ -9,8 +9,6 @@ import { useState } from "react";
 // import father from "../assets/father.jpg"
 
 function Post(props: { postData: PostModel; currentUserID: number }) {
-  console.log(props.postData.post_id + "post.tsx");
-
   const [showMore, setShowMore] = useState(false);
 
   const postUser = props.postData.username;
@@ -31,31 +29,6 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
   const bookmarked = props.postData.bookmarked ?? false;
   const num_bookmarks = props.postData.num_bookmarks ?? 0;
   const media_type = props.postData.mediaType ?? "";
-  // console.log(props.postData.user_id);
-
-  // const formData = new FormData();
-  // formData.append("user_id", props.postData.user_id!.toString());
-  // formData.append("post_id", props.postData.post_id.toString());
-
-  // useEffect(() => {
-  //     console.log("FROM POST");
-
-  //     const checkLiked = async () => {
-  //         const response2 = await fetch(uri + "post/didUserLike", {
-  //             body: formData,
-  //             method: "GET"
-  //         });
-  //         const json = await response2.json();
-  //         console.log(json.message);
-  //         setLiked(json.message);
-  //       }
-
-  //       checkLiked();
-  // }, []);
-
-  console.log("HAMBURGER:");
-  console.log(liked);
-  console.log(num_likes);
 
   return (
     <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
@@ -109,7 +82,13 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
             post_id={props.postData.post_id!}
             user_id={props.currentUserID!}
           />
-          <ShareIcon />
+          {photo_data && (
+            <ShareIcon
+              s3link={photo_data}
+              media_type={media_type}
+              post_id={props.postData.post_id!}
+            />
+          )}
         </div>
       </div>
 

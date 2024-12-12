@@ -37,7 +37,6 @@ function Home() {
       const url = uri + "post/real/getPostArray";
       const response = await fetch(url);
       const json = await response.json();
-      // console.log('this is the most recent post id from home.tsx')
       setAllPosts(json["postArray"]);
       setCurrentPostIndex(0);
       setLoading(false);
@@ -80,9 +79,6 @@ function Home() {
       setCurrentPostIndex(currentPostIndex! - 1);
     }
   };
-
-  // console.log("Current Post: **********************************************************");
-  // console.log(currentPost);
 
   if (loading) {
     return <div> Loading... </div>;

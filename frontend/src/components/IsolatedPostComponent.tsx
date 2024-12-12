@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
 import PostModel from "../types/Post";
-import { uri } from "../App";
-import { Post } from "./Post";
-import { CommentBox } from "./CommentBox";
+import { local_uri } from "../App";
+import { Post } from "../components/Post";
+import { CommentBox } from "../components/CommentBox";
 
-function PostBox(props: { postID: number }) {
+function IsolatedPostComponent(props: { post_id: string }) {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const [post, setPost] = useState<PostModel>({});
   const [loading, setLoading] = useState(true);
 
-  // const [loading, setLoading] = useState<boolean>(true);
-
   const fetchPosts = async () => {
     try {
       const response = await fetch(
-        uri +
+        local_uri +
           "post/real/getPostInfo/" +
-          props.postID +
+          props.post_id +
           "/" +
           userInfo["user_id"]
       ); // test
@@ -52,13 +50,7 @@ function PostBox(props: { postID: number }) {
 
   useEffect(() => {
     fetchPosts();
-  }, [props.postID]);
-
-  // const TempPost: PostModel = post;
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  }, [props.post_id]);
 
   if (loading) {
     return <div> Loading... </div>;
@@ -68,7 +60,7 @@ function PostBox(props: { postID: number }) {
     <div className="flex justify-center mt-6 mb-4">
       <Post postData={post} currentUserID={userInfo["user_id"]} />
       <CommentBox
-        post_id={props.postID}
+        post_id={props.post_id as unknown as number}
         user_id={userInfo["user_id"]}
         username={userInfo["username"]}
         user_pfp={userInfo["pfp"]}
@@ -76,4 +68,4 @@ function PostBox(props: { postID: number }) {
     </div>
   );
 }
-export { PostBox };
+export { IsolatedPostComponent };

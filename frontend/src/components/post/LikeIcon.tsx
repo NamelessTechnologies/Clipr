@@ -42,27 +42,22 @@ function LikeIcon(props: {
     if (liked) {
       setLiked(false);
       setLikes(num_likes - 1);
-      const response = await fetch(uri + "post/unlikePost", {
+      await fetch(uri + "post/unlikePost", {
         body: formData,
         method: "DELETE",
       });
-      console.log(response);
     } else {
       setLiked(true);
       setLikes(num_likes + 1);
-      const response2 = await fetch(uri + "post/likePost", {
+      await fetch(uri + "post/likePost", {
         body: formData,
         method: "POST",
       });
-      console.log(response2);
     }
 
     setAnimate(true);
     setTimeout(() => setAnimate(false), 300);
   };
-
-  console.log("FROM LIKEICON AGAIN");
-  console.log(liked);
 
   return (
     <div className="flex flex-col justify-center">
@@ -72,7 +67,9 @@ function LikeIcon(props: {
       >
         {liked ? (
           <FaHeart
-            className={`text-red-500 text-3xl mt-0.5 ${animate ? "enlarge-shrink" : ""}`}
+            className={`text-red-500 text-3xl mt-0.5 ${
+              animate ? "enlarge-shrink" : ""
+            }`}
           />
         ) : (
           <FaRegHeart className="text-red-500 text-3xl mt-0.5" />

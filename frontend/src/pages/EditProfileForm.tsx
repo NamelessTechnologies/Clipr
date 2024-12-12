@@ -42,7 +42,7 @@ const EditProfileForm: React.FC = () => {
       if (type == "image") {
         const previewURL = URL.createObjectURL(file);
         const previewImgElement = document.getElementById(
-          "img-preview",
+          "img-preview"
         ) as HTMLImageElement;
         previewImgElement.src = previewURL;
       } else {
