@@ -96,16 +96,16 @@ function ShareIcon(props: {
           onClick={toggleModal}
         >
           <div
-            className="relative p-4 w-full max-w-2xl max-h-full bg-navbar rounded-lg shadow "
+            className="relative px-6 pt-6 pb-8  w-full max-w-2xl max-h-full bg-modalBackground rounded-lg shadow"
             onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
           >
             {/* Modal content */}
-            <div className="bg-navbar">
+            <div className="bg-modalBackground">
               {/* Modal header */}
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <div className="flex items-center">
+                <span className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Share
-                </h3>
+                </span>
                 <button
                   onClick={toggleModal}
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -128,27 +128,31 @@ function ShareIcon(props: {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
+              <hr className="h-px mt-5 mb-2 bg-gray-400 border-0"></hr>
+
               {/* Modal body */}
-              <div className="p-4 md:p-5 space-y-4">
-                <h2>
-                  <b>Send to Friend</b>
-                </h2>
-                <ShareFriend
-                  users={users}
-                  url={sharedURL}
-                  media_type={props.media_type}
-                  s3link={props.s3link}
-                ></ShareFriend>
-                <div className="text-gray-100 text-center">
-                  -----------------------------OR------------------------------
+              {/* <div className="p-4 md:p-5 space-y-4"> */}
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col">
+                  <span className="text-white font-semibold mb-4">Send to Friend</span>
+                  <ShareFriend
+                    users={users}
+                    url={sharedURL}
+                    media_type={props.media_type}
+                    s3link={props.s3link}
+                  ></ShareFriend>
                 </div>
-                <h2 className="flex flex-col">
-                  <b>Send by Link</b>
+
+                <div className="text-gray-100 text-center">OR</div>
+
+                {/* send by link box */}
+                <div className="flex flex-col">
+                  <span className="text-white font-semibold">Send by Link</span>
                   <div className="flex flex-row pt-4">
                     <input
                       type="text"
                       id="first_name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="w-full p-2 rounded-lg bg-transparent border border-gray-400 placeholder:text-amber-500"
                       placeholder={sharedURL}
                       readOnly
                     />
@@ -157,10 +161,10 @@ function ShareIcon(props: {
                       onCopy={copiedToClipboard}
                     >
                       {copied ? (
-                        <button className="ml-5 text-white text-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700  dark:focus:ring-blue-800">
+                        <button className="ml-5 text-white focus:ring-4 focus:outline-none font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-700">
                           <div className=" flex flex-row">
                             <svg
-                              className="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5 mt-1"
+                              className="w-3 h-3 text-green-400 me-1.5 mt-1"
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -178,7 +182,7 @@ function ShareIcon(props: {
                           </div>
                         </button>
                       ) : (
-                        <button className="ml-5 text-white text-gray-200 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-400 dark:focus:ring-blue-800">
+                        <button className="ml-5 text-white hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-400 dark:focus:ring-blue-800">
                           <div className="flex flex-row">
                             <svg
                               className="w-3 h-5 me-1.5 mr-2"
@@ -195,10 +199,11 @@ function ShareIcon(props: {
                       )}
                     </CopyToClipboard>
                   </div>
-                </h2>
+                </div>
               </div>
+              {/* <hr className="h-px mt-5 mb-5 bg-gray-400 border-0"></hr> */}
               {/* Modal footer */}
-              <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"></div>
+              {/* <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"></div> */}
             </div>
           </div>
         </div>

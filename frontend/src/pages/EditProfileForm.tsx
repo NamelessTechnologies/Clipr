@@ -224,10 +224,10 @@ const EditProfileForm: React.FC = () => {
         {(isLoading) && <LoadingSpinner />}
     </div>
     
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
+    <div className=" bg-modalBackground flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
-        className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
+        className="bg-modalBackground rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
       >
         <div className="w-full text-amber-500 text-center text-3xl mb-6">
           Edit Profile
