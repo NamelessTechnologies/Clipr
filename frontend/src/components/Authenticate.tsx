@@ -8,8 +8,7 @@ const ShouldBeLoggedIn = (ShouldBeLoggedIn: boolean) => {
     loggedIn = true;
   }
   if (loggedIn != ShouldBeLoggedIn) {
-    navigate("/");
-    location.reload();
+    window.location.href = "https://clipr.vercel.app/";
   }
 };
 
