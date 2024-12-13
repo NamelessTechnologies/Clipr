@@ -1,3 +1,4 @@
+import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
 function PostModal(props: {post_id: number, post_url: string, media_type: string, onClose: ()=>void}) {
@@ -15,7 +16,7 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
             onClick={props.onClose}
             >
                 <div
-                className="relative p-4 w-full max-w-2xl max-h-full bg-navbar rounded-lg shadow "
+                className="relative p-4 w-full max-w-xl max-h-full bg-navbar rounded-lg shadow"
                 onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
                 >
                     {/* post modal header */}
@@ -27,27 +28,8 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
                             >
                             See Original Post
                         </button>
-                        <button
-                        onClick={props.onClose}
-                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                        <svg
-                            className="w-3 h-3"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 14"
-                        >
-                            <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                            />
-                        </svg>
-                        <span className="sr-only">Close modal</span>
-                        </button>
+                        <RxCross2 className={`absolute top-2 right-2 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
+                                            onClick={props.onClose}/>
                     </div>
                     </div>
                     {/* Post Content */}
@@ -55,7 +37,8 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
                         <img 
                         src={props.post_url} 
                         alt="post of type photo" 
-                        className="mb-4 h-auto mx-auto rounded-xl"
+                        // className="mb-4 h-auto mx-auto rounded-xl object-contain"
+                        className="mb-4 mx-auto min-w-[400px] min-h-[400px] rounded-xl max-w-full max-h-full object-contain"
                         />
                     ) : (
                         <video 
@@ -63,7 +46,7 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
                         controls
                         autoPlay={true}
                         loop
-                        className="mb-4 h-auto mx-auto rounded-xl"/>
+                        className="mb-4 mx-auto rounded-xl min-w-[400px] min-h-[400px] rounded-xl max-w-full max-h-full object-contain"/>
                     )}
 
                 </div>
