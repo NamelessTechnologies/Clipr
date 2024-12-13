@@ -20,7 +20,7 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
                 >
                     {/* post modal header */}
                     <div className="bg-navbar">
-                    <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <div className="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                         <button
                             onClick={goToOGPost}
                             className="text-white bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-4 py-2"
@@ -55,6 +55,7 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
                         <img 
                         src={props.post_url} 
                         alt="post of type photo" 
+                        className="mb-4 h-auto mx-auto rounded-xl"
                         />
                     ) : (
                         <video 
