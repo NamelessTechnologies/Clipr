@@ -5,7 +5,7 @@ import placeholder from "../../assets/placeholder.png";
 import { PostModal } from "../post/PostModal";
 // import { Post } from "../Post";
 
-function ProfilePost(props: { post_id: number, post_url: string; media_type: string }) {
+function ProfilePost(props: { post_id?: number, post_url: string; media_type: string }) {
   const [valid, setValid] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -68,7 +68,7 @@ function ProfilePost(props: { post_id: number, post_url: string; media_type: str
 
               {/* post modal */}
               <div>
-                {isModalVisible && <PostModal post_id={props.post_id} post_url={props.post_url} media_type={props.media_type} onClose={handleCloseModal}/>}
+                {isModalVisible && props.post_id && <PostModal post_id={props.post_id} post_url={props.post_url} media_type={props.media_type} onClose={handleCloseModal}/>}
               </div>
             </>
           ) : (
@@ -100,7 +100,7 @@ function ProfilePost(props: { post_id: number, post_url: string; media_type: str
 
               {/* post modal */}
               <div>
-                {isModalVisible && <PostModal post_id={props.post_id} post_url={props.post_url} media_type={props.media_type} onClose={handleCloseModal}/>}
+                {isModalVisible && props.post_id && <PostModal post_id={props.post_id} post_url={props.post_url} media_type={props.media_type} onClose={handleCloseModal}/>}
               </div>
 
             </>
