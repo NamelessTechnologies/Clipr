@@ -216,9 +216,15 @@ function Post(props: {
       {props.loggedOut ? (
         <div className="text-amber-500 text-lg">{postUser}</div>
       ) : (
-        <button className="text-amber-500 text-lg pointer-events-auto:hover" 
-          onClick={() => {goToTheProfile(postUserID?.toString()!);
-        }}>{postUser}</button>
+        <button
+          className="text-amber-500 text-lg pointer-events-auto:hover"
+          onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+            goToTheProfile(postUserID?.toString()!);
+          }}
+        >
+          {postUser}
+        </button>
       )}
 
       {/* post description */}

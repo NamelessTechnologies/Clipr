@@ -4,7 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import UserModel from "../../types/User";
 import { uri } from "../../App";
 import { ShareFriend } from "./ShareFriend";
-import { RxCross2  } from "react-icons/rx";
+import { RxCross2 } from "react-icons/rx";
 
 function ShareIcon(props: {
   post_id: number;
@@ -107,8 +107,10 @@ function ShareIcon(props: {
                 <span className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Share
                 </span>
-                <RxCross2 className={`absolute top-3 right-3 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
-                          onClick={toggleModal}/>
+                <RxCross2
+                  className={`absolute top-3 right-3 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
+                  onClick={toggleModal}
+                />
               </div>
               <hr className="h-px mt-5 mb-2 bg-gray-400 border-0"></hr>
 
@@ -116,12 +118,15 @@ function ShareIcon(props: {
               {/* <div className="p-4 md:p-5 space-y-4"> */}
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
-                  <span className="text-white font-semibold mb-4">Send to Friend</span>
+                  <span className="text-white font-semibold mb-4">
+                    Send to Friend
+                  </span>
                   <ShareFriend
                     users={users}
                     url={sharedURL}
                     media_type={props.media_type}
                     s3link={props.s3link}
+                    post_id={props.post_id}
                   ></ShareFriend>
                 </div>
 
