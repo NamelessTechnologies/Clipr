@@ -115,7 +115,7 @@ const CreatePost: React.FC = () => {
 
     const uid = userInfo["user_id"];
     let postID = 0;
-
+    F;
     if (media_type != "text") {
       let fileLocation = "";
 
@@ -286,7 +286,7 @@ const CreatePost: React.FC = () => {
                     onClick={toggle}
                     className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
                   >
-                    Record Screen
+                    Record Media
                   </div>
                 </div>
               </div>
