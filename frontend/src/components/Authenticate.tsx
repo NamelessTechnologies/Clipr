@@ -9,6 +9,7 @@ const ShouldBeLoggedIn = (ShouldBeLoggedIn: boolean) => {
   }
   if (loggedIn != ShouldBeLoggedIn) {
     navigate("/");
+    location.reload();
   }
 };
 
