@@ -10,6 +10,39 @@ namespace backend.Controllers;
 
 public class PostController : ControllerBase {
 
+    [HttpGet("searchPost/{p}")]
+    public IActionResult getPostFromSearch(string p)
+    {
+
+        // var sql = "SELECT user_id,username,nickname,pfp FROM users WHERE (LOWER(username) LIKE '%' || '" + p.ToLower() + "' || '%') OR (LOWER(nickname) LIKE '%' || '" + u.ToLower() + "' || '%')";
+
+        var sql = "WITH link_table AS (SELECT * FROM media WHERE post_id IN (SELECT post_id FROM post ORDER BY post_id DESC)) SELECT post.post_id, post.media_type, link_table.url FROM link_table  INNER JOIN post ON post.post_id = link_table.post_id  WHERE (LOWER(post.title) LIKE '%' || '" + p.ToLower() + "' || '%') OR (LOWER(post.description) LIKE '%' || '" + p.ToLower() + "' || '%') ORDER BY post_id DESC";
+        // Console.WriteLine(sql);
+        using var conn = DBConn.GetConn();
+        conn.Open();
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        // var searchParam = $"%{p.ToLower()}%";
+        // cmd.Parameters.AddWithValue("@search", searchParam);
+
+        var reader = cmd.ExecuteReader();
+
+        if (!reader.HasRows) {
+            return BadRequest("No Comments");
+        }
+
+        var profilePosts = new List<ProfilePost>();
+        while (reader.Read()) {
+            ProfilePost comment = new ProfilePost {
+                Post_Id = reader.GetInt32(0),
+                Media_Type = reader.GetString(1),
+                Media_Link = reader.GetString(2)
+            };
+            profilePosts.Add(comment);
+        }
+        return Ok(profilePosts);
+    }
+
     [HttpPost("likeComment")]
     public async Task<IActionResult> likeComment([FromForm] int user_id, [FromForm] int comment_id) {
         var sql = "INSERT INTO comment_like (user_id, comment_id) VALUES(@user_id, @comment_id);";
