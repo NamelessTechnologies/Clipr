@@ -4,6 +4,7 @@ const ShouldBeLoggedIn = (ShouldBeLoggedIn: boolean) => {
   if (getUser) {
     loggedIn = true;
   }
+  localStorage.removeItem("heylol");
   if (loggedIn != ShouldBeLoggedIn) {
     window.location.href = "https://clipr.vercel.app/";
   }

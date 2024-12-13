@@ -7,7 +7,7 @@ interface mediaRecorder {
 }
 const ScreenRecorder = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [isCamera, setIsCamera] = useState<boolean>(false);
+  const [isCamera, setIsCamera] = useState<boolean>(true);
   const [media, setMedia] = useState<mediaRecorder>({ screen: true });
 
   const toggle = () => {
@@ -29,14 +29,22 @@ const ScreenRecorder = () => {
     }
   };
 
-  useEffect(() => {}, []);
-
   const { startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder(media);
+
+  useEffect(() => {
+    if (mediaBlobUrl) {
+      localStorage.setItem("heylol", mediaBlobUrl);
+      window.dispatchEvent(new Event("heylol"));
+    } else {
+      localStorage.removeItem("heylol");
+    }
+  }, [mediaBlobUrl]);
 
   return (
     <div>
       <video
+        id="skibidiToilet"
         height={200}
         width={400}
         src={mediaBlobUrl}
@@ -57,18 +65,6 @@ const ScreenRecorder = () => {
             {isCamera ? (
               <div>
                 <label className="block text-white text-lg font-semibold mt-4 mb-2">
-                  Current Recording Type: Camera
-                </label>
-                <div
-                  onClick={mediaType}
-                  className="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
-                >
-                  Record Screen Instead
-                </div>
-              </div>
-            ) : (
-              <div>
-                <label className="block text-white text-lg font-semibold mt-4 mb-2">
                   Current Recording Type: Screen
                 </label>
                 <div
@@ -76,6 +72,18 @@ const ScreenRecorder = () => {
                   className="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
                 >
                   Record Camera Instead
+                </div>
+              </div>
+            ) : (
+              <div>
+                <label className="block text-white text-lg font-semibold mt-4 mb-2">
+                  Current Recording Type: Camera
+                </label>
+                <div
+                  onClick={mediaType}
+                  className="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
+                >
+                  Record Screen Instead
                 </div>
               </div>
             )}

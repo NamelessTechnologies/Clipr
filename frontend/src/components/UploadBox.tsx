@@ -30,11 +30,36 @@ const CreatePost: React.FC = () => {
   const [currentUser, setCurrentUser] = useState(
     localStorage.getItem("user") || ""
   );
+
   let userInfo = JSON.parse(currentUser);
+
+  window.addEventListener("heylol", async () => {
+    const blob = localStorage.getItem("heylol");
+    if (blob) {
+      const response = await fetch(blob);
+      const newBlob = await response.blob();
+      const newName = generateRandomString(20);
+      // Create a File from the Blob
+      const file = new File([newBlob], newName, { type: newBlob.type });
+      setImage(file);
+      setMediaType("video");
+    }
+  });
+
+  function generateRandomString(length: number) {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  }
 
   const toggle = () => {
     setRecording(!isRecording);
-    console.log("hi");
   };
 
   const toggleModal = () => {
@@ -50,6 +75,7 @@ const CreatePost: React.FC = () => {
       }
     };
     window.addEventListener("storage", handleStorageChange);
+    localStorage.removeItem("heylol");
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
@@ -63,7 +89,6 @@ const CreatePost: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      console.log("hi");
       const temp_type = file?.type;
       const type = temp_type?.split("/")[0];
       setMediaType(type);
