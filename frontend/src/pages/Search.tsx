@@ -4,7 +4,6 @@ import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { local_uri, uri } from "../App";
-import PostModel from "../types/Post";
 import ProfilePost from "../components/profile/ProfilePost";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
@@ -21,6 +20,7 @@ interface PartialPostModel {
   media_Type: string;
   media_Link: string;
 }
+
 function Search() {
   ShouldBeLoggedIn(true);
   const navigate = useNavigate();
