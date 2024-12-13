@@ -1,7 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
 function SearchBar() {
-  const navigate = useNavigate();
   function goToSearchPage(): void {
     const input = (document.getElementById("search") as HTMLInputElement).value;
     if (input) {
