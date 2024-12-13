@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import UserModel from "../../types/User";
 import { useNavigate } from "react-router-dom";
 import { uri } from "../../App";
+import { RxCross2  } from "react-icons/rx";
 
 interface propTypes {
   open: boolean;
@@ -115,42 +116,30 @@ const FollowersModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()
                 ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
                 onClick={(e) => e.stopPropagation()}
                 >
-                <button 
-                className={`absolute top-2 right-2 px-2 border border-neutral-200 rounded-md 
-                text-gray-400 bg-gray-500 bg-opacity-70`}
-                onClick={onClose}>
-                    x
-                </button>
-                {/* {children} */}
-                <div className="friends-container pt-3">
-              <div className="flex flex-col justify-center text-yellow-100 text-center text-3xl pr-2">
-                  Followers
-              </div>
-              <hr className="h-px my-2 bg-gray-400 border-0"></hr>
+                <RxCross2 className={`absolute top-2 right-2 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
+                          onClick={onClose}/>
 
-        {user?.map((user) => (
-            <div 
-              onClick={() => {
-                goToTheProfile(user.user_id.toString());
-              }} 
-              className="flex p-4 text-white hover:cursor-pointer space-x-6" 
-              key={user.user_id}>
-
-              <img src={user.pfp} alt="pfp" className="object-cover w-16 h-16 rounded-full"/>
-              <div className="flex flex-col">
-                <div className="text-white text-base italic pr-2">
-                {user.nickname}
+                <div className="text-yellow-100 text-center text-3xl">
+                    Followers
                 </div>
-                <div className="text-yellow-100 text-xl pr-2">
-                {user.username}
-              </div>
-            </div>
-            </div>
+                <hr className="h-px my-2 bg-gray-400 border-0"></hr>
 
-            
-        ))}
-        </div>
-            
+                {user?.map((user) => (
+                    <div 
+                      className="flex p-4 text-white" 
+                      key={user.user_id}>
+
+                      <img src={user.pfp} alt="pfp" className="object-cover w-16 h-16 rounded-full hover:cursor-pointer" onClick={() => { goToTheProfile(user.user_id.toString()); }} />
+                      <div className="flex flex-col ml-6 my-auto hover:cursor-pointer" onClick={() => { goToTheProfile(user.user_id.toString()); }}>
+                        <div className="text-white text-xl">
+                        {user.username}
+                        </div>
+                        <div className="text-yellow-100 text-sm italic">
+                        {user.nickname}
+                        </div>
+                      </div>
+                    </div>
+                ))}
             </div>
         </div>
     </div>
