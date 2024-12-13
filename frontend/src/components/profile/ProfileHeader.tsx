@@ -310,21 +310,21 @@ function ProfileHeader(props: { profile_id: string; userData: UserModel }) {
 
             <div className="flex gap-5 mt-3">
             <div className="Followers-box">
-              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowersOpen(true)}> 
+              <div className="text-white hover:cursor-pointer text-lg " onClick={() => setFollowersOpen(true)}> 
                 <span className="font-bold">{followerCount + " "}</span>
                 Followers
                 <FollowersModal open={followersOpen} onClose={() => setFollowersOpen(false)} profile_id={profileID}/>
               </div>
             </div>
             <div className="Following-box">
-              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFollowingOpen(true)}>
+              <div className="text-white hover:cursor-pointer text-lg" onClick={() => setFollowingOpen(true)}>
                 <span className="font-bold">{followingCount + " "}</span>
                 Following
                 <FollowingModal open={followingOpen} onClose={() => setFollowingOpen(false)} profile_id={profileID}/>
               </div>
             </div>
             <div className="Friends-box">
-              <div className="text-white text-base hover:cursor-pointer text-lg" onClick={() => setFriendsOpen(true)}>
+              <div className="text-white hover:cursor-pointer text-lg" onClick={() => setFriendsOpen(true)}>
                 <span className="font-bold">{friendCount + " "}</span>
                 Friends
                 <FriendsModal open={friendsOpen} onClose={() => setFriendsOpen(false)} profile_id={profileID}/>
