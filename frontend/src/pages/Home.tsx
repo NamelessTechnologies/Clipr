@@ -93,7 +93,7 @@ function Home() {
           {transparentUp ? (
             <FaArrowAltCircleUp
               onClick={handleUp}
-              className="fixed left-48 top-1/3 text-white w-12 h-12 hidden"
+              className="fixed left-48 top-1/3 text-white w-12 h-12 hidden cursor-pointer"
             >
               {" "}
               click to go down{" "}
@@ -101,7 +101,7 @@ function Home() {
           ) : (
             <FaArrowAltCircleUp
               onClick={handleUp}
-              className="fixed left-48 top-1/3 text-white w-12 h-12"
+              className="fixed left-48 top-1/3 text-white w-12 h-12 cursor-pointer hover:text-zinc-300"
             >
               {" "}
               click to go down{" "}
@@ -111,7 +111,7 @@ function Home() {
           {transparentDown ? (
             <FaArrowAltCircleDown
               onClick={handleDown}
-              className="fixed left-48 top-2/4 text-white w-12 h-12 hidden"
+              className="fixed left-48 top-2/4 text-white w-12 h-12 hidden cursor-pointer"
             >
               {" "}
               click to go down{" "}
@@ -119,7 +119,7 @@ function Home() {
           ) : (
             <FaArrowAltCircleDown
               onClick={handleDown}
-              className="fixed left-48 top-2/4 text-white w-12 h-12"
+              className="fixed left-48 top-2/4 text-white w-12 h-12 cursor-pointer hover:text-zinc-300"
             >
               {" "}
               click to go down{" "}
