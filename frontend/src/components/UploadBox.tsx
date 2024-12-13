@@ -274,7 +274,12 @@ const CreatePost: React.FC = () => {
                     />
                   </label>
                 </div>
-                <div className="text-white">{fileName}</div>
+                <div className="text-white">
+                  {fileName.length > 30
+                    ? fileName.slice(0, 20) + "..."
+                    : fileName}
+                </div>
+
                 <label className="block text-white text-lg font-semibold mt-4 mb-2">
                   Upload File
                 </label>
@@ -296,7 +301,7 @@ const CreatePost: React.FC = () => {
               Title
             </label>
             <input
-              maxLength={100}
+              maxLength={40}
               type="text"
               value={title}
               required
@@ -305,14 +310,14 @@ const CreatePost: React.FC = () => {
               className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
             />
             <span className="text-white text-sm float-right">
-              {title.length} / 100
+              {title.length} / 40
             </span>
 
             <label className="block text-white text-lg font-semibold mt-6 mb-2">
               Content:
             </label>
             <textarea
-              maxLength={500}
+              maxLength={100}
               id="content"
               value={post.content}
               onChange={handleInputChange}
@@ -322,7 +327,7 @@ const CreatePost: React.FC = () => {
               placeholder="Share your thoughts!"
             />
             <span className="text-white text-sm float-right">
-              {post.content.length} / 500
+              {post.content.length} / 100
             </span>
           </div>
           <button
