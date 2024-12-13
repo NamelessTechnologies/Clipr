@@ -15,7 +15,7 @@ function QuerriedProfile(props: {
   return (
     <div
       onClick={props.onClick}
-      className="flex justify-center w-screen h-scree hover:cursor-pointer"
+      className="flex justify-center  hover:cursor-pointer"
     >
       <div className="flex flex-row">
         <div className="pt-3">

@@ -95,7 +95,6 @@ function IsolatedPostComponent(props: { post_id: string }) {
         </>
       ) : (
         <>
-          <AltNavBar />
           <div className="flex justify-center mt-6 mb-4">
             <Post
               postData={post}
