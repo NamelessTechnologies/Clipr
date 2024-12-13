@@ -10,6 +10,7 @@ function CommentBox(props: {
   user_id: number;
   username: string;
   user_pfp: string;
+  loggedOut?: boolean;
 }) {
   const [userComment, setUserComment] = useState("");
   const [comments, setComments] = useState<CommentModel[]>([]);
@@ -125,29 +126,32 @@ function CommentBox(props: {
         ))}
       </div>
 
-      {/* textbox to post comment */}
-      <div className="flex items-center pl-4 pr-6 py-10 mt-auto w-full h-16 rounded-b-xl border-t">
-        <img
-          src={props.user_pfp}
-          className="w-12 h-12 shrink-0 rounded-full mr-3"
-        ></img>
-
-        {/* <input type="text" className="bg-transparent outline-none border-b text-white px-1 my-auto w-full" placeholder="Leave a comment"></input>
+      {/* <input type="text" className="bg-transparent outline-none border-b text-white px-1 my-auto w-full" placeholder="Leave a comment"></input>
                 <SendIcon/> */}
-        <form onSubmit={postComment} className="flex w-full">
-          <input
-            type="text"
-            className="text-white w-full mr-2 bg-transparent outline-none border-b py-1"
-            placeholder="Leave a comment"
-            value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-          ></input>
+      {props.loggedOut ? (
+        <div></div>
+      ) : (
+        <div className="flex items-center pl-4 pr-6 py-10 mt-auto w-full h-16 rounded-b-xl border-t">
+          <img
+            src={props.user_pfp}
+            className="w-12 h-12 shrink-0 rounded-full mr-3"
+          ></img>
+          <form onSubmit={postComment} className="flex w-full">
+            <input
+              type="text"
+              className="text-white w-full mr-2 bg-transparent outline-none border-b py-1"
+              placeholder="Leave a comment"
+              value={userComment}
+              onChange={(e) => setUserComment(e.target.value)}
+            ></input>
 
-          <button type="submit" className="">
-            <SendIcon />
-          </button>
-        </form>
-      </div>
+            <button type="submit" className="">
+              <SendIcon />
+            </button>
+          </form>
+          \
+        </div>
+      )}
     </div>
   );
 }
