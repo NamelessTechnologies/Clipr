@@ -10,6 +10,7 @@ interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
   mediaType: string;
   nickname?: string;
+  postid?: string;
 }
 function IntegratedMessages(props: {
   convo_id: string;
@@ -79,7 +80,8 @@ function IntegratedMessages(props: {
           (media: MessageModel) => {
             if (media.content.includes("π")) {
               const hasMedia = true;
-              const [mediaUrl, mediaType] = media.content.split("π");
+              const [mediaUrl, mediaType, postid] = media.content.split("π");
+              console.log(mediaUrl, postid);
               return {
                 id: media.id,
                 convo_id: media.convo_id,
@@ -89,6 +91,7 @@ function IntegratedMessages(props: {
                 user_pfp: media.user_pfp,
                 hasMedia,
                 mediaType,
+                postid,
               };
             }
             return {
@@ -192,6 +195,7 @@ function IntegratedMessages(props: {
           {messages.map((msg) =>
             msg.hasMedia ? (
               <EmbeddedPost
+                post_id={msg.postid as unknown as number}
                 msg={msg}
                 sender={msg.user_id === userInfo["user_id"]}
               ></EmbeddedPost>

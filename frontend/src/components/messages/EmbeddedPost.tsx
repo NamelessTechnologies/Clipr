@@ -8,12 +8,14 @@ interface ExtendedMessageModel extends MessageModel {
 const EmbeddedPost = (props: {
   msg: ExtendedMessageModel;
   sender: boolean;
+  post_id: number;
 }) => {
   return (
     <div>
       {props.sender ? (
         <div className="flex py-4 justify-end">
           <ProfilePost
+            post_id={props.post_id}
             post_url={props.msg.content}
             media_type={props.msg.mediaType}
           ></ProfilePost>
@@ -29,6 +31,7 @@ const EmbeddedPost = (props: {
             className="w-8 h-8 rounded-full mr-3"
           ></img>
           <ProfilePost
+            post_id={props.post_id}
             post_url={props.msg.content}
             media_type={props.msg.mediaType}
           ></ProfilePost>

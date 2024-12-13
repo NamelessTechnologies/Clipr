@@ -87,7 +87,7 @@ function Home() {
   return (
     <>
       {foundUser ? (
-        <div>
+        <div className="">
           {darkMode && <div className="fixed bg-black inset-0 z-10"></div>}
 
           {transparentUp ? (
