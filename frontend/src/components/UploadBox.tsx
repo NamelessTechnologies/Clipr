@@ -59,7 +59,9 @@ const CreatePost: React.FC = () => {
   }
 
   const toggle = () => {
+    setImage(null);
     setRecording(!isRecording);
+    setFileName("");
   };
 
   const toggleModal = () => {
@@ -105,6 +107,11 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(image);
+    if (!fileName) {
+      alert("most upload file first");
+      return;
+    }
 
     const uid = userInfo["user_id"];
     let postID = 0;
@@ -184,6 +191,7 @@ const CreatePost: React.FC = () => {
         return;
       }
     }
+    setFileName("");
     setTitle("");
     setPost({ content: "" });
     setImage(null);
@@ -202,11 +210,17 @@ const CreatePost: React.FC = () => {
         <div className="w-full text-white text-center text-3xl mt-6 mb-3">
           Create New Post
         </div>
-        <form onSubmit={createPost} className=" rounded items-center">
+        <form
+          noValidate
+          onSubmit={createPost}
+          className=" rounded items-center"
+        >
           <div>
             {isRecording ? (
               <div>
-                <ScreenRecorder></ScreenRecorder>
+                <div className="flex justify-center items-center al">
+                  <ScreenRecorder></ScreenRecorder>
+                </div>
                 <div className="text-center mt-3 mb-3 text-gray-100">
                   --------------------or--------------------
                 </div>
@@ -246,8 +260,8 @@ const CreatePost: React.FC = () => {
                         <span className="font-semibold">Click to upload</span>{" "}
                         or drag and drop
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      <p className="mb-2 text-sm text-gray-300 dark:text-gray-400">
+                        Video Formats are accepted
                       </p>
                     </div>
                     <input
@@ -268,12 +282,12 @@ const CreatePost: React.FC = () => {
                   --------------------or--------------------
                 </div>
                 <div className="flex justify-center items-center">
-                  <button
+                  <div
                     onClick={toggle}
                     className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
                   >
-                    Record Screen
-                  </button>
+                    Record Media
+                  </div>
                 </div>
               </div>
             )}
@@ -282,6 +296,7 @@ const CreatePost: React.FC = () => {
               Title
             </label>
             <input
+              maxLength={100}
               type="text"
               value={title}
               required
@@ -297,6 +312,7 @@ const CreatePost: React.FC = () => {
               Content:
             </label>
             <textarea
+              maxLength={500}
               id="content"
               value={post.content}
               onChange={handleInputChange}
