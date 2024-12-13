@@ -80,9 +80,6 @@ function IsolatedPostComponent(props: { post_id: string }) {
     <div>
       {foundUser ? (
         <>
-          <div className="invisible -mb-5">
-            <AltNavBar />
-          </div>
           <div className="flex justify-center mt-6 mb-4 -mt-5">
             <Post postData={post} currentUserID={userInfo["user_id"]} />
             <CommentBox
@@ -95,6 +92,7 @@ function IsolatedPostComponent(props: { post_id: string }) {
         </>
       ) : (
         <>
+          <AltNavBar />
           <div className="flex justify-center mt-6 mb-4">
             <Post
               postData={post}

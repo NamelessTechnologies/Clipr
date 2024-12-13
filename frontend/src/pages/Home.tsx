@@ -88,7 +88,7 @@ function Home() {
     <>
       {foundUser ? (
         <div className="">
-          {darkMode && <div className="fixed bg-black inset-0 z-10"></div>}
+          {darkMode && <div className="fixed bg-black inset-0 z-20"></div>}
 
           {transparentUp ? (
             <FaArrowAltCircleUp
@@ -128,7 +128,7 @@ function Home() {
 
           <PostBox postID={allPosts![currentPostIndex!]!} />
 
-          <div className="fixed bottom-5 right-5 z-20 flex items-center">
+          <div className="fixed bottom-5 right-5 z-30 flex items-center">
             {darkMode ? (
               <IoMoon className="text-[#d78d35]" />
             ) : (
