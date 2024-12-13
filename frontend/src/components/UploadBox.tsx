@@ -109,7 +109,7 @@ const CreatePost: React.FC = () => {
     event.preventDefault();
     console.log(image);
     if (!fileName) {
-      alert("most upload file first");
+      alert("must upload file first");
       return;
     }
 

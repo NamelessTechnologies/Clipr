@@ -12,6 +12,7 @@ interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
   mediaType: string;
   nickname?: string;
+  postid?: string;
 }
 const Messages: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -74,7 +75,7 @@ const Messages: React.FC = () => {
           (media: MessageModel) => {
             if (media.content.includes("π")) {
               const hasMedia = true;
-              const [mediaUrl, mediaType] = media.content.split("π");
+              const [mediaUrl, mediaType, postid] = media.content.split("π");
               return {
                 id: media.id,
                 convo_id: media.convo_id,
@@ -84,6 +85,7 @@ const Messages: React.FC = () => {
                 user_pfp: media.user_pfp,
                 hasMedia,
                 mediaType,
+                postid,
               };
             }
             return {
@@ -188,6 +190,7 @@ const Messages: React.FC = () => {
           {messages.map((msg) =>
             msg.hasMedia ? (
               <EmbeddedPost
+                post_id={msg.postid as unknown as number}
                 msg={msg}
                 sender={msg.user_id === userInfo["user_id"]}
               ></EmbeddedPost>

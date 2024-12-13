@@ -10,11 +10,13 @@ function ShareFriend(props: {
   url: string;
   media_type: string;
   s3link: string;
+  post_id: number;
 }) {
   const currentUser = localStorage.getItem("user");
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const userID = userInfo["user_id"] as number;
   const userPFP = userInfo["pfp"] as string;
+  const userNickname = userInfo["nickname"] as string;
 
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
@@ -39,9 +41,10 @@ function ShareFriend(props: {
       }
       const postMessage = {
         Convo_id: convoID,
-        Content: `${props.s3link}π${props.media_type}`,
+        Content: `${props.s3link}π${props.media_type}π${props.post_id}`,
         Datesent: new Date(),
         User_id: userID,
+        nickname: userNickname,
       };
       console.log(postMessage);
       try {
