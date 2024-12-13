@@ -206,7 +206,9 @@ const CreatePost: React.FC = () => {
           <div>
             {isRecording ? (
               <div>
-                <ScreenRecorder></ScreenRecorder>
+                <div className="flex justify-center items-center al">
+                  <ScreenRecorder></ScreenRecorder>
+                </div>
                 <div className="text-center mt-3 mb-3 text-gray-100">
                   --------------------or--------------------
                 </div>
@@ -245,9 +247,6 @@ const CreatePost: React.FC = () => {
                       <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                         <span className="font-semibold">Click to upload</span>{" "}
                         or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
                       </p>
                     </div>
                     <input
