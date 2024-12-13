@@ -119,7 +119,7 @@ const FriendsModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()=>
         <RxCross2 className={`absolute top-2 right-2 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
                   onClick={onClose}/>
 
-        <div className="text-yellow-100 text-center text-3xl">
+        <div className="text-white text-center text-3xl">
             Friends
         </div>
         <hr className="h-px my-2 bg-gray-400 border-0"></hr>
