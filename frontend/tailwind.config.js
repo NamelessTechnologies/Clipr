@@ -15,6 +15,7 @@ export default {
         like_button_bg: "#4D4D4D",
         scrollbarTrack: "#f0f0f0",
         scrollbarThumb: "#a0a0a0",
+        modalBackground: "#1D1D1D"
       },
       height: {
         "90%": "95%",

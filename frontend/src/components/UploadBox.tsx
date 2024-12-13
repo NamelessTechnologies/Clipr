@@ -148,9 +148,11 @@ const CreatePost: React.FC = () => {
         </div>
 
         <div className="flex-col w-1/3 h-4/6 mt-14 px-10 bg-navbar border border-x-gray-300">
-        <div className="w-full text-white text-center text-3xl mt-6 mb-6">
+        <div className="w-full text-amber-500 text-center text-3xl mt-8 mb-6">
             Create New Post
         </div>
+        <hr className="h-px mb-6 bg-gray-400 border-0"></hr>
+
         <form onSubmit={createPost} className=" rounded items-center">
             <div>
             <label className="block text-white text-lg font-semibold mb-2">
@@ -163,7 +165,7 @@ const CreatePost: React.FC = () => {
                 accept="image/*, video/*"
                 onChange={handleFileChange}
                 className="text-white"></input>
-            <label className="block text-white text-lg font-semibold mb-2">
+            <label className="block text-white text-lg font-semibold mb-2 mt-6">
                 Title
             </label>
             <input
@@ -173,6 +175,7 @@ const CreatePost: React.FC = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Title"
                 className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
+                maxLength={100}
             />
             <span className="text-white text-sm float-right">
                 {title.length} / 100
@@ -189,16 +192,16 @@ const CreatePost: React.FC = () => {
                 rows={6}
                 className="w-full h-2/3 py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
                 placeholder="Share your thoughts!"
+                maxLength={500}
             />
             <span className="text-white text-sm float-right">
                 {post.content.length} / 500
             </span>
             </div>
             <button
-            type="submit"
-            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded"
-            >
-            Post
+              type="submit"
+              className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded">
+              Post
             </button>
         </form>
         </div>
