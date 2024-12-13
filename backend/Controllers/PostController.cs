@@ -332,11 +332,15 @@ public class PostController : ControllerBase {
         using var conn = DBConn.GetConn();
         conn.Open();
 
+        var zone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+        var utcNow = DateTime.UtcNow;
+        var pacificNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, zone);
+
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", post.UserID);
             cmd.Parameters.AddWithValue("title", post.Title);
             cmd.Parameters.AddWithValue("content", post.Content);
-            cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
+            cmd.Parameters.AddWithValue("datePosted", pacificNow);
 
             await cmd.ExecuteNonQueryAsync();
         }
@@ -350,11 +354,15 @@ public class PostController : ControllerBase {
         using var conn = DBConn.GetConn();
         conn.Open();
 
+        var zone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+        var utcNow = DateTime.UtcNow;
+        var pacificNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, zone);
+
         await using (var cmd = new NpgsqlCommand(sql, conn)) {
             cmd.Parameters.AddWithValue("user_id", user_id);
             cmd.Parameters.AddWithValue("title", title);
             cmd.Parameters.AddWithValue("description", description);
-            cmd.Parameters.AddWithValue("datePosted", DateTime.Now);
+            cmd.Parameters.AddWithValue("datePosted", pacificNow);
             cmd.Parameters.AddWithValue("media_type", media_type);
 
             var insertedId = (int) await cmd.ExecuteScalarAsync();
@@ -440,12 +448,16 @@ public class PostController : ControllerBase {
 
                 var sql = "INSERT INTO temp_photo_post (user_id, title, content, datePosted, photo_data) VALUES (@userId, @title, @content, @datePosted, @photoData);"; 
 
+                var zone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                var utcNow = DateTime.UtcNow;
+                var pacificNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, zone);
+
                 using (var cmd = new NpgsqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("userId", userId);
                     cmd.Parameters.AddWithValue("title", title);
                     cmd.Parameters.AddWithValue("content", content);
-                    cmd.Parameters.AddWithValue("datePosted", DateTime.Now); 
+                    cmd.Parameters.AddWithValue("datePosted", pacificNow); 
                     cmd.Parameters.AddWithValue("photoData", imageBytes);
 
                     await cmd.ExecuteScalarAsync();
