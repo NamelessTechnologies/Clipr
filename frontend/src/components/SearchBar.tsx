@@ -5,7 +5,7 @@ function SearchBar() {
   function goToSearchPage(): void {
     const input = (document.getElementById("search") as HTMLInputElement).value;
     if (input) {
-      navigate(`/Search?q=${input}`);
+      window.location.href = `https://clipr.vercel.app/Search?q=${input}`;
     }
   }
 
