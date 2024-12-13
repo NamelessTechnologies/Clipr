@@ -105,10 +105,10 @@ const Messages: React.FC = () => {
   }, [secondUserID, userID]);
 
   useEffect(() => {
-    if (incomingMessage && incomingMessage.convo_id.toString() === convoID) {
+    if (incomingMessage && (incomingMessage.convo_id as unknown as string)) {
       setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
-  }, [incomingMessage, convoID]);
+  }, [convoID, incomingMessage]);
 
   // automatically scrolls to bottom of message box to go to most recent message
   useEffect(() => {

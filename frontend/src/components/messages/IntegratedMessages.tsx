@@ -53,6 +53,12 @@ function IntegratedMessages(props: {
     };
   }, []);
 
+  useEffect(() => {
+    if (incomingMessage && (incomingMessage.convo_id as unknown as string)) {
+      setMessages((prevMessages) => [...prevMessages, incomingMessage]);
+    }
+  }, [convoID, incomingMessage]);
+
   // this useEffect contains two functions which fetches the other user's pfp and all messages between the current and other user
   useEffect(() => {
     console.log("FETCHING MESSAGES");
@@ -111,12 +117,6 @@ function IntegratedMessages(props: {
     };
     fetchMessages();
   }, [secondUserID, userID]);
-
-  useEffect(() => {
-    if (incomingMessage && incomingMessage.convo_id.toString() === convoID) {
-      setMessages((prevMessages) => [...prevMessages, incomingMessage]);
-    }
-  }, [incomingMessage, convoID]);
 
   // automatically scrolls to bottom of message box to go to most recent message
   useEffect(() => {
