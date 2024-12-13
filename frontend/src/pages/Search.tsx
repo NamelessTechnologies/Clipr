@@ -58,8 +58,11 @@ function Search() {
     navigate(`/Profile?profile_id=${index}`);
   };
 
-  const toggle = () => {
-    setIsByUser(!isByUser);
+  const toUser = () => {
+    setIsByUser(true);
+  };
+  const toPost = () => {
+    setIsByUser(false);
   };
 
   return (
@@ -68,13 +71,14 @@ function Search() {
         <div className="flex flex-col justify-start w-screen h-screen">
           {isByUser ? (
             <div>
-              <div
-                onClick={toggle}
-                className="ml-5  mt-5 text-center w-[10vw] text-white focus:ring-4 focus:outline-none font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-700 hover:bg-amber-400 cursor-pointer"
-              >
-                Filter by Video
-              </div>
-              <div className="text-center text-2xl font-medium text-white pt-3">
+              <div className="flex flex-col text-center text-2xl font-medium text-white pt-3">
+                <div className="flex flex-row text-center align-center justify-center">
+                  <div onClick={toUser} className="mr-3">
+                    <u>User</u>
+                  </div>
+                  <div onClick={toPost}>|</div>
+                  <div className="ml-3">Posts</div>
+                </div>
                 Search Results for: {query}
               </div>
               {searchResults.map((result) => (
@@ -90,12 +94,28 @@ function Search() {
             </div>
           ) : (
             <div>
-              <div
-                onClick={toggle}
-                className="ml-5  mt-5 text-center w-[10vw] text-white focus:ring-4 focus:outline-none font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-700 hover:bg-amber-400 cursor-pointer"
-              >
-                Filter by Users
+              <div className="flex flex-col text-center text-2xl font-medium text-white pt-3">
+                <div className="flex flex-row text-center align-center justify-center">
+                  <div onClick={toUser} className="mr-3">
+                    User
+                  </div>
+                  <div onClick={toPost}>|</div>
+                  <div className="ml-3">
+                    <u>Posts</u>
+                  </div>
+                </div>
+                Search Results for: {query}
               </div>
+              {searchResults.map((result) => (
+                <QuerriedProfile
+                  key={result.user_id}
+                  onClick={() => goToTheProfile(result.user_id.toString())}
+                  user_id={result.user_id as unknown as string}
+                  username={result.username}
+                  nickname={result.nickname}
+                  pfp={result.pfp}
+                ></QuerriedProfile>
+              ))}
             </div>
           )}
         </div>
