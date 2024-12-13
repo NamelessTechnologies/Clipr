@@ -228,7 +228,7 @@ public class PostController : ControllerBase {
         var reader = cmd.ExecuteReader();
 
         if (!reader.HasRows) {
-            return BadRequest("No Comments");
+            return BadRequest("No posts found.");
         }
 
         var profilePosts = new List<ProfilePost>();
@@ -253,7 +253,7 @@ public class PostController : ControllerBase {
         var reader = cmd.ExecuteReader();
 
         if (!reader.HasRows) {
-            return BadRequest("No Comments");
+            return BadRequest("No saves found.");
         }
 
         var profilePosts = new List<ProfilePost>();
