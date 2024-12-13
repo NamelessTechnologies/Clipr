@@ -1,3 +1,4 @@
+import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
 function PostModal(props: {
@@ -12,68 +13,51 @@ function PostModal(props: {
     navigate(`/IsolatedPost/?id=${props.post_id}`);
   };
 
-  return (
-    <>
-      <div
-        className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
-        onClick={props.onClose}
-      >
-        <div
-          className="relative p-4 w-full max-w-2xl max-h-full bg-navbar rounded-lg shadow "
-          onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
-        >
-          {/* post modal header */}
-          <div className="bg-navbar">
-            <div className="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
-              <button
-                onClick={goToOGPost}
-                className="text-white bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-4 py-2"
-              >
-                See Original Post
-              </button>
-              <button
-                onClick={props.onClose}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <svg
-                  className="w-3 h-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 14"
+    return(
+        <>
+            <div
+            className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
+            onClick={props.onClose}
+            >
+                <div
+                className="relative p-4 w-full max-w-[600px] max-h-[800px] bg-navbar rounded-lg shadow"
+                onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
-                <span className="sr-only">Close modal</span>
-              </button>
+                    {/* post modal header */}
+                    <div className="bg-navbar">
+                    <div className="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
+                        <button
+                            onClick={goToOGPost}
+                            className="text-white bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-4 py-2"
+                            >
+                            See Original Post
+                        </button>
+                        <RxCross2 className={`absolute top-2 right-2 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
+                                            onClick={props.onClose}/>
+                    </div>
+                    </div>
+                    {/* Post Content */}
+                    {props.media_type == "image" ? (
+                        <img 
+                        src={props.post_url} 
+                        alt="post of type photo" 
+                        // className="mb-4 h-auto mx-auto rounded-xl object-contain"
+                        className="mb-4 mx-auto min-w-[400px] min-h-[400px] rounded-xl max-w-[500px] max-h-[600px] object-contain"
+                        />
+                    ) : (
+                        <video 
+                        src={props.post_url} 
+                        controls
+                        autoPlay={true}
+                        loop
+                        className="mb-4 mx-auto rounded-xl min-w-[400px] min-h-[400px] rounded-xl ax-w-[600px] max-h-[600px] object-contain"/>
+                    )}
+
+                </div>
+
             </div>
-          </div>
-          {/* Post Content */}
-          {props.media_type == "image" ? (
-            <img
-              src={props.post_url}
-              alt="post of type photo"
-              className="mb-4 h-auto mx-auto rounded-xl"
-            />
-          ) : (
-            <video
-              src={props.post_url}
-              controls
-              autoPlay={true}
-              loop
-              className="mb-4 h-auto mx-auto rounded-xl"
-            />
-          )}
-        </div>
-      </div>
-    </>
-  );
+        </>
+    )
 }
 
 export { PostModal };
