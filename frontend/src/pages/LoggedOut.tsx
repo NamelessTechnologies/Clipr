@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import ShouldBeLoggedIn from "../components/Authenticate";
 
 function LoggingOutAnimation() {
+  ShouldBeLoggedIn(false);
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-yellow-200 italic text-4xl mt-5">
