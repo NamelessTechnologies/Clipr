@@ -86,6 +86,14 @@ function Inbox() {
 
         let updatedConversations = [...prevConversations];
 
+        if (existingIndex === -1) {
+          for (const daconvo of prevConversations) {
+            if (daconvo.user_id === (message.user_id as unknown as string)) {
+              return prevConversations;
+            }
+          }
+        }
+
         if (existingIndex !== -1) {
           updatedConversations.splice(existingIndex, 1);
         }

@@ -42,7 +42,7 @@ const ScreenRecorder = () => {
   }, [mediaBlobUrl]);
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center text-center">
       <video
         id="skibidiToilet"
         height={200}

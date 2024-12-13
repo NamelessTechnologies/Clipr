@@ -1,13 +1,17 @@
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
-function PostModal(props: {post_id: number, post_url: string, media_type: string, onClose: ()=>void}) {
+function PostModal(props: {
+  post_id: number;
+  post_url: string;
+  media_type: string;
+  onClose: () => void;
+}) {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    const goToOGPost = () => {
-        navigate(`/IsolatedPost/?id=${props.post_id}`);
-      };
+  const goToOGPost = () => {
+    navigate(`/IsolatedPost/?id=${props.post_id}`);
+  };
 
     return(
         <>
@@ -56,4 +60,4 @@ function PostModal(props: {post_id: number, post_url: string, media_type: string
     )
 }
 
-export { PostModal }
+export { PostModal };

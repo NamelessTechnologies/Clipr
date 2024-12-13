@@ -59,7 +59,9 @@ const CreatePost: React.FC = () => {
   }
 
   const toggle = () => {
+    setImage(null);
     setRecording(!isRecording);
+    setFileName("");
   };
 
   const toggleModal = () => {
@@ -105,6 +107,11 @@ const CreatePost: React.FC = () => {
 
   const createPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(image);
+    if (!fileName) {
+      alert("must upload file first");
+      return;
+    }
 
     const uid = userInfo["user_id"];
     let postID = 0;
@@ -184,6 +191,7 @@ const CreatePost: React.FC = () => {
         return;
       }
     }
+    setFileName("");
     setTitle("");
     setPost({ content: "" });
     setImage(null);
@@ -202,11 +210,17 @@ const CreatePost: React.FC = () => {
         <div className="w-full text-white text-center text-3xl mt-6 mb-3">
           Create New Post
         </div>
-        <form onSubmit={createPost} className=" rounded items-center">
+        <form
+          noValidate
+          onSubmit={createPost}
+          className=" rounded items-center"
+        >
           <div>
             {isRecording ? (
               <div>
-                <ScreenRecorder></ScreenRecorder>
+                <div className="flex justify-center items-center al">
+                  <ScreenRecorder></ScreenRecorder>
+                </div>
                 <div className="text-center mt-3 mb-3 text-gray-100">
                   --------------------or--------------------
                 </div>
@@ -246,8 +260,8 @@ const CreatePost: React.FC = () => {
                         <span className="font-semibold">Click to upload</span>{" "}
                         or drag and drop
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      <p className="mb-2 text-sm text-gray-300 dark:text-gray-400">
+                        Video Formats are accepted
                       </p>
                     </div>
                     <input
@@ -260,7 +274,12 @@ const CreatePost: React.FC = () => {
                     />
                   </label>
                 </div>
-                <div className="text-white">{fileName}</div>
+                <div className="text-white">
+                  {fileName.length > 30
+                    ? fileName.slice(0, 20) + "..."
+                    : fileName}
+                </div>
+
                 <label className="block text-white text-lg font-semibold mt-4 mb-2">
                   Upload File
                 </label>
@@ -268,12 +287,12 @@ const CreatePost: React.FC = () => {
                   --------------------or--------------------
                 </div>
                 <div className="flex justify-center items-center">
-                  <button
+                  <div
                     onClick={toggle}
                     className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 mt-3 rounded flex-col justify-center items-center align-center"
                   >
-                    Record Screen
-                  </button>
+                    Record Media
+                  </div>
                 </div>
               </div>
             )}
@@ -282,6 +301,7 @@ const CreatePost: React.FC = () => {
               Title
             </label>
             <input
+              maxLength={40}
               type="text"
               value={title}
               required
@@ -290,13 +310,14 @@ const CreatePost: React.FC = () => {
               className="w-full py-2 px-3 text-white bg-navbar border border-white focus:outline-none focus:border-amber-500"
             />
             <span className="text-white text-sm float-right">
-              {title.length} / 100
+              {title.length} / 40
             </span>
 
             <label className="block text-white text-lg font-semibold mt-6 mb-2">
               Content:
             </label>
             <textarea
+              maxLength={100}
               id="content"
               value={post.content}
               onChange={handleInputChange}
@@ -306,7 +327,7 @@ const CreatePost: React.FC = () => {
               placeholder="Share your thoughts!"
             />
             <span className="text-white text-sm float-right">
-              {post.content.length} / 500
+              {post.content.length} / 100
             </span>
           </div>
           <button
