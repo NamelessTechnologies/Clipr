@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import UserModel from "../../types/User";
 import { useNavigate } from "react-router-dom";
 import { uri } from "../../App";
+import { RxCross2  } from "react-icons/rx";
 
 interface propTypes {
   open: boolean;
@@ -107,50 +108,37 @@ const FollowingModal: React.FC<propTypes> = (props: { open: boolean, onClose: ()
   return (
     <div 
       className={`fixed inset-0 z-50 top-0 left-0 w-full h-full flex items-center justify-center 
-      bg-gray-500 bg-opacity-70 ${open ? "visible bg-black/20" : "invisible"}`} 
+      bg-black bg-opacity-50 ${open ? "visible" : "invisible"}`} 
       onClick={onClose}>
         <div
-          className={`bg-gray-500 rounded-lg shadow p-6 transition-all max-w-md w-96 h-96 overflow-y-auto
+          className={`bg-modalBackground rounded-lg shadow p-6 transition-all max-w-md w-96 h-96 overflow-y-auto
           ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
           onClick={(e) => e.stopPropagation()}
           >
-          <button 
-          className={`absolute top-2 right-2 py-2 px-2 border border-neutral-200 rounded-md 
-          text-gray-400 bg-gray-500 bg-opacity-70`}
-          onClick={onClose}>
-            x
-          </button>
-          {/* {children} */}
-          <div className="following-container pt-3">
-        <div className="flex flex-col justify-center text-yellow-100 text-center text-5xl italic pr-2">
-            Following
-        </div>
+          <RxCross2 className={`absolute top-2 right-2 rounded-md w-7 h-7 text-white hover:cursor-pointer hover:text-zinc-400`}
+                    onClick={onClose}/>
 
-        {user?.map((user) => (
-            <div 
-              onClick={() => {
-                goToTheProfile(user.user_id.toString());
-              }} 
-              className="flex p-4 text-white hover:cursor-pointer space-x-6" 
-              key={user.user_id}>
-              <div className="circle-small border ">
-                <img src={user.pfp} alt="pfp" className="object-cover w-full h-full"/>
-              </div>
-              <div className="flex flex-col">
-                <div className="text-yellow-100 italic text-m pr-2">
-                {user.nickname}
+          <div className="text-white text-center text-3xl">
+              Following
+          </div>
+          <hr className="h-px my-2 bg-gray-400 border-0"></hr>
+
+          {user?.map((user) => (
+              <div 
+                className="flex p-4 text-white" 
+                key={user.user_id}>
+
+                <img src={user.pfp} alt="pfp" className="object-cover w-16 h-16 rounded-full hover:cursor-pointer" onClick={() => { goToTheProfile(user.user_id.toString()); }}/>
+                <div className="flex flex-col ml-6 my-auto hover:cursor-pointer" onClick={() => { goToTheProfile(user.user_id.toString()); }}>
+                  <div className="text-white text-xl">
+                  {user.username}
+                  </div>
+                  <div className="text-yellow-100 text-sm italic">
+                  {user.nickname}
+                  </div>
                 </div>
-                <div className="text-yellow-100 italic text-xl pr-2">
-                {user.username}
-              </div>
             </div>
-            </div>
-
-            
-        ))}
-        </div>
-
-          
+              ))} 
         </div>
     </div>
   );

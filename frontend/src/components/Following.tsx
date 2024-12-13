@@ -103,7 +103,7 @@ function Following (props: {profile_id: string}) {
       {user?.map((user) => (
         <div 
         onClick={() => goToTheProfile(user.user_id.toString())} 
-        className="flex p-4 text-white hover:cursor-pointer space-x-6" 
+        className="flex p-4 text-white space-x-6" 
         key={user.user_id}>
           <div className="circle-small border ">
             <img src={user.pfp} alt="pfp" className="object-cover w-full h-full"/>

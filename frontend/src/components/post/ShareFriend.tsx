@@ -131,7 +131,7 @@ function ShareFriend(props: {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row justify-start w-full overflow-scroll">
+      <div className="flex flex-row justify-start w-full overflow-scroll py-2">
         {props.users.map((user) => (
           <div onClick={() => changeSelected(user.user_id)}>
             <ShareFriendProfile
@@ -147,19 +147,20 @@ function ShareFriend(props: {
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="w-full p-2 rounded-lg bg-transparent border border-gray-400 placeholder:text-gray-300 text-white"
           placeholder="Send with a Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         {sent ? (
-          <button className="ml-5 text-white text-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700  dark:focus:ring-blue-800">
+          <button className="ml-5 text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700  dark:focus:ring-blue-800">
             Sent!
           </button>
         ) : (
           <button
             onClick={sendMessage}
-            className="ml-5 text-white text-gray-200 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-blue-800"
+            className="ml-5 text-white  hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-small rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-blue-800"
           >
             Send
           </button>

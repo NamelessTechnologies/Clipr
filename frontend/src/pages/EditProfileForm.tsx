@@ -224,10 +224,10 @@ const EditProfileForm: React.FC = () => {
         {(isLoading) && <LoadingSpinner />}
     </div>
     
-    <div className=" bg-neutral-900 flex flex-row justify-center pt-2 z-20">
+    <div className=" bg-modalBackground flex flex-row justify-center pt-2 z-20">
       <form
         onSubmit={createAccount}
-        className="bg-neutral-900 rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
+        className="bg-modalBackground rounded px-20 pt-5 pb-5 items-center w-11/12 max-h-[88vh]"
       >
         <div className="w-full text-amber-500 text-center text-3xl mb-6">
           Edit Profile
@@ -303,7 +303,7 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="password"
-            className="mb-2 border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
+            className="mb-2 border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 "
             // value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             // required
@@ -315,7 +315,7 @@ const EditProfileForm: React.FC = () => {
           </label>
           <input
             type="password"
-            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800"
             // value={password2}
             onChange={(e) => onPassword2Change(e.target.value)}
             // required
@@ -335,7 +335,7 @@ const EditProfileForm: React.FC = () => {
             Biography
           </label>
           <textarea
-            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 placeholder-gray-600"
+            className="border-gray-800 rounded-sm w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-zinc-800 "
             value={biography}
             onChange={(e) => setBiography(e.target.value)}
             maxLength={100}
