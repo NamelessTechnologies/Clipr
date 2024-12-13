@@ -3,7 +3,7 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import QuerriedProfile from "../components/search/QuerriedProfile";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { local_uri, uri } from "../App";
+import { uri } from "../App";
 import ProfilePost from "../components/profile/ProfilePost";
 
 // type Category = "Users" | "Videos" | "Tags"; Later
@@ -44,7 +44,7 @@ function Search() {
 
     async function fetchData() {
       try {
-        const queryString = local_uri + "searchname/" + query;
+        const queryString = uri + "searchname/" + query;
         const response = await fetch(queryString);
         const json = (await response.json()) as PartialUserModel[];
         setUsers(json);
