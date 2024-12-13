@@ -115,7 +115,7 @@ const CreatePost: React.FC = () => {
 
     const uid = userInfo["user_id"];
     let postID = 0;
-    F;
+
     if (media_type != "text") {
       let fileLocation = "";
 
