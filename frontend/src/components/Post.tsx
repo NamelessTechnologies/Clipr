@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 // import feixiao from "../assets/feixiao_pull.png";
 // import narrow_pic from "../assets/narrow_pic_test.png";
 // import father from "../assets/father.jpg"
+import { useNavigate } from "react-router-dom";
 
 function Post(props: {
   postData: PostModel;
@@ -21,13 +22,16 @@ function Post(props: {
   const title = props.postData.title;
   const description = props.postData.content ?? "";
   const photo_data = props.postData.photo_data;
-
+  const postUserID = props.postData.user_id;
   const publish_date_str = props.postData.datePosted ?? ""; // datePosted returned from endpoint is a string, not date. so have to convert it to date obj again
   const publish_date = new Date(publish_date_str).toLocaleDateString("en-us", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
+  // console.log("HELOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+  // console.log(props.postData.user_id);
 
   const liked = props.postData.liked ?? false;
   const num_likes = props.postData.num_likes ?? 0;
@@ -40,6 +44,12 @@ function Post(props: {
   const hopOnPause = () => {
     setIsOpen(!isOpen);
   };
+
+  const navigate = useNavigate();
+  const goToTheProfile = (postUserID: string) => {
+    navigate(`/Profile?profile_id=${postUserID}`);
+  };
+
   return (
     <div className="flex-col w-1/2 h-3/5 mr-7 pb-4 rounded-xl">
       {photo_data && (
@@ -203,7 +213,13 @@ function Post(props: {
         )}
       </div>
 
-      <div className="text-amber-500">{postUser}</div>
+      {props.loggedOut ? (
+        <div className="text-amber-500 text-lg">{postUser}</div>
+      ) : (
+        <button className="text-amber-500 text-lg pointer-events-auto:hover" 
+          onClick={() => {goToTheProfile(postUserID?.toString()!);
+        }}>{postUser}</button>
+      )}
 
       {/* post description */}
       <div className="flex flex-col text-white mt-1 bg-neutral-900 rounded-xl p-2">
