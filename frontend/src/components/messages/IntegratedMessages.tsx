@@ -54,7 +54,7 @@ function IntegratedMessages(props: {
   }, []);
 
   useEffect(() => {
-    if (incomingMessage && (incomingMessage.convo_id as unknown as string)) {
+    if (incomingMessage && ((incomingMessage.convo_id as unknown as string) === convoID)) {
       setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
   }, [convoID, incomingMessage]);
