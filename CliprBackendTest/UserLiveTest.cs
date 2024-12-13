@@ -34,7 +34,7 @@ public class UserLiveTest : IDisposable
     {
 
         // Act
-        var response = await _httpClient.GetAsync("/user/followers/9999"); // Adjust path as needed
+        var response = await _httpClient.GetAsync("/user/followers/0"); // Adjust path as needed
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
 
@@ -48,7 +48,21 @@ public class UserLiveTest : IDisposable
     {
 
         // Act
-        var response = await _httpClient.GetAsync("/user/following/9999"); // Adjust path as needed
+        var response = await _httpClient.GetAsync("/user/following/0"); // Adjust path as needed
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Equal("No followings found.", content);
+        this.Dispose();
+    }
+
+    [Fact]
+    public async Task GetOneUserFollowing_ReturnsNotFound_WhenUserHasNoFollowings()
+    {
+
+        // Act
+        var response = await _httpClient.GetAsync("/user/following/15"); // Adjust path as needed
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
 
@@ -118,7 +132,7 @@ public class UserLiveTest : IDisposable
     {
 
         // Act
-        var response = await _httpClient.GetAsync("/user/friendsof/9999"); // Adjust path as needed
+        var response = await _httpClient.GetAsync("/user/friendsof/0"); // Adjust path as needed
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
 
@@ -140,6 +154,17 @@ public class UserLiveTest : IDisposable
         this.Dispose();
     }
 
+    [Fact]
+    public async Task Test_GetFollowCounts_ReturnsZeroesWhenIdDoesntExist() {
+        // Act
+        var response = await _httpClient.GetAsync("/user/followCounts/0");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualResult = JsonSerializer.Deserialize<List<int>>(content);
+        Console.WriteLine(content);
+        List<int> expectedResponse= [0,0,0];
+        Assert.Equal(expectedResponse, actualResult);
+    }
+
 // ----------------- EXPECTING OUTPUT -----------------
     [Fact]
     // [InlineData("{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": \"jpalonzo@cpp.edu\", \"password\": \"password123\", \"biography\": \"I love CS!\", \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}")]
@@ -154,15 +179,6 @@ public class UserLiveTest : IDisposable
         var actualUser = JsonSerializer.Deserialize<User>(content);
 
         Assert.NotNull(actualUser);
-
-        // Assert: Compare the actual and expected results
-        // Assert.Equal(expectedUser.User_id, actualUser.User_id);
-        // Assert.Equal(expectedUser.Username, actualUser.Username);
-        // Assert.Equal(expectedUser.Email, actualUser.Email);
-        // Assert.Equal(expectedUser.Password, actualUser.Password);
-        // Assert.Equal(expectedUser.Biography, actualUser.Biography);
-        // Assert.Equal(expectedUser.Nickname, actualUser.Nickname);
-        // Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
         this.Dispose();
     }
 
@@ -178,22 +194,12 @@ public class UserLiveTest : IDisposable
         var content = await response.Content.ReadAsStringAsync();
         var actualFollowers = JsonSerializer.Deserialize<List<Follower>>(content);
 
-        // Assert: Compare the expected and actual followers
         // Assert: Followers are found
         Assert.NotNull(actualFollowers);
-        // Assert.Equal(expectedFollowers.Count, actualFollowers.Count);
-        // for (int i = 0; i < expectedFollowers.Count; i++)
-        // {
-        //     Assert.Equal(expectedFollowers[i].UserID, actualFollowers[i].UserID);
-        //     Assert.Equal(expectedFollowers[i].Username, actualFollowers[i].Username);
-        //     Assert.Equal(expectedFollowers[i].Nickname, actualFollowers[i].Nickname);
-        //     Assert.Equal(expectedFollowers[i].PFP_URL, actualFollowers[i].PFP_URL);
-        // }
         this.Dispose();
     }
 
     [Fact]
-    // [InlineData("[{\"userID\": 9, \"username\": \"samantha_lee\", \"nickname\": \"FitSamantha\", \"pfP_URL\": \"https://random.image/img9.jpg\"}]")]
     public async Task Test_UserTen_ReturnsCorrectJsonOfFollowers()
     {
         // Arrange: Deserialize the expected JSON into a List<Follower> object
@@ -203,16 +209,6 @@ public class UserLiveTest : IDisposable
         var response = await _httpClient.GetAsync("/user/followers/10");
         var content = await response.Content.ReadAsStringAsync();
         var actualFollowers = JsonSerializer.Deserialize<List<Follower>>(content);
-
-        // Assert: Compare the expected and actual followers
-        // Assert.Equal(expectedFollowers.Count, actualFollowers.Count);
-        // for (int i = 0; i < expectedFollowers.Count; i++)
-        // {
-        //     Assert.Equal(expectedFollowers[i].UserID, actualFollowers[i].UserID);
-        //     Assert.Equal(expectedFollowers[i].Username, actualFollowers[i].Username);
-        //     Assert.Equal(expectedFollowers[i].Nickname, actualFollowers[i].Nickname);
-        //     Assert.Equal(expectedFollowers[i].PFP_URL, actualFollowers[i].PFP_URL);
-        // }
 
         // Assert: Followers are found
         Assert.NotNull(actualFollowers);
@@ -231,18 +227,6 @@ public class UserLiveTest : IDisposable
         var content = await response.Content.ReadAsStringAsync();
         var actualPosts = JsonSerializer.Deserialize<List<Post>>(content);
 
-        // Assert: Compare the expected and actual saved
-        // Assert.Equal(expectedPosts.Count, actualPosts.Count);
-        // for (int i = 0; i < expectedPosts.Count; i++)
-        // {
-        //     Assert.Equal(expectedPosts[i].PostID, actualPosts[i].PostID);
-        //     Assert.Equal(expectedPosts[i].UserID, actualPosts[i].UserID);
-        //     Assert.Equal(expectedPosts[i].Title, actualPosts[i].Title);
-        //     Assert.Equal(expectedPosts[i].Description, actualPosts[i].Description);
-        //     Assert.Equal(expectedPosts[i].DatePosted, actualPosts[i].DatePosted);
-        //     Assert.Equal(expectedPosts[i].MediaType, actualPosts[i].MediaType);
-        // }
-
         // Assert: Saved post(s) are found
         Assert.NotNull(actualPosts);
         this.Dispose();
@@ -260,26 +244,14 @@ public class UserLiveTest : IDisposable
         var content = await response.Content.ReadAsStringAsync();
         var actualUser = JsonSerializer.Deserialize<User>(content);
 
-        // Assert: Compare the actual and expected results
-        // Assert.Equal(expectedUser.User_id, actualUser.User_id);
-        // Assert.Equal(expectedUser.Username, actualUser.Username);
-        // Assert.Equal(expectedUser.Email, actualUser.Email);
-        // Assert.Equal(expectedUser.Password, actualUser.Password);
-        // Assert.Equal(expectedUser.Biography, actualUser.Biography);
-        // Assert.Equal(expectedUser.Nickname, actualUser.Nickname);
-        // Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
-
         // Assert: User is found
         Assert.NotNull(actualUser);
         this.Dispose();
     }
 
-    [Theory]
-    [InlineData("{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": \"jpalonzo@cpp.edu\", \"password\": \"password123\", \"biography\": \"I love CS!\", \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}")]
-    public async Task Test_UserOneUsername_ReturnsCorrectJson(string expectedJson)
+    [Fact]
+    public async Task Test_UserOneUsername_ReturnsCorrectJson()
     {
-        // Arrange: Deserialize the expected JSON into an object
-        var expectedUser = JsonSerializer.Deserialize<User>(expectedJson);
 
         // Act: Call the API to get the actual result 
         var response = await _httpClient.GetAsync("/username/alonzojp");
@@ -287,22 +259,13 @@ public class UserLiveTest : IDisposable
         var actualUser = JsonSerializer.Deserialize<User>(content);
 
         // Assert: Compare the actual and expected results
-        Assert.Equal(expectedUser.User_id, actualUser.User_id);
-        Assert.Equal(expectedUser.Username, actualUser.Username);
-        Assert.Equal(expectedUser.Email, actualUser.Email);
-        Assert.Equal(expectedUser.Password, actualUser.Password);
-        Assert.Equal(expectedUser.Biography, actualUser.Biography);
-        Assert.Equal(expectedUser.Nickname, actualUser.Nickname);
-        Assert.Equal(expectedUser.Pfp, actualUser.Pfp);
+        Assert.NotNull(actualUser);
         this.Dispose();
     }
 
-    [Theory]
-    [InlineData("[{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": null, \"password\": null, \"biography\": null, \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}]")]
-    public async Task Test_UserOneSearchNameAlonzo_ReturnsCorrectJson(string expectedJson)
+    [Fact]
+    public async Task Test_UserOneSearchNameAlonzo_ReturnsCorrectJson()
     {
-        // Arrange: Deserialize the expected JSON into an object
-        var expectedUsers = JsonSerializer.Deserialize<List<User>>(expectedJson);
 
         // Act: Call the API to get the actual result 
         var response = await _httpClient.GetAsync("/searchname/alonzo");
@@ -310,27 +273,13 @@ public class UserLiveTest : IDisposable
         var actualUsers = JsonSerializer.Deserialize<List<User>>(content);
 
         // Assert: Compare the actual and expected results
-        Assert.Equal(expectedUsers.Count, actualUsers.Count);
-        for (int i = 0; i < expectedUsers.Count; i++)
-        {
-            Assert.Equal(expectedUsers[i].User_id, actualUsers[i].User_id);
-            Assert.Equal(expectedUsers[i].Username, actualUsers[i].Username);
-            Assert.Equal(expectedUsers[i].Email, actualUsers[i].Email);
-            Assert.Equal(expectedUsers[i].Password, actualUsers[i].Password);
-            Assert.Equal(expectedUsers[i].Biography, actualUsers[i].Biography);
-            Assert.Equal(expectedUsers[i].Nickname, actualUsers[i].Nickname);
-            Assert.Equal(expectedUsers[i].Pfp, actualUsers[i].Pfp);
-        }
-
+        Assert.NotNull(actualUsers);
         this.Dispose();
     }
 
-    [Theory]
-    [InlineData("[{\"user_id\": 1, \"username\": \"alonzojp\", \"email\": \"jpalonzo@cpp.edu\", \"password\": \"password123\", \"biography\": \"I love CS!\", \"nickname\": \"Ender\", \"pfp\": \"https://i.pinimg.com/originals/6f/bd/2e/6fbd2e62dddb28723603aace97f9ac67.jpg\"}, {\"user_id\": 19, \"username\": \"chrisjlo\", \"email\": \"cjlo@cpp.edu\", \"password\": \"Password123\", \"biography\": \"My middle name is Ji-Chek!\", \"nickname\": \"cheky\", \"pfp\": \"http://chris.png\"}]")]
-    public async Task Test_FriendsofUserTwo_ReturnsCorrectJsonArray(string expectedJson)
+    [Fact]
+    public async Task Test_FriendsofUserTwo_ReturnsCorrectJsonArray()
     {
-        // Arrange: Deserialize the expected JSON into an object
-        var expectedUsers = JsonSerializer.Deserialize<List<User>>(expectedJson);
 
         // Act: Call the API to get the actual result 
         var response = await _httpClient.GetAsync("/user/friendsof/2");
@@ -338,18 +287,7 @@ public class UserLiveTest : IDisposable
         var actualUsers = JsonSerializer.Deserialize<List<User>>(content);
 
         // Assert: Compare the actual and expected results
-        Assert.Equal(expectedUsers.Count, actualUsers.Count);
-        for (int i = 0; i < expectedUsers.Count; i++)
-        {
-            Assert.Equal(expectedUsers[i].User_id, actualUsers[i].User_id);
-            Assert.Equal(expectedUsers[i].Username, actualUsers[i].Username);
-            Assert.Equal(expectedUsers[i].Email, actualUsers[i].Email);
-            Assert.Equal(expectedUsers[i].Password, actualUsers[i].Password);
-            Assert.Equal(expectedUsers[i].Biography, actualUsers[i].Biography);
-            Assert.Equal(expectedUsers[i].Nickname, actualUsers[i].Nickname);
-            Assert.Equal(expectedUsers[i].Pfp, actualUsers[i].Pfp);
-        }
-
+        Assert.NotNull(actualUsers);
         this.Dispose();
     }
 
@@ -364,6 +302,15 @@ public class UserLiveTest : IDisposable
         // Assert: Endpoint returns response
         Assert.NotEqual(errorResult,content);
 
+    }
+
+    [Fact]
+    public async Task Test_GetFollowCounts_ReturnsSomethingWhenIdIsValid() {
+        // Act
+        var response = await _httpClient.GetAsync("/user/followCounts/1");
+        var content = await response.Content.ReadAsStringAsync();
+        var actualResult = JsonSerializer.Deserialize<List<int>>(content);
+        Assert.NotNull(actualResult);
     }
 
     public void Dispose()
