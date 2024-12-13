@@ -8,7 +8,11 @@ import { useState } from "react";
 // import narrow_pic from "../assets/narrow_pic_test.png";
 // import father from "../assets/father.jpg"
 
-function Post(props: { postData: PostModel; currentUserID: number }) {
+function Post(props: {
+  postData: PostModel;
+  currentUserID: number;
+  loggedOut?: boolean;
+}) {
   const [showMore, setShowMore] = useState(false);
 
   const postUser = props.postData.username;
@@ -70,27 +74,31 @@ function Post(props: { postData: PostModel; currentUserID: number }) {
         </div>
 
         {/* like, bookmark, share box */}
-        <div className="flex ml-auto space-x-5 mr-2">
-          <LikeIcon
-            liked={liked}
-            num_likes={num_likes}
-            post_id={props.postData.post_id!}
-            user_id={props.currentUserID!}
-          />
-          <BookmarkIcon
-            bookmarked={bookmarked}
-            num_bookmarks={num_bookmarks}
-            post_id={props.postData.post_id!}
-            user_id={props.currentUserID!}
-          />
-          {photo_data && (
-            <ShareIcon
-              s3link={photo_data}
-              media_type={media_type}
+        {props.loggedOut ? (
+          <div></div>
+        ) : (
+          <div className="flex ml-auto space-x-5 mr-2">
+            <LikeIcon
+              liked={liked}
+              num_likes={num_likes}
               post_id={props.postData.post_id!}
+              user_id={props.currentUserID!}
             />
-          )}
-        </div>
+            <BookmarkIcon
+              bookmarked={bookmarked}
+              num_bookmarks={num_bookmarks}
+              post_id={props.postData.post_id!}
+              user_id={props.currentUserID!}
+            />
+            {photo_data && (
+              <ShareIcon
+                s3link={photo_data}
+                media_type={media_type}
+                post_id={props.postData.post_id!}
+              />
+            )}
+          </div>
+        )}
       </div>
 
       <div className="text-amber-500">{postUser}</div>
