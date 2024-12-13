@@ -113,18 +113,33 @@ function CommentBox(props: {
       </div>
 
       {/* all comments */}
-      <div
-        className="flex flex-col items-center w-full overflow-auto"
-        style={{ height: "70vh", maxHeight: "70vh" }}
-      >
-        {comments.map((comment, index) => (
-          <CommentWrapper
-            key={index}
-            commentData={comment}
-            current_user_id={props.user_id}
-          />
-        ))}
-      </div>
+      {props.loggedOut ? (
+        <div
+          className="flex flex-col items-center w-full overflow-auto"
+          style={{ height: "70vh", maxHeight: "70vh", pointerEvents: "none" }}
+        >
+          {comments.map((comment, index) => (
+            <CommentWrapper
+              key={index}
+              commentData={comment}
+              current_user_id={props.user_id}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="flex flex-col items-center w-full overflow-auto"
+          style={{ height: "70vh", maxHeight: "70vh" }}
+        >
+          {comments.map((comment, index) => (
+            <CommentWrapper
+              key={index}
+              commentData={comment}
+              current_user_id={props.user_id}
+            />
+          ))}
+        </div>
+      )}
 
       {/* <input type="text" className="bg-transparent outline-none border-b text-white px-1 my-auto w-full" placeholder="Leave a comment"></input>
                 <SendIcon/> */}
@@ -149,7 +164,6 @@ function CommentBox(props: {
               <SendIcon />
             </button>
           </form>
-          \
         </div>
       )}
     </div>
