@@ -65,6 +65,7 @@ function ShareFriend(props: {
           Content: message,
           Datesent: new Date(),
           User_id: userID,
+          nickname: userNickname,
         };
         try {
           await fetch(`${uri}conversation/message`, {
