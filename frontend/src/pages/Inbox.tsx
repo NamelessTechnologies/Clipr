@@ -4,6 +4,7 @@ import ShouldBeLoggedIn from "../components/Authenticate";
 import IntegratedMessages from "../components/messages/IntegratedMessages";
 import { uri } from "../App";
 import { socket } from "../socket";
+import MessageModel from "../types/Message";
 
 interface ProfilePreview {
   user_id: string;
@@ -13,6 +14,12 @@ interface ProfilePreview {
   convo_id: string;
   latestDate: Date;
 }
+interface ExtendedMessageModel extends MessageModel {
+  hasMedia?: boolean;
+  mediaType: string;
+  nickname?: string;
+}
+
 function Inbox() {
   ShouldBeLoggedIn(true);
   const currentUser = localStorage.getItem("user");
@@ -67,13 +74,45 @@ function Inbox() {
     };
 
     fetchConvos();
+  }, [userID]);
+
+  useEffect(() => {
+    const updateConvo = (message: ExtendedMessageModel) => {
+      setConversation((prevConversations) => {
+        // Find the index of the conversation in the current array
+        const existingIndex = prevConversations.findIndex(
+          (convo) => convo.convo_id === (message.convo_id as unknown as string)
+        );
+
+        let updatedConversations = [...prevConversations];
+
+        if (existingIndex !== -1) {
+          updatedConversations.splice(existingIndex, 1);
+        }
+
+        updatedConversations = [
+          {
+            user_id: message.user_id as unknown as string,
+            nickname: message.nickname as string,
+            pfp: message.user_pfp,
+            lastMessage: message.content,
+            latestDate: message.datesent,
+            convo_id: message.convo_id as unknown as string,
+          },
+          ...updatedConversations,
+        ];
+
+        return updatedConversations;
+      });
+      setConversation((prev) => [...prev]);
+    };
 
     // Socket listener with cleanup
-    socket.on("recieve-message", fetchConvos);
+    socket.on("recieve-message", updateConvo);
     return () => {
-      socket.off("recieve-message", fetchConvos);
+      socket.off("recieve-message", updateConvo);
     };
-  }, [userID]); // Add userID as a dependency
+  }, []);
 
   useEffect(() => {
     console.log(
@@ -108,6 +147,7 @@ function Inbox() {
                 }
               >
                 <ProfilePreview
+                  key={`${preview.user_id}-${preview.pfp}`}
                   selected={selected.toString() == preview.user_id}
                   user_id={preview.user_id}
                   nickname={preview.nickname}

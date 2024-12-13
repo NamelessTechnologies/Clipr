@@ -9,6 +9,7 @@ import { EmbeddedPost } from "./EmbeddedPost";
 interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
   mediaType: string;
+  nickname?: string;
 }
 function IntegratedMessages(props: {
   convo_id: string;
@@ -19,6 +20,7 @@ function IntegratedMessages(props: {
   const userInfo = currentUser ? JSON.parse(currentUser) : {};
   const userID = userInfo["user_id"] as number;
   const userPFP = userInfo["pfp"] as string;
+  const userNickname = userInfo["nickname"] as string;
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ExtendedMessageModel[]>([]);
@@ -150,6 +152,7 @@ function IntegratedMessages(props: {
         datesent: new Date(),
         user_id: userID,
         user_pfp: userPFP,
+        nickname: userNickname,
       } as unknown as ExtendedMessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();
