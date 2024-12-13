@@ -20,7 +20,7 @@ function PostModal(props: {
             onClick={props.onClose}
             >
                 <div
-                className="relative p-4 w-full max-w-xl max-h-full bg-navbar rounded-lg shadow"
+                className="relative p-4 w-full max-w-[600px] max-h-[800px] bg-navbar rounded-lg shadow"
                 onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
                 >
                     {/* post modal header */}
@@ -42,7 +42,7 @@ function PostModal(props: {
                         src={props.post_url} 
                         alt="post of type photo" 
                         // className="mb-4 h-auto mx-auto rounded-xl object-contain"
-                        className="mb-4 mx-auto min-w-[400px] min-h-[400px] rounded-xl max-w-full max-h-full object-contain"
+                        className="mb-4 mx-auto min-w-[400px] min-h-[400px] rounded-xl max-w-[500px] max-h-[600px] object-contain"
                         />
                     ) : (
                         <video 
@@ -50,7 +50,7 @@ function PostModal(props: {
                         controls
                         autoPlay={true}
                         loop
-                        className="mb-4 mx-auto rounded-xl min-w-[400px] min-h-[400px] rounded-xl max-w-full max-h-full object-contain"/>
+                        className="mb-4 mx-auto rounded-xl min-w-[400px] min-h-[400px] rounded-xl ax-w-[600px] max-h-[600px] object-contain"/>
                     )}
 
                 </div>
