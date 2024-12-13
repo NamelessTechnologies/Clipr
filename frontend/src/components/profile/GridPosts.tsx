@@ -108,6 +108,7 @@ function GridPosts(props: { profile_id: string }) {
             {bookmarks.map((post, index) => (
               <ProfilePost
                 key={index}
+                post_id={post.post_id}
                 post_url={post.mediaLink}
                 media_type={post.mediaType}
               />
@@ -118,6 +119,7 @@ function GridPosts(props: { profile_id: string }) {
             {posts.map((post, index) => (
               <ProfilePost
                 key={index}
+                post_id={post.post_id}
                 post_url={post.mediaLink}
                 media_type={post.mediaType}
               />
