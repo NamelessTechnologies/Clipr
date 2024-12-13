@@ -3,12 +3,32 @@ import PostModel from "../types/Post";
 import { uri } from "../App";
 import { Post } from "../components/Post";
 import { CommentBox } from "../components/CommentBox";
+import { AltNavBar } from "./AltNavbar";
 
 function IsolatedPostComponent(props: { post_id: string }) {
+  const [foundUser, setFoundUser] = useState<string>();
+
   const currentUser = localStorage.getItem("user");
-  const userInfo = currentUser ? JSON.parse(currentUser) : {};
+  const userInfo = currentUser
+    ? JSON.parse(currentUser)
+    : {
+        user_id: 30,
+        username: "dnpaxion",
+        email: "dpasion@cpp.edu",
+        password: "Password123",
+        biography: "Looking for some TFT friends to Make!",
+        nickname: "The Daniel",
+        pfp: "https://wiki.leagueoflegends.com/en-us/images/Duckbill_Pajama_Party_Tier_2.png?1bad5",
+      };
   const [post, setPost] = useState<PostModel>({});
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const localStorageUser = localStorage.getItem("user");
+    if (localStorageUser) {
+      setFoundUser(localStorageUser);
+    }
+  }, []);
 
   const fetchPosts = async () => {
     try {
@@ -57,14 +77,41 @@ function IsolatedPostComponent(props: { post_id: string }) {
   }
 
   return (
-    <div className="flex justify-center mt-6 mb-4">
-      <Post postData={post} currentUserID={userInfo["user_id"]} />
-      <CommentBox
-        post_id={props.post_id as unknown as number}
-        user_id={userInfo["user_id"]}
-        username={userInfo["username"]}
-        user_pfp={userInfo["pfp"]}
-      />
+    <div>
+      {foundUser ? (
+        <>
+          <div className="invisible -mb-5">
+            <AltNavBar />
+          </div>
+          <div className="flex justify-center mt-6 mb-4 -mt-5">
+            <Post postData={post} currentUserID={userInfo["user_id"]} />
+            <CommentBox
+              post_id={props.post_id as unknown as number}
+              user_id={userInfo["user_id"]}
+              username={userInfo["username"]}
+              user_pfp={userInfo["pfp"]}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <AltNavBar />
+          <div className="flex justify-center mt-6 mb-4">
+            <Post
+              postData={post}
+              currentUserID={userInfo["user_id"]}
+              loggedOut={true}
+            />
+            <CommentBox
+              post_id={props.post_id as unknown as number}
+              user_id={userInfo["user_id"]}
+              username={userInfo["username"]}
+              user_pfp={userInfo["pfp"]}
+              loggedOut={true}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
