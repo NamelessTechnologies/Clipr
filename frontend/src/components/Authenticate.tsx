@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 const ShouldBeLoggedIn = (ShouldBeLoggedIn: boolean) => {
   const getUser = localStorage.getItem("user");
   let loggedIn = false;
