@@ -119,6 +119,16 @@ function ShareFriend(props: {
         setConvoID(json.id);
       }
       try {
+        const postMessage = {
+          convo_id: json.id,
+          Content: `${props.s3link}π${props.media_type}π${props.post_id}`,
+          Datesent: new Date(),
+          User_id: userID,
+          user_pfp: userPFP,
+          secondUserID: id,
+          nickname: userNickname,
+        };
+        socket.emit("send-message", postMessage);
         const recentMessage = {
           convo_id: json.id,
           content: message,
