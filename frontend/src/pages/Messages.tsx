@@ -13,6 +13,7 @@ interface ExtendedMessageModel extends MessageModel {
   mediaType: string;
   nickname?: string;
   postid?: string;
+  secondUserID: string;
 }
 const Messages: React.FC = () => {
   ShouldBeLoggedIn(true);
@@ -84,6 +85,7 @@ const Messages: React.FC = () => {
                 hasMedia,
                 mediaType,
                 postid,
+                secondUserID,
               };
             }
             return {
@@ -93,6 +95,7 @@ const Messages: React.FC = () => {
               datesent: media.datesent,
               user_id: media.user_id,
               user_pfp: media.user_pfp,
+              secondUserID,
             };
           }
         );
@@ -105,7 +108,10 @@ const Messages: React.FC = () => {
   }, [secondUserID, userID]);
 
   useEffect(() => {
-    if (incomingMessage && ((incomingMessage.convo_id as unknown as string) === convoID)) {
+    if (
+      incomingMessage &&
+      (incomingMessage.convo_id as unknown as string) === convoID
+    ) {
       setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
   }, [convoID, incomingMessage]);
@@ -148,6 +154,7 @@ const Messages: React.FC = () => {
         user_id: userID,
         user_pfp: userPFP,
         nickname: userNickname,
+        secondUserID,
       } as unknown as ExtendedMessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();

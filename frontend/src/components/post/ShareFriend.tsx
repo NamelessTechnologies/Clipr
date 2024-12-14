@@ -125,6 +125,7 @@ function ShareFriend(props: {
           datesent: new Date(),
           user_id: userID,
           user_pfp: userPFP,
+          secondUserID: id,
         } as unknown as MessageModel;
         socket.emit("send-message", recentMessage);
       } catch (error) {

@@ -11,6 +11,7 @@ interface ExtendedMessageModel extends MessageModel {
   mediaType: string;
   nickname?: string;
   postid?: string;
+  secondUserID: string;
 }
 function IntegratedMessages(props: {
   convo_id: string;
@@ -54,7 +55,10 @@ function IntegratedMessages(props: {
   }, []);
 
   useEffect(() => {
-    if (incomingMessage && ((incomingMessage.convo_id as unknown as string) === convoID)) {
+    if (
+      incomingMessage &&
+      (incomingMessage.convo_id as unknown as string) === convoID
+    ) {
       setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }
   }, [convoID, incomingMessage]);
@@ -98,6 +102,7 @@ function IntegratedMessages(props: {
                 hasMedia,
                 mediaType,
                 postid,
+                secondUserID,
               };
             }
             return {
@@ -107,6 +112,7 @@ function IntegratedMessages(props: {
               datesent: media.datesent,
               user_id: media.user_id,
               user_pfp: media.user_pfp,
+              secondUserID,
             };
           }
         );
@@ -156,6 +162,7 @@ function IntegratedMessages(props: {
         user_id: userID,
         user_pfp: userPFP,
         nickname: userNickname,
+        secondUserID,
       } as unknown as ExtendedMessageModel;
       socket.emit("send-message", recentMessage);
       await postMessage();

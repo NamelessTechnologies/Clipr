@@ -18,6 +18,7 @@ interface ExtendedMessageModel extends MessageModel {
   hasMedia?: boolean;
   mediaType: string;
   nickname?: string;
+  secondUserID: string;
 }
 
 function Inbox() {
@@ -87,11 +88,22 @@ function Inbox() {
         let updatedConversations = [...prevConversations];
 
         if (existingIndex === -1) {
-          for (const daconvo of prevConversations) {
-            if (daconvo.user_id === (message.user_id as unknown as string)) {
-              return prevConversations;
-            }
+          if ((userID as unknown as string) === message.secondUserID) {
+            updatedConversations = [
+              {
+                user_id: message.user_id as unknown as string,
+                nickname: message.nickname as string,
+                pfp: message.user_pfp,
+                lastMessage: message.content,
+                latestDate: message.datesent,
+                convo_id: message.convo_id as unknown as string,
+              },
+              ...updatedConversations,
+            ];
+
+            return updatedConversations;
           }
+          return updatedConversations;
         }
 
         if (existingIndex !== -1) {
@@ -121,6 +133,8 @@ function Inbox() {
       socket.off("recieve-message", updateConvo);
     };
   }, []);
+
+  useEffect(() => {}, [conversation]);
 
   useEffect(() => {
     console.log(
